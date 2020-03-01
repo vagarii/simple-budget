@@ -7,7 +7,7 @@ import {INSERT_SPENDING_ITEMS} from "../data/mutations";
 import {GET_SPENDING_ITEMS} from "../data/queries";
 
 const AddSpendingItem = ({user, date}) => {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
   const [insertTodo, {loading, error}] = useMutation(INSERT_SPENDING_ITEMS);
 
@@ -55,7 +55,7 @@ const AddSpendingItem = ({user, date}) => {
         onPress={() => {
           insertTodo({
             variables: {
-              description: description,
+              description: description ?? "",
               category_id: 1,
               amount: amount,
               user_id: user.id,
