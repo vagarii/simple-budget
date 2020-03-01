@@ -1,0 +1,6 @@
+framework module Pods_my_big_planTests {
+  umbrella header "Pods-my-big-planTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

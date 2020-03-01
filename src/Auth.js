@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Button, Alert} from "react-native";
+import {Alert, StyleSheet} from "react-native";
 import {AuthSession} from "expo";
 import * as Random from "expo-random";
 import * as SecureStore from "expo-secure-store";
@@ -13,6 +13,7 @@ import {
   ID_TOKEN_KEY,
   NONCE_KEY
 } from "../config";
+import {Button, Icon} from "@ui-kitten/components";
 
 const generateNonce = async () => {
   const nonce = String.fromCharCode.apply(
@@ -22,6 +23,8 @@ const generateNonce = async () => {
   await SecureStore.setItemAsync(NONCE_KEY, nonce);
   return nonce;
 };
+
+const StarIcon = style => <Icon {...style} name="star" />;
 
 const Auth = ({token, onLogin, onLogout}) => {
   const handleLoginPress = async () => {
@@ -72,9 +75,21 @@ const Auth = ({token, onLogin, onLogout}) => {
   };
 
   return token ? (
-    <Button title="Logout" onPress={onLogout} />
+    <Button
+      style={styles.button}
+      onPress={onLogout}
+      // icon={StarIcon}
+    >
+      Logout
+    </Button>
   ) : (
-    <Button title="Login" onPress={handleLoginPress} />
+    <Button
+      style={styles.button}
+      onPress={handleLoginPress}
+      // icon={StarIcon}
+    >
+      Login
+    </Button>
   );
 };
 
@@ -83,5 +98,15 @@ Auth.propTypes = {
   onLogin: PropTypes.func,
   onLogout: PropTypes.func
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  button: {
+    margin: 8
+  }
+});
 
 export default Auth;
