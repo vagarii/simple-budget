@@ -1,13 +1,14 @@
 import React from "react";
 import {useQuery} from "@apollo/react-hooks";
+import {FlatList, StyleSheet, View, ActivityIndicator} from "react-native";
 import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator
-} from "react-native";
-import {Layout, Button, Icon, List, ListItem} from "@ui-kitten/components";
+  Layout,
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Text
+} from "@ui-kitten/components";
 import SpendingItem from "./SpendingItem";
 import {GET_SPENDING_ITEMS} from "../data/queries";
 

@@ -9,3 +9,17 @@ export const GET_SPENDING_ITEMS = gql`
     }
   }
 `;
+
+export const GET_SPENDING_CATEGORIES = gql`
+  {
+    spending_category {
+      id
+      name
+      description
+      category_icon {
+        name
+        pack
+      }
+    }
+  }
+`;

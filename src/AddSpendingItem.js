@@ -6,7 +6,7 @@ import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../data/mutations";
 import {GET_SPENDING_ITEMS} from "../data/queries";
 
-const AddSpendingItem = ({user, date}) => {
+const AddSpendingItem = ({user, date, categoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
   const [insertTodo, {loading, error}] = useMutation(INSERT_SPENDING_ITEMS);
@@ -56,7 +56,7 @@ const AddSpendingItem = ({user, date}) => {
           insertTodo({
             variables: {
               description: description ?? "",
-              category_id: 1,
+              category_id: categoryId,
               amount: amount,
               user_id: user.id,
               spending_date: date
@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
 
 AddSpendingItem.propTypes = {
   user: PropTypes.object.isRequired,
-  date: PropTypes.string.isRequired
+  date: PropTypes.string.isRequired,
+  categoryId: PropTypes.number.isRequired
 };
 
 export default AddSpendingItem;

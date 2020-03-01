@@ -4,44 +4,44 @@ import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, Text, View} from "react-native";
 import {UPDATE_TODO} from "../data/mutations";
 import {Button, Icon, List, ListItem} from "@ui-kitten/components";
-import {DELETE_SPENDING_ITEM} from "../data/mutations";
-import {GET_SPENDING_ITEMS} from "../data/queries";
+// import {DELETE_SPENDING_ITEM} from "../data/mutations";
+import {GET_SPENDING_CATEGORIES} from "../data/queries";
 
-const SpendingItem = ({item}) => {
-  const [insertSpendingItem, {loading, error}] = useMutation(
-    DELETE_SPENDING_ITEM
-  );
+const CategoryItem = ({item}) => {
+  // const [insertCategoryItem, {loading, error}] = useMutation(
+  //   DELETE_SPENDING_ITEM
+  // );
 
-  const {id, description} = item;
+  const {id, name, description, category_icon} = item;
 
-  const renderItemIcon = style => <Icon {...style} name="person" />;
+  const renderItemIcon = style => <Icon {...style} name={category_icon.name} />;
 
   const renderItemAccessory = itemId => (
     <Button
       icon={DeleteIcon}
       size="small"
-      onPress={deleteItem}
+      onPress={{}}
       appearance="ghost"
       status="basic"
     ></Button>
   );
 
   const DeleteIcon = style => <Icon {...style} name="trash-2" />;
-
-  const deleteItem = () => {
-    insertSpendingItem({
-      variables: {
-        id: item.id
-      },
-      refetchQueries: [{query: GET_SPENDING_ITEMS}]
-    });
-  };
+  //
+  // const deleteItem = () => {
+  //   insertCategoryItem({
+  //     variables: {
+  //       id: item.id
+  //     },
+  //     refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+  //   });
+  // };
 
   return (
     <View style={styles.container}>
       <ListItem
-        title={item.amount}
-        description={item.description}
+        title={name}
+        description={description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
       />
@@ -49,7 +49,7 @@ const SpendingItem = ({item}) => {
   );
 };
 
-SpendingItem.propTypes = {
+CategoryItem.propTypes = {
   item: PropTypes.object.isRequired
 };
 
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SpendingItem;
+export default CategoryItem;
