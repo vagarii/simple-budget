@@ -8,12 +8,13 @@ export const INSERT_USER = gql`
   }
 `;
 
-export const INSERT_TODO = gql`
+export const INSERT_SPENDING_ITEMS = gql`
   mutation(
     $description: String!
     $category_id: Int!
     $amount: money!
     $user_id: String!
+    $spending_date: timestamptz!
   ) {
     insert_spending_item(
       objects: {
@@ -21,12 +22,22 @@ export const INSERT_TODO = gql`
         category_id: $category_id
         amount: $amount
         user_id: $user_id
+        spending_date: $spending_date
       }
     ) {
       returning {
         id
         description
+        amount
       }
+    }
+  }
+`;
+
+export const DELETE_SPENDING_ITEM = gql`
+  mutation($id: Int!) {
+    delete_spending_item(where: {id: {_eq: $id}}) {
+      affected_rows
     }
   }
 `;

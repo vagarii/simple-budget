@@ -47,14 +47,17 @@ const App = () => {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={darkTheme}>
         <Layout style={styles}>
-          {token && user && <Main token={token} user={user} />}
           <Auth token={token} onLogin={handleLogin} onLogout={handleLogout} />
+          {token && user && <Main token={token} user={user} />}
         </Layout>
       </ApplicationProvider>
     </React.Fragment>
   );
 };
 
-const styles = {flex: 1, justifyContent: "center", alignItems: "center"};
+const styles = {
+  flex: 1,
+  paddingTop: 30
+};
 
 export default App;

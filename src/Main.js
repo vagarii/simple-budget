@@ -2,14 +2,15 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {ApolloProvider} from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
-import {StyleSheet, Text, View, ActivityIndicator} from "react-native";
+import {StyleSheet, ActivityIndicator} from "react-native";
 import {GRAPHQL_ENDPOINT} from "../config";
 import {INSERT_USER} from "../data/mutations";
-import TodoList from "./TodoList";
-import AddTodo from "./AddTodo";
+import AddItemPage from "./AddItemPage";
+import {Layout, Text, ViewPager} from "@ui-kitten/components";
 
 const Main = ({token, user}) => {
   const [client, setClient] = useState(null);
+  const [selectedPageIndex, setSelectedPageIndex] = useState(0);
 
   useEffect(() => {
     const {id, name, isNewUser} = user;
@@ -39,11 +40,17 @@ const Main = ({token, user}) => {
   } else {
     return (
       <ApolloProvider client={client}>
-        <View>
-          <Text>Welcome {user.name}!</Text>
-          <TodoList />
-          <AddTodo user={user} />
-        </View>
+        <ViewPager
+          selectedIndex={selectedPageIndex}
+          onSelect={setSelectedPageIndex}
+        >
+          <Layout style={styles.tab}>
+            <AddItemPage user={user} />
+          </Layout>
+          <Layout level="2" style={styles.tab}>
+            <Text category="h5">Welcome {user.name}!</Text>
+          </Layout>
+        </ViewPager>
       </ApolloProvider>
     );
   }
@@ -53,5 +60,14 @@ Main.propTypes = {
   token: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired
 };
+
+const styles = StyleSheet.create({
+  tab: {
+    // height: 192,
+    // width: "100%"
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 export default Main;

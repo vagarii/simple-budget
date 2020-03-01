@@ -75,19 +75,11 @@ const Auth = ({token, onLogin, onLogout}) => {
   };
 
   return token ? (
-    <Button
-      style={styles.button}
-      onPress={onLogout}
-      // icon={StarIcon}
-    >
+    <Button style={styles.button} onPress={onLogout} icon={StarIcon}>
       Logout
     </Button>
   ) : (
-    <Button
-      style={styles.button}
-      onPress={handleLoginPress}
-      // icon={StarIcon}
-    >
+    <Button style={styles.button} onPress={handleLoginPress} icon={StarIcon}>
       Login
     </Button>
   );
