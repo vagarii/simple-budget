@@ -18,7 +18,7 @@ export const GET_SPENDING_CATEGORIES = gql`
       description
       category_icon {
         name
-        pack
+        color
       }
     }
   }

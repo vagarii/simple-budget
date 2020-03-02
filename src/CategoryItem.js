@@ -4,6 +4,7 @@ import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, Text, View} from "react-native";
 import {UPDATE_TODO} from "../data/mutations";
 import {Button, Icon, List, ListItem} from "@ui-kitten/components";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 // import {DELETE_SPENDING_ITEM} from "../data/mutations";
 import {GET_SPENDING_CATEGORIES} from "../data/queries";
 
@@ -14,7 +15,15 @@ const CategoryItem = ({item}) => {
 
   const {id, name, description, category_icon} = item;
 
-  const renderItemIcon = style => <Icon {...style} name={category_icon.name} />;
+  const renderItemIcon = style => (
+    <FontAwesome5
+      {...style}
+      name={category_icon.name}
+      color="white"
+      size={20}
+      solid
+    />
+  );
 
   const renderItemAccessory = itemId => (
     <Button
