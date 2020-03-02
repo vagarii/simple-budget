@@ -6,6 +6,12 @@ export const GET_SPENDING_ITEMS = gql`
       id
       amount
       description
+      spending_category {
+        category_icon {
+          name
+          color
+        }
+      }
     }
   }
 `;
@@ -19,6 +25,7 @@ export const GET_SPENDING_CATEGORIES = gql`
       category_icon {
         name
         color
+        color2
       }
     }
   }

@@ -1,20 +1,38 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
 import {UPDATE_TODO} from "../data/mutations";
-import {Button, Icon, List, ListItem} from "@ui-kitten/components";
+import {Button, Icon, List, ListItem, Text} from "@ui-kitten/components";
 import {DELETE_SPENDING_ITEM} from "../data/mutations";
 import {GET_SPENDING_ITEMS} from "../data/queries";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const SpendingItem = ({item}) => {
   const [insertSpendingItem, {loading, error}] = useMutation(
     DELETE_SPENDING_ITEM
   );
 
-  const {id, description} = item;
+  const {id, amount, description, spending_category} = item;
+  const {category_icon} = spending_category ?? {};
 
-  const renderItemIcon = style => <Icon {...style} name="person" />;
+  const renderItemIcon = style => {
+    return (
+      <TouchableOpacity
+        style={{
+          backgroundColor: category_icon.color,
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 20
+        }}
+      >
+        <FontAwesome5 name={category_icon.name} color="white" size={20} solid />
+      </TouchableOpacity>
+    );
+  };
 
   const renderItemAccessory = itemId => (
     <Button
@@ -57,10 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center"
-  },
-  item: {
-    padding: 10,
-    fontSize: 24
   }
 });
 

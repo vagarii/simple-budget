@@ -64,9 +64,10 @@ const AddSpendingItem = ({user, date, categoryId}) => {
             refetchQueries: [{query: GET_SPENDING_ITEMS}]
           });
           setAmount(null);
+          setCategoryId(null);
           setDescription(null);
         }}
-        disabled={loading || amount == null}
+        disabled={loading || amount == null || categoryId == null}
       >
         Save
       </Button>

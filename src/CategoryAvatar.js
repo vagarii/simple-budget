@@ -6,7 +6,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const CATEGORY_ICON_SIZE = 35;
 
-const CategoryAvatar = ({item, setCategoryId}) => {
+const CategoryAvatar = ({item, categoryId, setCategoryId}) => {
   const {id, name, description, category_icon} = item;
 
   const styles = StyleSheet.create({
@@ -15,6 +15,8 @@ const CategoryAvatar = ({item, setCategoryId}) => {
       justifyContent: "center"
     },
     avatar: {
+      borderWidth: categoryId === id ? 4 : 0,
+      borderColor: category_icon.color2,
       backgroundColor: category_icon.color,
       width: 70,
       height: 70,
@@ -49,6 +51,7 @@ const CategoryAvatar = ({item, setCategoryId}) => {
 
 CategoryAvatar.propTypes = {
   item: PropTypes.object.isRequired,
+  categoryId: PropTypes.number,
   setCategoryId: PropTypes.func.isRequired
 };
 
