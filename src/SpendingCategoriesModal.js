@@ -23,31 +23,50 @@ const SpendingCategoriesModal = ({
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
   const CloseIcon = style => <Icon {...style} name="close" />;
+  const AddIcon = style => <Icon {...style} name="plus" />;
 
   const closeCategoriesModal = () => {
     setShowCategoriesModal(false);
   };
 
+  const CategoriesPage = () => (
+    <Layout>
+      <Layout style={styles.header}>
+        <Text category="h5">My Categories</Text>
+        <Button
+          style={styles.cancelButton}
+          icon={CloseIcon}
+          size="large"
+          onPress={closeCategoriesModal}
+          appearance="ghost"
+          status="basic"
+        ></Button>
+      </Layout>
+      <Layout style={styles.list}>
+        <List
+          style={{backgroundColor: "#242B43"}}
+          data={data.spending_category}
+          renderItem={({item}) => <CategoryItem item={item} />}
+        />
+      </Layout>
+      <Layout style={styles.bottomBar}>
+        <Button
+          style={styles.addButton}
+          icon={AddIcon}
+          size="medium"
+          onPress={closeCategoriesModal}
+          status="info"
+        >
+          New Category
+        </Button>
+      </Layout>
+    </Layout>
+  );
+
   return (
-    <Modal backdropStyle={styles.backdrop} visible={showCategoriesModal}>
-      <Layout level="1" style={styles.modalContainer}>
-        {loading ? (
-          <Spinner status="basic" />
-        ) : (
-          <Layout>
-            <Button
-              icon={CloseIcon}
-              size="medium"
-              onPress={closeCategoriesModal}
-              appearance="ghost"
-              status="basic"
-            ></Button>
-            <List
-              data={data.spending_category}
-              renderItem={({item}) => <CategoryItem item={item} />}
-            />
-          </Layout>
-        )}
+    <Modal visible={showCategoriesModal}>
+      <Layout style={styles.modalContainer}>
+        {loading ? <Spinner status="basic" /> : <CategoriesPage />}
       </Layout>
     </Modal>
   );
@@ -64,8 +83,30 @@ const styles = StyleSheet.create({
     height: winHeight,
     padding: 16
   },
-  backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.3)"
+  header: {
+    marginTop: 20,
+    marginLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  list: {
+    height: winHeight - 140
+  },
+  bottomBar: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10
+  },
+  cancelButton: {
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  addButton: {
+    width: 344
   }
 });
 

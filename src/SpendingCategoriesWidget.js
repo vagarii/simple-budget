@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
+    width: 344
   }
 });
 

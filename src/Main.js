@@ -47,7 +47,7 @@ const Main = ({token, user}) => {
           <Layout style={styles.tab}>
             <AddItemPage user={user} />
           </Layout>
-          <Layout level="2" style={styles.tab}>
+          <Layout style={styles.tab}>
             <Text category="h5">Welcome {user.name}!</Text>
           </Layout>
         </ViewPager>

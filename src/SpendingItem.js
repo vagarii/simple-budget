@@ -3,13 +3,20 @@ import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
 import {UPDATE_TODO} from "../data/mutations";
-import {Button, Icon, List, ListItem, Text} from "@ui-kitten/components";
+import {
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  Layout
+} from "@ui-kitten/components";
 import {DELETE_SPENDING_ITEM} from "../data/mutations";
 import {GET_SPENDING_ITEMS} from "../data/queries";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const SpendingItem = ({item}) => {
-  const [insertSpendingItem, {loading, error}] = useMutation(
+  const [deleteSpendingItem, {loading, error}] = useMutation(
     DELETE_SPENDING_ITEM
   );
 
@@ -34,7 +41,7 @@ const SpendingItem = ({item}) => {
     );
   };
 
-  const renderItemAccessory = itemId => (
+  const renderItemAccessory = () => (
     <Button
       icon={DeleteIcon}
       size="small"
@@ -47,7 +54,7 @@ const SpendingItem = ({item}) => {
   const DeleteIcon = style => <Icon {...style} name="trash-2" />;
 
   const deleteItem = () => {
-    insertSpendingItem({
+    deleteSpendingItem({
       variables: {
         id: item.id
       },
@@ -56,14 +63,14 @@ const SpendingItem = ({item}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
       <ListItem
         title={item.amount}
         description={item.description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
       />
-    </View>
+    </Layout>
   );
 };
 

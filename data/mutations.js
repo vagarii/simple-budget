@@ -41,3 +41,11 @@ export const DELETE_SPENDING_ITEM = gql`
     }
   }
 `;
+
+export const DELETE_SPENDING_CATEGORY = gql`
+  mutation($id: Int!) {
+    delete_spending_category(where: {id: {_eq: $id}}) {
+      affected_rows
+    }
+  }
+`;
