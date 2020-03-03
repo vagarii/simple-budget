@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 import {ApolloProvider} from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
 import {StyleSheet, ActivityIndicator} from "react-native";
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
 import {GRAPHQL_ENDPOINT} from "../config";
 import {INSERT_USER} from "../data/mutations";
-import AddItemPage from "./AddItemPage";
+import Home from "./screens/Home";
+import CategoriesPage from "./screens/CategoriesPage";
+import CategoryEditPage from "./screens/CategoryEditPage";
 import {Layout, Text, ViewPager} from "@ui-kitten/components";
+
+const NavStack = createStackNavigator();
 
 const Main = ({token, user}) => {
   const [client, setClient] = useState(null);
-  const [selectedPageIndex, setSelectedPageIndex] = useState(0);
 
   useEffect(() => {
     const {id, name, isNewUser} = user;
@@ -37,37 +42,49 @@ const Main = ({token, user}) => {
 
   if (!client) {
     return <ActivityIndicator size="large" color="#0000ff" />;
-  } else {
-    return (
-      <ApolloProvider client={client}>
-        <ViewPager
-          selectedIndex={selectedPageIndex}
-          onSelect={setSelectedPageIndex}
-        >
-          <Layout style={styles.tab}>
-            <AddItemPage user={user} />
-          </Layout>
-          <Layout style={styles.tab}>
-            <Text category="h5">Welcome {user.name}!</Text>
-          </Layout>
-        </ViewPager>
-      </ApolloProvider>
-    );
   }
+
+  return (
+    <ApolloProvider client={client}>
+      <NavigationContainer>
+        <NavStack.Navigator initialRouteName="Home">
+          <NavStack.Screen
+            name="Home"
+            component={Home}
+            initialParams={user}
+            options={{
+              headerStyle: {
+                height: 0
+              }
+            }}
+          />
+          <NavStack.Screen
+            name="CategoriesPage"
+            component={CategoriesPage}
+            options={{
+              headerStyle: {
+                height: 0
+              }
+            }}
+          />
+          <NavStack.Screen
+            name="CategoryEditPage"
+            component={CategoryEditPage}
+            options={{
+              headerStyle: {
+                height: 0
+              }
+            }}
+          />
+        </NavStack.Navigator>
+      </NavigationContainer>
+    </ApolloProvider>
+  );
 };
 
 Main.propTypes = {
   token: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired
 };
-
-const styles = StyleSheet.create({
-  tab: {
-    // height: 192,
-    // width: "100%"
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
 
 export default Main;

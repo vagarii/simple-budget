@@ -10,7 +10,7 @@ import {
   Text
 } from "@ui-kitten/components";
 import SpendingItem from "./SpendingItem";
-import {GET_SPENDING_ITEMS} from "../data/queries";
+import {GET_SPENDING_ITEMS} from "../../data/queries";
 
 const SpendingItemList = () => {
   const {loading, error, data} = useQuery(GET_SPENDING_ITEMS);

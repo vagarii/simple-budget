@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
-import {INSERT_SPENDING_ITEMS} from "../data/mutations";
-import {GET_SPENDING_ITEMS} from "../data/queries";
+import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
+import {GET_SPENDING_ITEMS} from "../../data/queries";
 
 const AddSpendingItem = ({user, date, categoryId}) => {
   const [description, setDescription] = useState(null);

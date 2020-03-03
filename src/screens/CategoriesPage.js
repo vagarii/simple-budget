@@ -9,43 +9,34 @@ import {
   Modal,
   Text,
   List,
-  Spinner
+  Spinner,
+  TopNavigation,
+  TopNavigationAction
 } from "@ui-kitten/components";
-import CategoryItem from "./CategoryItem";
-import {GET_SPENDING_CATEGORIES} from "../data/queries";
+import CategoryItem from "../components/CategoryItem";
+import {GET_SPENDING_CATEGORIES} from "../../data/queries";
+import {useNavigation} from "@react-navigation/native";
 
-const SpendingCategoriesModal = ({
-  showCategoriesModal,
-  setShowCategoriesModal
-}) => {
+const CategoriesPage = () => {
   const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES);
-
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
-  const CloseIcon = style => <Icon {...style} name="close" />;
-  const AddIcon = style => <Icon {...style} name="plus" />;
+  const BackIcon = style => <Icon {...style} name="arrow-back" />;
 
-  const closeCategoriesModal = () => {
-    setShowCategoriesModal(false);
-  };
-
-  const CategoriesPageHeader = () => (
-    <Layout style={styles.header}>
-      <Text category="h5">My Categories</Text>
-      <Button
-        style={styles.cancelButton}
-        icon={CloseIcon}
-        size="large"
-        onPress={closeCategoriesModal}
-        appearance="ghost"
-        status="basic"
-      ></Button>
-    </Layout>
+  const navigation = useNavigation();
+  const backAction = () => (
+    <TopNavigationAction
+      icon={BackIcon}
+      onPress={() => {
+        navigation.goBack();
+      }}
+    />
   );
 
-  const CategoriesPage = () => (
+  const AddIcon = style => <Icon {...style} name="plus" />;
+
+  const CategoriesContent = () => (
     <Layout>
-      <CategoriesPageHeader />
       <Layout style={styles.list}>
         <List
           style={{backgroundColor: "#242B43"}}
@@ -58,7 +49,9 @@ const SpendingCategoriesModal = ({
           style={styles.addButton}
           icon={AddIcon}
           size="medium"
-          onPress={closeCategoriesModal}
+          onPress={() => {
+            console.warn("Add new Cate!");
+          }}
           status="info"
         >
           New Category
@@ -68,11 +61,12 @@ const SpendingCategoriesModal = ({
   );
 
   return (
-    <Modal visible={showCategoriesModal}>
-      <Layout style={styles.modalContainer}>
-        {loading ? <Spinner status="basic" /> : <CategoriesPage />}
+    <Layout>
+      <TopNavigation leftControl={backAction()} title="My Categories" />
+      <Layout style={styles.container}>
+        {loading ? <Spinner status="basic" /> : <CategoriesContent />}
       </Layout>
-    </Modal>
+    </Layout>
   );
 };
 
@@ -80,11 +74,11 @@ const winWidth = Dimensions.get("window").width; //full width
 const winHeight = Dimensions.get("window").height; //full height
 
 const styles = StyleSheet.create({
-  modalContainer: {
+  container: {
     justifyContent: "center",
     alignItems: "center",
     width: winWidth,
-    height: winHeight,
+    height: winHeight - 200,
     padding: 16
   },
   header: {
@@ -95,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   list: {
-    height: winHeight - 150
+    height: winHeight - 300
   },
   bottomBar: {
     justifyContent: "center",
@@ -114,9 +108,4 @@ const styles = StyleSheet.create({
   }
 });
 
-SpendingCategoriesModal.propTypes = {
-  showCategoriesModal: PropTypes.bool.isRequired,
-  setShowCategoriesModal: PropTypes.func.isRequired
-};
-
-export default SpendingCategoriesModal;
+export default CategoriesPage;

@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
 import {Layout, Button, Icon, Modal, Avatar} from "@ui-kitten/components";
-import SpendingCategoriesModal from "./SpendingCategoriesModal";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import CategoryAvatar from "./CategoryAvatar";
 import CategoryEditAvatar from "./CategoryEditAvatar.js";
-import {GET_SPENDING_CATEGORIES} from "../data/queries";
+import {GET_SPENDING_CATEGORIES} from "../../data/queries";
+import {useNavigation} from "@react-navigation/native";
 
 const CATEGORY_NUMBER_PER_CARD = 7;
 
@@ -16,7 +16,10 @@ const SpendingCategoriesWidget = ({categoryId, setCategoryId}) => {
 
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
-  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+  const navigation = useNavigation();
+  const goToCategoriesPage = () => {
+    navigation.navigate("CategoriesPage");
+  };
 
   const {spending_category} = data ?? {};
 
@@ -45,33 +48,22 @@ const SpendingCategoriesWidget = ({categoryId, setCategoryId}) => {
               </Fragment>
             ))}
             {row.length < 4 && (
-              <CategoryEditAvatar onPressEdit={openCategoriesModal} />
+              <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
             )}
           </Layout>
         ))}
         {items.length % 4 === 0 && (
           <Layout style={styles.row}>
-            <CategoryEditAvatar onPressEdit={openCategoriesModal} />
+            <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
           </Layout>
         )}
       </Layout>
     );
   };
 
-  const openCategoriesModal = () => {
-    setShowCategoriesModal(true);
-  };
-  const closeCategoriesModal = () => {
-    setShowCategoriesModal(false);
-  };
-
   return (
     <Layout>
       <Categories />
-      <SpendingCategoriesModal
-        showCategoriesModal={showCategoriesModal}
-        setShowCategoriesModal={setShowCategoriesModal}
-      />
     </Layout>
   );
 };

@@ -10,8 +10,8 @@ import {
   Text,
   Layout
 } from "@ui-kitten/components";
-import {DELETE_SPENDING_ITEM} from "../data/mutations";
-import {GET_SPENDING_ITEMS} from "../data/queries";
+import {DELETE_SPENDING_ITEM} from "../../data/mutations";
+import {GET_SPENDING_ITEMS} from "../../data/queries";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const SpendingItem = ({item}) => {

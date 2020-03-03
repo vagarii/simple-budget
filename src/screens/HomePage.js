@@ -2,11 +2,11 @@ import React, {Fragment, useState} from "react";
 import PropTypes from "prop-types";
 import {StyleSheet, ScrollView} from "react-native";
 import {Layout, Calendar, Text} from "@ui-kitten/components";
-import SpendingItemList from "./SpendingItemList";
-import AddSpendingItem from "./AddSpendingItem";
-import SpendingCategoriesWidget from "./SpendingCategoriesWidget";
+import SpendingItemList from "../components/SpendingItemList";
+import AddSpendingItem from "../components/AddSpendingItem";
+import SpendingCategoriesWidget from "../components/SpendingCategoriesWidget";
 
-const AddItemPage = ({user}) => {
+const HomePage = ({user}) => {
   const [date, setDate] = useState(new Date());
   const [categoryId, setCategoryId] = useState(null);
 
@@ -27,7 +27,7 @@ const AddItemPage = ({user}) => {
   );
 };
 
-AddItemPage.propTypes = {
+HomePage.propTypes = {
   user: PropTypes.object.isRequired
 };
 
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddItemPage;
+export default HomePage;

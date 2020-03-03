@@ -11,18 +11,10 @@ import {
   Layout
 } from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import {GET_SPENDING_CATEGORIES} from "../data/queries";
-import CategoryItemEditModal from "./CategoryItemEditModal";
+import {GET_SPENDING_CATEGORIES} from "../../data/queries";
+import {useNavigation} from "@react-navigation/native";
 
 const CategoryItem = ({item}) => {
-  const [showEditCategoryItemModal, setShowEditCategoryItemModal] = useState(
-    false
-  );
-
-  const onShowEditCategoryItemModal = () => {
-    setShowEditCategoryItemModal(true);
-  };
-
   const {
     id,
     name,
@@ -53,6 +45,8 @@ const CategoryItem = ({item}) => {
     </Layout>
   );
 
+  const navigation = useNavigation();
+
   return (
     <Layout style={styles.container}>
       <ListItem
@@ -60,12 +54,9 @@ const CategoryItem = ({item}) => {
         description={description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
-        onPress={onShowEditCategoryItemModal}
-      />
-      <CategoryItemEditModal
-        item={item}
-        showEditCategoryItemModal={showEditCategoryItemModal}
-        setShowEditCategoryItemModal={setShowEditCategoryItemModal}
+        onPress={() => {
+          navigation.navigate("CategoryEditPage", {item});
+        }}
       />
     </Layout>
   );
