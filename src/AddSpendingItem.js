@@ -9,7 +9,9 @@ import {GET_SPENDING_ITEMS} from "../data/queries";
 const AddSpendingItem = ({user, date, categoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
-  const [insertTodo, {loading, error}] = useMutation(INSERT_SPENDING_ITEMS);
+  const [insertSpendingItem, {loading, error}] = useMutation(
+    INSERT_SPENDING_ITEMS
+  );
 
   if (error) return <Text>`Error! ${error.message}`</Text>;
 
@@ -53,7 +55,7 @@ const AddSpendingItem = ({user, date, categoryId}) => {
       <Button
         style={styles.button}
         onPress={() => {
-          insertTodo({
+          insertSpendingItem({
             variables: {
               description: description ?? "",
               category_id: categoryId,

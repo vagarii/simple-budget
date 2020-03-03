@@ -1,8 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
-import {UPDATE_TODO} from "../data/mutations";
 import {
   Button,
   Icon,
@@ -12,13 +11,17 @@ import {
   Layout
 } from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-// import {DELETE_SPENDING_CATEGORY} from "../data/mutations";
 import {GET_SPENDING_CATEGORIES} from "../data/queries";
+import CategoryItemEditModal from "./CategoryItemEditModal";
 
 const CategoryItem = ({item}) => {
-  // const [deleteCategory, {loading, error}] = useMutation(
-  //   DELETE_SPENDING_CATEGORY
-  // );
+  const [showEditCategoryItemModal, setShowEditCategoryItemModal] = useState(
+    false
+  );
+
+  const onShowEditCategoryItemModal = () => {
+    setShowEditCategoryItemModal(true);
+  };
 
   const {
     id,
@@ -50,17 +53,6 @@ const CategoryItem = ({item}) => {
     </Layout>
   );
 
-  // const DeleteIcon = style => <Icon {...style} name="trash-2" />;
-
-  // const deleteCategoryItem = () => {
-  //   deleteCategory({
-  //     variables: {
-  //       id: item.id
-  //     },
-  //     refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
-  //   });
-  // };
-
   return (
     <Layout style={styles.container}>
       <ListItem
@@ -68,6 +60,12 @@ const CategoryItem = ({item}) => {
         description={description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
+        onPress={onShowEditCategoryItemModal}
+      />
+      <CategoryItemEditModal
+        item={item}
+        showEditCategoryItemModal={showEditCategoryItemModal}
+        setShowEditCategoryItemModal={setShowEditCategoryItemModal}
       />
     </Layout>
   );

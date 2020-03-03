@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, View, TouchableOpacity} from "react-native";
-import {UPDATE_TODO} from "../data/mutations";
 import {
   Button,
   Icon,

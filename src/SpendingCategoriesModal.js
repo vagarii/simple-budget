@@ -29,19 +29,23 @@ const SpendingCategoriesModal = ({
     setShowCategoriesModal(false);
   };
 
+  const CategoriesPageHeader = () => (
+    <Layout style={styles.header}>
+      <Text category="h5">My Categories</Text>
+      <Button
+        style={styles.cancelButton}
+        icon={CloseIcon}
+        size="large"
+        onPress={closeCategoriesModal}
+        appearance="ghost"
+        status="basic"
+      ></Button>
+    </Layout>
+  );
+
   const CategoriesPage = () => (
     <Layout>
-      <Layout style={styles.header}>
-        <Text category="h5">My Categories</Text>
-        <Button
-          style={styles.cancelButton}
-          icon={CloseIcon}
-          size="large"
-          onPress={closeCategoriesModal}
-          appearance="ghost"
-          status="basic"
-        ></Button>
-      </Layout>
+      <CategoriesPageHeader />
       <Layout style={styles.list}>
         <List
           style={{backgroundColor: "#242B43"}}
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   list: {
-    height: winHeight - 140
+    height: winHeight - 150
   },
   bottomBar: {
     justifyContent: "center",

@@ -25,6 +25,7 @@ export const GET_SPENDING_CATEGORIES = gql`
       budget_amount
       budget_time_duration
       category_icon {
+        id
         name
         color
         color2
