@@ -29,9 +29,11 @@ import {
 } from "../../data/mutations";
 import {
   GET_SPENDING_CATEGORIES,
-  GET_SPENDING_ITEMS_FOR_CATEGORY
+  GET_SPENDING_ITEMS_FOR_CATEGORY,
+  GET_CATEGORY_ICONS
 } from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
+import IconInventory from "../components/IconInventory";
 
 /** TODO: use enum from the database **/
 const DurationData = [
@@ -52,9 +54,7 @@ const CategoryEditPage = ({route}) => {
   const [budgetTimeDuration, setBudgetTimeDuration] = useState({
     text: item?.budget_time_duration
   });
-  const [categoryIconId, setCategoryIconId] = useState(
-    item?.category_icon?.id ?? 3
-  );
+  const [iconId, setIconId] = useState(item?.category_icon?.id);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [updateCategory, {loading: saving, error: errorOnSaving}] = useMutation(
@@ -121,7 +121,7 @@ const CategoryEditPage = ({route}) => {
           budget_amount: budgetAmount,
           budget_time_duration: budgetTimeDuration.text,
           budget_amount_per_day: getBudgetAmountPerDay(),
-          icon_id: categoryIconId
+          icon_id: iconId
         },
         refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
       });
@@ -134,7 +134,7 @@ const CategoryEditPage = ({route}) => {
           budget_amount: budgetAmount,
           budget_time_duration: budgetTimeDuration.text,
           budget_amount_per_day: getBudgetAmountPerDay(),
-          icon_id: categoryIconId
+          icon_id: iconId
         },
         refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
       });
@@ -167,90 +167,89 @@ const CategoryEditPage = ({route}) => {
     <Layout>
       <TopNavigation leftControl={backAction()} title="Edit Category" />
       <Layout style={styles.container}>
-        <Layout>
-          <TextInput
-            style={{
-              fontSize: 25,
-              color: "white",
-              marginTop: 12,
-              width: 344,
-              height: 50,
-              borderColor: "white",
-              borderWidth: 0,
-              borderBottomWidth: 2
-            }}
-            textAlign="center"
-            placeholder="Name"
-            placeholderTextColor="grey"
-            onChangeText={setName}
-            value={name}
-          />
+        <IconInventory iconId={iconId} setIconId={setIconId} />
+        <TextInput
+          style={{
+            fontSize: 25,
+            color: "white",
+            marginTop: 12,
+            width: 344,
+            height: 50,
+            borderColor: "white",
+            borderWidth: 0,
+            borderBottomWidth: 2
+          }}
+          textAlign="center"
+          placeholder="Name"
+          placeholderTextColor="grey"
+          onChangeText={setName}
+          value={name}
+        />
 
-          <TextInput
+        <TextInput
+          style={{
+            fontSize: 20,
+            color: "gray",
+            marginTop: 12,
+            width: 344,
+            height: 30,
+            borderColor: "gray",
+            borderWidth: 0,
+            borderBottomWidth: 1
+          }}
+          textAlign="center"
+          placeholder="Description"
+          placeholderTextColor="grey"
+          textColor="White"
+          onChangeText={setDescription}
+          value={description}
+        />
+        <Layout style={styles.targetAmountRow}>
+          <Input
             style={{
-              fontSize: 20,
-              color: "gray",
-              marginTop: 12,
-              width: 344,
-              height: 30,
-              borderColor: "gray",
-              borderWidth: 0,
-              borderBottomWidth: 1
+              width: 160,
+              marginRight: 8
             }}
-            textAlign="center"
-            placeholder="Description"
-            placeholderTextColor="grey"
-            textColor="White"
-            onChangeText={setDescription}
-            value={description}
+            placeholder="Target Budget Amount"
+            value={budgetAmount}
+            onChangeText={setBudgetAmount}
           />
-          <Layout style={styles.targetAmountRow}>
-            <Input
-              style={{
-                width: 160,
-                marginRight: 8
-              }}
-              placeholder="Target Budget Amount"
-              value={budgetAmount}
-              onChangeText={setBudgetAmount}
-            />
-            <Text category="h5">/</Text>
-            <Select
-              style={styles.targetAmountDuration}
-              data={DurationData}
-              placeholder="Time Duration"
-              selectedOption={budgetTimeDuration}
-              onSelect={setBudgetTimeDuration}
-            />
-          </Layout>
-          <Button
-            status="info"
-            icon={SaveIcon}
-            style={styles.button}
-            onPress={onSaveCategoryItem}
-            disabled={
-              saving ||
-              deleting ||
-              name == null ||
-              budgetAmount == null ||
-              budgetTimeDuration.text == null ||
-              categoryIconId == null
-            }
-          >
-            Save
-          </Button>
-          {item != null && (
-            <Button
-              icon={DeleteIcon}
-              status="danger"
-              style={styles.button}
-              onPress={onShowDeleteModal}
-              disabled={saving || deleting}
-            >
-              Delete
-            </Button>
-          )}
+          <Text category="h5">/</Text>
+          <Select
+            style={styles.targetAmountDuration}
+            data={DurationData}
+            placeholder="Time Duration"
+            selectedOption={budgetTimeDuration}
+            onSelect={setBudgetTimeDuration}
+          />
         </Layout>
+        <Button
+          status="info"
+          icon={SaveIcon}
+          style={styles.button}
+          onPress={onSaveCategoryItem}
+          disabled={
+            saving ||
+            deleting ||
+            name == null ||
+            budgetAmount == null ||
+            budgetTimeDuration.text == null ||
+            iconId == null
+          }
+        >
+          Save
+        </Button>
+        {item != null && (
+          <Button
+            icon={DeleteIcon}
+            status="danger"
+            style={styles.button}
+            onPress={onShowDeleteModal}
+            disabled={saving || deleting}
+          >
+            Delete
+          </Button>
+        )}
       </Layout>
       <Modal
         backdropStyle={styles.backdrop}
@@ -296,13 +295,6 @@ const styles = StyleSheet.create({
     width: winWidth,
     height: winHeight,
     padding: 16
-  },
-  header: {
-    marginTop: 20,
-    marginLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
   },
   targetAmountRow: {
     flexDirection: "row",

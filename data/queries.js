@@ -43,3 +43,14 @@ export const GET_SPENDING_ITEMS_FOR_CATEGORY = gql`
     }
   }
 `;
+
+export const GET_CATEGORY_ICONS = gql`
+  query category_icon {
+    category_icon(order_by: {id: asc}) {
+      id
+      name
+      color
+      color2
+    }
+  }
+`;
