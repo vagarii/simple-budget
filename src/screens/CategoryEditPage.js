@@ -24,7 +24,8 @@ import {
 import {
   DELETE_SPENDING_CATEGORY,
   UPDATE_SPENDING_CATEGORY,
-  INSERT_SPENDING_ITEMS
+  INSERT_SPENDING_ITEMS,
+  INSERT_SPENDING_CATEGORY
 } from "../../data/mutations";
 import {
   GET_SPENDING_CATEGORIES,
@@ -43,6 +44,7 @@ const DurationData = [
 
 const CategoryEditPage = ({route}) => {
   const {item, user} = route.params;
+  const isNewCategory = item == null;
 
   const [name, setName] = useState(item?.name);
   const [description, setDescription] = useState(item?.description);
@@ -50,12 +52,20 @@ const CategoryEditPage = ({route}) => {
   const [budgetTimeDuration, setBudgetTimeDuration] = useState({
     text: item?.budget_time_duration
   });
-  const [categoryIconId, setCategoryIconId] = useState(item?.category_icon?.id);
+  const [categoryIconId, setCategoryIconId] = useState(
+    item?.category_icon?.id ?? 3
+  );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [updateCategory, {loading: saving, error: errorOnSaving}] = useMutation(
     UPDATE_SPENDING_CATEGORY
   );
+
+  const [
+    insertCategory,
+    {loading: creating, error: errorOnCreating}
+  ] = useMutation(INSERT_SPENDING_CATEGORY);
+
   const [
     deleteCategory,
     {loading: deleting, error: errorOnDeleting}
@@ -66,7 +76,7 @@ const CategoryEditPage = ({route}) => {
     loading: querying,
     error: errorQuerying
   } = useQuery(GET_SPENDING_ITEMS_FOR_CATEGORY, {
-    variables: {user_id: user.id, category_id: item.id}
+    variables: {user_id: user.id, category_id: item?.id ?? 0}
   });
 
   /** TODO: move to utils **/
@@ -100,6 +110,37 @@ const CategoryEditPage = ({route}) => {
       }}
     />
   );
+
+  const onSaveCategoryItem = () => {
+    if (isNewCategory) {
+      insertCategory({
+        variables: {
+          user_id: user.id,
+          name: name,
+          description: description ?? "",
+          budget_amount: budgetAmount,
+          budget_time_duration: budgetTimeDuration.text,
+          budget_amount_per_day: getBudgetAmountPerDay(),
+          icon_id: categoryIconId
+        },
+        refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+      });
+    } else {
+      updateCategory({
+        variables: {
+          id: item?.id,
+          name: name,
+          description: description ?? "",
+          budget_amount: budgetAmount,
+          budget_time_duration: budgetTimeDuration.text,
+          budget_amount_per_day: getBudgetAmountPerDay(),
+          icon_id: categoryIconId
+        },
+        refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+      });
+    }
+    navigation.goBack();
+  };
 
   const onShowDeleteModal = () => {
     setShowDeleteModal(true);
@@ -186,27 +227,13 @@ const CategoryEditPage = ({route}) => {
             status="info"
             icon={SaveIcon}
             style={styles.button}
-            onPress={() => {
-              updateCategory({
-                variables: {
-                  id: item?.id,
-                  name: name,
-                  description: description ?? "",
-                  budget_amount: budgetAmount,
-                  budget_time_duration: budgetTimeDuration.text,
-                  budget_amount_per_day: getBudgetAmountPerDay(),
-                  icon_id: categoryIconId
-                },
-                refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
-              });
-            }}
+            onPress={onSaveCategoryItem}
             disabled={
               saving ||
               deleting ||
-              item == null ||
               name == null ||
               budgetAmount == null ||
-              budgetTimeDuration == null ||
+              budgetTimeDuration.text == null ||
               categoryIconId == null
             }
           >
@@ -234,7 +261,7 @@ const CategoryEditPage = ({route}) => {
         spendingItems?.spending_item.length === 0 ? (
           <Layout style={styles.modalContainer}>
             <Text category="s1">{`Are you sure to delete category`}</Text>
-            <Text category="h6">{`"${item.name}" ?`}</Text>
+            <Text category="h6">{`"${item?.name}" ?`}</Text>
             <Button
               icon={DeleteIcon}
               status="danger"

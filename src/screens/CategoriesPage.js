@@ -52,7 +52,7 @@ const CategoriesPage = ({route}) => {
           icon={AddIcon}
           size="medium"
           onPress={() => {
-            console.warn("Add new Cate!");
+            navigation.navigate("CategoryEditPage", {user});
           }}
           status="info"
         >
