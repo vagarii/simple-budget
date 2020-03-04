@@ -40,13 +40,14 @@ const DurationData = [
 
 const CategoryEditPage = ({route}) => {
   const {item} = route.params;
+  console.warn(item);
 
   const [name, setName] = useState(item?.name);
   const [description, setDescription] = useState(item?.description);
   const [budgetAmount, setBudgetAmount] = useState(item?.budget_amount);
-  const [budgetTimeDuration, setBudgetTimeDuration] = useState(
-    item?.budget_time_duration
-  );
+  const [budgetTimeDuration, setBudgetTimeDuration] = useState({
+    text: item?.budget_time_duration
+  });
   const [categoryIconId, setCategoryIconId] = useState(item?.category_icon?.id);
 
   // const [deleteCategory, {loading, error}] = useMutation(
@@ -100,7 +101,7 @@ const CategoryEditPage = ({route}) => {
   // };
 
   const CloseIcon = style => <Icon {...style} name="close" />;
-
+  console.warn(budgetTimeDuration);
   return (
     <Layout>
       <TopNavigation leftControl={backAction()} title="Edit Category" />
@@ -170,8 +171,7 @@ const CategoryEditPage = ({route}) => {
                   name: name,
                   description: description ?? "",
                   budget_amount: budgetAmount,
-                  // FIX IT!!!!!!!!!!! NEEDS ENUM!!!
-                  // budget_time_duration: budgetTimeDuration,
+                  budget_time_duration: budgetTimeDuration.text,
                   budget_amount_per_day: getBudgetAmountPerDay(),
                   icon_id: categoryIconId
                 },

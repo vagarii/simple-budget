@@ -56,7 +56,7 @@ export const UPDATE_SPENDING_CATEGORY = gql`
     $name: String!
     $description: String!
     $budget_amount: money!
-    $budget_time_duration: String!
+    $budget_time_duration: time_duration_enum!
     $budget_amount_per_day: money!
     $icon_id: Int!
   ) {
