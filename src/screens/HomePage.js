@@ -20,7 +20,12 @@ const HomePage = ({user}) => {
           categoryId={categoryId}
           setCategoryId={setCategoryId}
         />
-        <AddSpendingItem user={user} date={date} categoryId={categoryId} />
+        <AddSpendingItem
+          user={user}
+          date={date}
+          categoryId={categoryId}
+          setCategoryId={setCategoryId}
+        />
         <SpendingItemList />
       </ScrollView>
     </Fragment>

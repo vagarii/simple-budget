@@ -61,6 +61,7 @@ const Main = ({token, user}) => {
           <NavStack.Screen
             name="CategoriesPage"
             component={CategoriesPage}
+            initialParams={user}
             options={{
               headerStyle: {
                 height: 0

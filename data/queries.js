@@ -33,3 +33,13 @@ export const GET_SPENDING_CATEGORIES = gql`
     }
   }
 `;
+
+export const GET_SPENDING_ITEMS_FOR_CATEGORY = gql`
+  query spending_item($user_id: String!, $category_id: Int!) {
+    spending_item(
+      where: {user_id: {_eq: $user_id}, category_id: {_eq: $category_id}}
+    ) {
+      id
+    }
+  }
+`;

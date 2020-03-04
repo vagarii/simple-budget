@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 import {
   StyleSheet,
   TextInput,
@@ -26,7 +26,10 @@ import {
   UPDATE_SPENDING_CATEGORY,
   INSERT_SPENDING_ITEMS
 } from "../../data/mutations";
-import {GET_SPENDING_CATEGORIES} from "../../data/queries";
+import {
+  GET_SPENDING_CATEGORIES,
+  GET_SPENDING_ITEMS_FOR_CATEGORY
+} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
 /** TODO: use enum from the database **/
@@ -39,8 +42,7 @@ const DurationData = [
 ];
 
 const CategoryEditPage = ({route}) => {
-  const {item} = route.params;
-  console.warn(item);
+  const {item, user} = route.params;
 
   const [name, setName] = useState(item?.name);
   const [description, setDescription] = useState(item?.description);
@@ -49,13 +51,23 @@ const CategoryEditPage = ({route}) => {
     text: item?.budget_time_duration
   });
   const [categoryIconId, setCategoryIconId] = useState(item?.category_icon?.id);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // const [deleteCategory, {loading, error}] = useMutation(
-  //   DELETE_SPENDING_CATEGORY
-  // );
-  const [updateCategory, {loading, error}] = useMutation(
+  const [updateCategory, {loading: saving, error: errorOnSaving}] = useMutation(
     UPDATE_SPENDING_CATEGORY
   );
+  const [
+    deleteCategory,
+    {loading: deleting, error: errorOnDeleting}
+  ] = useMutation(DELETE_SPENDING_CATEGORY);
+
+  const {
+    data: spendingItems,
+    loading: querying,
+    error: errorQuerying
+  } = useQuery(GET_SPENDING_ITEMS_FOR_CATEGORY, {
+    variables: {user_id: user.id, category_id: item.id}
+  });
 
   /** TODO: move to utils **/
   const getBudgetAmountPerDay = () => {
@@ -89,19 +101,27 @@ const CategoryEditPage = ({route}) => {
     />
   );
 
-  // const DeleteIcon = style => <Icon {...style} name="trash-2" />;
+  const onShowDeleteModal = () => {
+    setShowDeleteModal(true);
+  };
 
-  // const deleteCategoryItem = () => {
-  //   deleteCategory({
-  //     variables: {
-  //       id: item.id
-  //     },
-  //     refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
-  //   });
-  // };
+  const onHideDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
 
-  const CloseIcon = style => <Icon {...style} name="close" />;
-  console.warn(budgetTimeDuration);
+  const onDeleteCategoryItem = () => {
+    deleteCategory({
+      variables: {
+        id: item?.id
+      },
+      refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+    });
+    navigation.goBack();
+  };
+
+  const SaveIcon = style => <Icon {...style} name="save" />;
+  const DeleteIcon = style => <Icon {...style} name="trash-2" />;
+
   return (
     <Layout>
       <TopNavigation leftControl={backAction()} title="Edit Category" />
@@ -163,7 +183,9 @@ const CategoryEditPage = ({route}) => {
             />
           </Layout>
           <Button
-            style={styles.saveButton}
+            status="info"
+            icon={SaveIcon}
+            style={styles.button}
             onPress={() => {
               updateCategory({
                 variables: {
@@ -179,7 +201,8 @@ const CategoryEditPage = ({route}) => {
               });
             }}
             disabled={
-              // loading ||
+              saving ||
+              deleting ||
               item == null ||
               name == null ||
               budgetAmount == null ||
@@ -189,8 +212,50 @@ const CategoryEditPage = ({route}) => {
           >
             Save
           </Button>
+          {item != null && (
+            <Button
+              icon={DeleteIcon}
+              status="danger"
+              style={styles.button}
+              onPress={onShowDeleteModal}
+              disabled={saving || deleting}
+            >
+              Delete
+            </Button>
+          )}
         </Layout>
       </Layout>
+      <Modal
+        backdropStyle={styles.backdrop}
+        onBackdropPress={onHideDeleteModal}
+        visible={showDeleteModal}
+      >
+        {spendingItems?.spending_item == null ||
+        spendingItems?.spending_item.length === 0 ? (
+          <Layout style={styles.modalContainer}>
+            <Text category="s1">{`Are you sure to delete category`}</Text>
+            <Text category="h6">{`"${item.name}" ?`}</Text>
+            <Button
+              icon={DeleteIcon}
+              status="danger"
+              style={styles.button}
+              onPress={onDeleteCategoryItem}
+              disabled={saving || deleting}
+            >
+              Delete
+            </Button>
+          </Layout>
+        ) : (
+          <Layout style={styles.modalContainer}>
+            <Text category="s1">
+              {`Sorry. You cannot delete this category because there are spending records under this category. `}
+              {`Please try editing this category to update the information. `}
+              {`If you still want to delete this category you would need to delete all the spending records under it first. `}
+              {`Thank you.`}
+            </Text>
+          </Layout>
+        )}
+      </Modal>
     </Layout>
   );
 };
@@ -223,11 +288,20 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingBottom: 4
   },
-  saveButton: {
+  button: {
     marginTop: 12,
     width: 344
     // backgroundColor: "blue",
     // padding: 13
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.9)"
+  },
+  modalContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 344,
+    backgroundColor: "rgba(0, 0, 0, 0.9)"
   }
 });
 

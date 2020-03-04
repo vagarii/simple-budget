@@ -14,7 +14,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
-const CategoryItem = ({item}) => {
+const CategoryItem = ({item, user}) => {
   const {
     id,
     name,
@@ -55,7 +55,7 @@ const CategoryItem = ({item}) => {
         icon={renderItemIcon}
         accessory={renderItemAccessory}
         onPress={() => {
-          navigation.navigate("CategoryEditPage", {item});
+          navigation.navigate("CategoryEditPage", {item, user});
         }}
       />
     </Layout>
@@ -63,7 +63,8 @@ const CategoryItem = ({item}) => {
 };
 
 CategoryItem.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

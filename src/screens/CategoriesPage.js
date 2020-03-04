@@ -17,7 +17,9 @@ import CategoryItem from "../components/CategoryItem";
 import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
-const CategoriesPage = () => {
+const CategoriesPage = ({route}) => {
+  const user = route.params;
+
   const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES);
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
@@ -41,7 +43,7 @@ const CategoriesPage = () => {
         <List
           style={{backgroundColor: "#242B43"}}
           data={data.spending_category}
-          renderItem={({item}) => <CategoryItem item={item} />}
+          renderItem={({item}) => <CategoryItem item={item} user={user} />}
         />
       </Layout>
       <Layout style={styles.bottomBar}>

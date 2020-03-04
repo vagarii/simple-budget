@@ -6,7 +6,7 @@ import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
 
-const AddSpendingItem = ({user, date, categoryId}) => {
+const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
   const [insertSpendingItem, {loading, error}] = useMutation(
