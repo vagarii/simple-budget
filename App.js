@@ -37,18 +37,16 @@ const App = () => {
     });
   };
 
-  const handleLogout = () => {
-    SecureStore.deleteItemAsync(ID_TOKEN_KEY);
-    setToken(null);
-  };
-
   return (
     <React.Fragment>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={darkTheme}>
         <Layout style={styles}>
-          <Auth token={token} onLogin={handleLogin} onLogout={handleLogout} />
-          {token && user && <Main token={token} user={user} />}
+          {token && user ? (
+            <Main user={user} token={token} setToken={setToken} />
+          ) : (
+            <Auth token={token} onLogin={handleLogin} />
+          )}
         </Layout>
       </ApplicationProvider>
     </React.Fragment>

@@ -14,7 +14,7 @@ import {Layout, Text, ViewPager} from "@ui-kitten/components";
 
 const NavStack = createStackNavigator();
 
-const Main = ({token, user}) => {
+const Main = ({user, token, setToken}) => {
   const [client, setClient] = useState(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Main = ({token, user}) => {
           <NavStack.Screen
             name="Home"
             component={Home}
-            initialParams={user}
+            initialParams={{user, setToken}}
             options={{
               headerStyle: {
                 height: 0

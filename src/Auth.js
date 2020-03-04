@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Alert, StyleSheet} from "react-native";
+import {Alert, StyleSheet, Dimensions} from "react-native";
 import {AuthSession} from "expo";
 import * as Random from "expo-random";
 import * as SecureStore from "expo-secure-store";
@@ -13,7 +13,7 @@ import {
   ID_TOKEN_KEY,
   NONCE_KEY
 } from "../config";
-import {Button, Icon} from "@ui-kitten/components";
+import {Button, Icon, Layout} from "@ui-kitten/components";
 
 const generateNonce = async () => {
   const nonce = String.fromCharCode.apply(
@@ -26,7 +26,7 @@ const generateNonce = async () => {
 
 const StarIcon = style => <Icon {...style} name="star" />;
 
-const Auth = ({token, onLogin, onLogout}) => {
+const Auth = ({token, onLogin}) => {
   const handleLoginPress = async () => {
     const nonce = await generateNonce();
     AuthSession.startAsync({
@@ -74,30 +74,33 @@ const Auth = ({token, onLogin, onLogout}) => {
     });
   };
 
-  return token ? (
-    <Button style={styles.button} onPress={onLogout} icon={StarIcon}>
-      Logout
-    </Button>
-  ) : (
-    <Button style={styles.button} onPress={handleLoginPress} icon={StarIcon}>
-      Login
-    </Button>
+  return (
+    <Layout style={styles.container}>
+      <Button
+        style={styles.button}
+        onPress={handleLoginPress}
+        status="info"
+        icon={StarIcon}
+      >
+        Login
+      </Button>
+    </Layout>
   );
 };
 
 Auth.propTypes = {
-  token: PropTypes.string,
-  onLogin: PropTypes.func,
-  onLogout: PropTypes.func
+  token: PropTypes.object,
+  onLogin: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    flexWrap: "wrap"
+    alignItems: "center",
+    justifyContent: "center",
+    height: Dimensions.get("window").height
   },
   button: {
-    margin: 8
+    width: 334
   }
 });
 

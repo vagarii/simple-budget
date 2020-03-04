@@ -78,32 +78,19 @@ const winHeight = Dimensions.get("window").height; //full height
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     width: winWidth,
-    height: winHeight - 200,
+    height: winHeight - 60,
     padding: 16
   },
-  header: {
-    marginTop: 20,
-    marginLeft: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
   list: {
-    height: winHeight - 300
+    height: winHeight - 210
   },
   bottomBar: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 10
-  },
-  cancelButton: {
-    height: 40,
-    width: 40,
-    justifyContent: "center",
-    alignItems: "center"
+    marginTop: 20,
+    marginBottom: 20
   },
   addButton: {
     width: 344

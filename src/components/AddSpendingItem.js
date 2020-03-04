@@ -54,6 +54,7 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
       />
       <Button
         style={styles.button}
+        status="info"
         onPress={() => {
           insertSpendingItem({
             variables: {
