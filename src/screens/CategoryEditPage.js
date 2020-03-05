@@ -244,7 +244,7 @@ const CategoryEditPage = ({route}) => {
           <Select
             style={styles.targetAmountDuration}
             data={DurationData}
-            placeholder="Time Duration"
+            placeholder="Duration"
             selectedOption={budgetTimeDuration}
             onSelect={setBudgetTimeDuration}
           />

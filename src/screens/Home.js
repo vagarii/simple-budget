@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import HomePage from "./HomePage";
+import StatisticsPage from "./StatisticsPage";
 import {StyleSheet, ActivityIndicator} from "react-native";
 import {
   Layout,
@@ -89,7 +90,7 @@ const Home = ({route}) => {
           <HomePage user={user} />
         </Layout>
         <Layout style={styles.pager}>
-          <Text category="h5">Welcome {user.name}!</Text>
+          <StatisticsPage user={user} />
         </Layout>
       </ViewPager>
     </Layout>
