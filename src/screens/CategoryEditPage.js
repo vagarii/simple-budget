@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, Fragment} from "react";
 import PropTypes from "prop-types";
 import {useMutation, useQuery} from "@apollo/react-hooks";
 import {
@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
 import {
   Button,
@@ -19,7 +20,8 @@ import {
   Select,
   Layout,
   TopNavigation,
-  TopNavigationAction
+  TopNavigationAction,
+  Tooltip
 } from "@ui-kitten/components";
 import {
   DELETE_SPENDING_CATEGORY,
@@ -44,6 +46,11 @@ const DurationData = [
   {text: "DAY"}
 ];
 
+const INFO_TEXT =
+  "This is the target budget you would like to contribute to this category. " +
+  "For example, if you'd like to spend $200 every quarter, " +
+  'you can put "200" in the Target Budget cell and choose "QUARTER" in the selector.';
+
 const CategoryEditPage = ({route}) => {
   const {item, user} = route.params;
   const isNewCategory = item == null;
@@ -56,6 +63,7 @@ const CategoryEditPage = ({route}) => {
   });
   const [iconId, setIconId] = useState(item?.category_icon?.id);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const [updateCategory, {loading: saving, error: errorOnSaving}] = useMutation(
     UPDATE_SPENDING_CATEGORY
@@ -162,58 +170,70 @@ const CategoryEditPage = ({route}) => {
 
   const SaveIcon = style => <Icon {...style} name="save" />;
   const DeleteIcon = style => <Icon {...style} name="trash-2" />;
+  const InfoIcon = style => <Icon {...style} name="info" />;
+
+  const onInfoIconPress = () => {
+    if (showInfo) {
+      setShowInfo(false);
+    } else {
+      setShowInfo(true);
+    }
+  };
 
   return (
     <Layout>
       <TopNavigation leftControl={backAction()} title="Edit Category" />
       <Layout style={styles.container}>
         <IconInventory iconId={iconId} setIconId={setIconId} />
-        <TextInput
+        <Input
           style={{
-            fontSize: 25,
-            color: "white",
-            marginTop: 12,
             width: 344,
-            height: 50,
-            borderColor: "white",
-            borderWidth: 0,
-            borderBottomWidth: 2
+            marginTop: 20
           }}
-          textAlign="center"
-          placeholder="Name"
-          placeholderTextColor="grey"
-          onChangeText={setName}
+          fontSize={20}
+          // size="large"
+          placeholder="Category Name"
           value={name}
+          onChangeText={setName}
         />
-
-        <TextInput
+        <Input
           style={{
-            fontSize: 20,
-            color: "gray",
-            marginTop: 12,
             width: 344,
-            height: 30,
-            borderColor: "gray",
-            borderWidth: 0,
-            borderBottomWidth: 1
+            marginTop: 12
           }}
-          textAlign="center"
+          fontSize={12}
           placeholder="Description"
-          placeholderTextColor="grey"
-          textColor="White"
-          onChangeText={setDescription}
           value={description}
+          onChangeText={setDescription}
         />
         <Layout style={styles.targetAmountRow}>
+          <Tooltip
+            style={{height: 84, width: 344}}
+            visible={showInfo}
+            text={INFO_TEXT}
+            onBackdropPress={onInfoIconPress}
+            backdropStyle={styles.infoBackdrop}
+          >
+            <Button
+              style={{width: 30, height: 30}}
+              onPress={onInfoIconPress}
+              icon={InfoIcon}
+              status="basic"
+              appearance="ghost"
+            ></Button>
+          </Tooltip>
           <Input
             style={{
-              width: 160,
+              width: 144,
               marginRight: 8
             }}
-            placeholder="Target Budget Amount"
+            // icon={renderInfoIcon}
+            // onIconPress={onInfoIconPress}
+            placeholder="Target Budget"
             value={budgetAmount}
             onChangeText={setBudgetAmount}
           />
+
           <Text category="h5">/</Text>
           <Select
             style={styles.targetAmountDuration}
@@ -293,8 +313,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     width: winWidth,
-    height: winHeight,
-    padding: 16
+    minHeight: winHeight - 260,
+    marginTop: 8,
+    marginBottom: 300
   },
   targetAmountRow: {
     flexDirection: "row",
@@ -303,18 +324,20 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   targetAmountDuration: {
-    width: 160,
+    width: 144,
     marginLeft: 8,
-    paddingBottom: 4
+    paddingBottom: 4,
+    marginRight: 8
   },
   button: {
-    marginTop: 12,
+    marginTop: 20,
     width: 344
-    // backgroundColor: "blue",
-    // padding: 13
   },
   backdrop: {
     backgroundColor: "rgba(0, 0, 0, 0.9)"
+  },
+  infoBackdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   modalContainer: {
     alignItems: "center",

@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
 import {
   Button,
@@ -42,6 +43,7 @@ const IconInventory = ({iconId, setIconId}) => {
       // marginTop: 12
       alignItems: "center",
       justifyContent: "center",
+      // height: 300
       height: rows.length * 90
     },
     row: {
@@ -53,21 +55,23 @@ const IconInventory = ({iconId, setIconId}) => {
   });
 
   return (
-    <Layout style={styles.container}>
-      {rows.map((row, index) => (
-        <Layout style={styles.row} key={index}>
-          {row.map(item => (
-            <Fragment key={item.id}>
-              <IconAvatar
-                icon={item}
-                isSelected={iconId === item.id}
-                onSelect={() => setIconId(item.id)}
-              />
-            </Fragment>
-          ))}
-        </Layout>
-      ))}
-    </Layout>
+    <ScrollView style={{height: 350}}>
+      <Layout style={styles.container}>
+        {rows.map((row, index) => (
+          <Layout style={styles.row} key={index}>
+            {row.map(item => (
+              <Layout key={item.id}>
+                <IconAvatar
+                  icon={item}
+                  isSelected={iconId === item.id}
+                  onSelect={() => setIconId(item.id)}
+                />
+              </Layout>
+            ))}
+          </Layout>
+        ))}
+      </Layout>
+    </ScrollView>
   );
 };
 

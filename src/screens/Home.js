@@ -50,7 +50,8 @@ const Home = ({route}) => {
       }}
     >
       <OverflowMenu
-        data={[{title: "Logout"}]}
+        style={{width: 200}}
+        data={[{title: `Log Out -- ${user.name}`}]}
         visible={menuVisible}
         selectedIndex={selectedMenuIndex}
         onSelect={onMenuItemSelect}

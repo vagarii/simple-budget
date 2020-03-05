@@ -11,7 +11,7 @@ const HomePage = ({user}) => {
   const [categoryId, setCategoryId] = useState(null);
 
   return (
-    <Fragment>
+    <Layout>
       <ScrollView>
         <Layout style={styles.calender}>
           <Calendar date={date} onSelect={setDate} />
@@ -28,7 +28,7 @@ const HomePage = ({user}) => {
         />
         <SpendingItemList />
       </ScrollView>
-    </Fragment>
+    </Layout>
   );
 };
 

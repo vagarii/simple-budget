@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import {StyleSheet, View} from "react-native";
 import * as SecureStore from "expo-secure-store";
 import Auth from "./src/Auth";
@@ -26,19 +26,18 @@ const App = () => {
       if (session) {
         const sessionObj = JSON.parse(session);
         const {exp, token, id, name} = sessionObj;
-
-        if (exp > Math.floor(new Date().getTime() / 1000)) {
-          setToken(token);
-          setUser({id, name, isNewUser});
-        } else {
-          handleLogout();
-        }
+        // if (exp > Math.floor(new Date().getTime() / 1000)) {
+        setToken(token);
+        setUser({id, name, isNewUser});
+        // } else {
+        //   handleLogout();
+        // }
       }
     });
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={darkTheme}>
         <Layout style={styles}>
@@ -49,7 +48,7 @@ const App = () => {
           )}
         </Layout>
       </ApplicationProvider>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -64,7 +64,11 @@ const CategoriesPage = ({route}) => {
 
   return (
     <Layout>
-      <TopNavigation leftControl={backAction()} title="My Categories" />
+      <TopNavigation
+        style={{height: 60}}
+        leftControl={backAction()}
+        title="My Categories"
+      />
       <Layout style={styles.container}>
         {loading ? <Spinner status="basic" /> : <CategoriesContent />}
       </Layout>
@@ -78,19 +82,17 @@ const winHeight = Dimensions.get("window").height; //full height
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    // alignItems: "center",
     width: winWidth,
     height: winHeight - 60,
     padding: 16
   },
   list: {
-    height: winHeight - 210
+    height: winHeight - 190
   },
   bottomBar: {
-    justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 60
   },
   addButton: {
     width: 344
