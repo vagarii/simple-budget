@@ -14,7 +14,9 @@ import {DELETE_SPENDING_ITEM} from "../../data/mutations";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-const SpendingItem = ({item}) => {
+const moment = require("moment");
+
+const SpendingItem = ({item, user, date}) => {
   const [deleteSpendingItem, {loading, error}] = useMutation(
     DELETE_SPENDING_ITEM
   );
@@ -57,7 +59,16 @@ const SpendingItem = ({item}) => {
       variables: {
         id: item.id
       },
-      refetchQueries: [{query: GET_SPENDING_ITEMS}]
+      refetchQueries: [
+        {
+          query: GET_SPENDING_ITEMS,
+          variables: {
+            user_id: user.id,
+            spending_date_start: moment(date).startOf("day"),
+            spending_date_end: moment(date).endOf("day")
+          }
+        }
+      ]
     });
   };
 

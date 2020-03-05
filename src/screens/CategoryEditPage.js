@@ -131,7 +131,9 @@ const CategoryEditPage = ({route}) => {
           budget_amount_per_day: getBudgetAmountPerDay(),
           icon_id: iconId
         },
-        refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+        refetchQueries: [
+          {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
+        ]
       });
     } else {
       updateCategory({
@@ -144,7 +146,9 @@ const CategoryEditPage = ({route}) => {
           budget_amount_per_day: getBudgetAmountPerDay(),
           icon_id: iconId
         },
-        refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+        refetchQueries: [
+          {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
+        ]
       });
     }
     navigation.goBack();
@@ -163,7 +167,9 @@ const CategoryEditPage = ({route}) => {
       variables: {
         id: item?.id
       },
-      refetchQueries: [{query: GET_SPENDING_CATEGORIES}]
+      refetchQueries: [
+        {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
+      ]
     });
     navigation.goBack();
   };
@@ -259,7 +265,7 @@ const CategoryEditPage = ({route}) => {
         >
           Save
         </Button>
-        {item != null && (
+        {!isNewCategory ? (
           <Button
             icon={DeleteIcon}
             status="danger"
@@ -269,6 +275,8 @@ const CategoryEditPage = ({route}) => {
           >
             Delete
           </Button>
+        ) : (
+          <Layout style={{height: 44}} />
         )}
       </Layout>
       <Modal

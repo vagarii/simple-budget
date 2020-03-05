@@ -11,8 +11,10 @@ import {useNavigation} from "@react-navigation/native";
 
 const CATEGORY_NUMBER_PER_CARD = 7;
 
-const SpendingCategoriesWidget = ({categoryId, setCategoryId}) => {
-  const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES);
+const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
+  const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES, {
+    variables: {user_id: user.id}
+  });
 
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 

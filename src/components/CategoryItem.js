@@ -11,7 +11,6 @@ import {
   Layout
 } from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
 const CategoryItem = ({item, user}) => {

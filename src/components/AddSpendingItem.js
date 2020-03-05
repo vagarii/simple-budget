@@ -6,6 +6,8 @@ import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
 
+const moment = require("moment");
+
 const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
@@ -62,9 +64,18 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
               category_id: categoryId,
               amount: amount,
               user_id: user.id,
-              spending_date: date
+              spending_date: moment(date).startOf("day")
             },
-            refetchQueries: [{query: GET_SPENDING_ITEMS}]
+            refetchQueries: [
+              {
+                query: GET_SPENDING_ITEMS,
+                variables: {
+                  user_id: user.id,
+                  spending_date_start: moment(date).startOf("day"),
+                  spending_date_end: moment(date).endOf("day")
+                }
+              }
+            ]
           });
           setAmount(null);
           setCategoryId(null);

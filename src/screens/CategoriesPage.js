@@ -20,7 +20,9 @@ import {useNavigation} from "@react-navigation/native";
 const CategoriesPage = ({route}) => {
   const user = route.params;
 
-  const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES);
+  const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES, {
+    variables: {user_id: user.id}
+  });
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
   const BackIcon = style => <Icon {...style} name="arrow-back" />;

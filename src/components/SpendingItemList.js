@@ -12,8 +12,16 @@ import {
 import SpendingItem from "./SpendingItem";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
 
-const SpendingItemList = () => {
-  const {loading, error, data} = useQuery(GET_SPENDING_ITEMS);
+const moment = require("moment");
+
+const SpendingItemList = ({user, date}) => {
+  const {loading, error, data} = useQuery(GET_SPENDING_ITEMS, {
+    variables: {
+      user_id: user.id,
+      spending_date_start: moment(date).startOf("day"),
+      spending_date_end: moment(date).endOf("day")
+    }
+  });
 
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
@@ -26,7 +34,9 @@ const SpendingItemList = () => {
           style={styles.list}
           {...flatlistProps}
           data={data.spending_item}
-          renderItem={({item}) => <SpendingItem item={item} />}
+          renderItem={({item}) => (
+            <SpendingItem item={item} user={user} date={date} />
+          )}
         />
       )}
     </Layout>

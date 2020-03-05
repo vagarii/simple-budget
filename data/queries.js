@@ -1,8 +1,18 @@
 import {gql} from "apollo-boost";
 
 export const GET_SPENDING_ITEMS = gql`
-  {
-    spending_item {
+  query spending_item(
+    $user_id: String!
+    $spending_date_start: timestamptz!
+    $spending_date_end: timestamptz!
+  ) {
+    spending_item(
+      order_by: {created_time: desc}
+      where: {
+        user_id: {_eq: $user_id}
+        spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
+      }
+    ) {
       id
       amount
       description
@@ -17,8 +27,11 @@ export const GET_SPENDING_ITEMS = gql`
 `;
 
 export const GET_SPENDING_CATEGORIES = gql`
-  {
-    spending_category {
+  query spending_category($user_id: String!) {
+    spending_category(
+      order_by: {order: asc}
+      where: {user_id: {_eq: $user_id}}
+    ) {
       id
       name
       description

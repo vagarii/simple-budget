@@ -17,6 +17,7 @@ const HomePage = ({user}) => {
           <Calendar date={date} onSelect={setDate} />
         </Layout>
         <SpendingCategoriesWidget
+          user={user}
           categoryId={categoryId}
           setCategoryId={setCategoryId}
         />
@@ -26,7 +27,7 @@ const HomePage = ({user}) => {
           categoryId={categoryId}
           setCategoryId={setCategoryId}
         />
-        <SpendingItemList />
+        <SpendingItemList user={user} date={date} />
       </ScrollView>
     </Layout>
   );
