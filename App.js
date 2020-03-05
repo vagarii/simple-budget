@@ -12,10 +12,16 @@ import {
 } from "@ui-kitten/components";
 import {mapping, dark as darkTheme} from "@eva-design/eva";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
+import {logout} from "./src/utils/AuthUtils";
 
 const App = () => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+
+  const handleLogout = () => {
+    logout();
+    setToken(null);
+  };
 
   useEffect(() => {
     handleLogin();
@@ -26,12 +32,12 @@ const App = () => {
       if (session) {
         const sessionObj = JSON.parse(session);
         const {exp, token, id, name} = sessionObj;
-        // if (exp > Math.floor(new Date().getTime() / 1000)) {
-        setToken(token);
-        setUser({id, name, isNewUser});
-        // } else {
-        //   handleLogout();
-        // }
+        if (exp > Math.floor(new Date().getTime() / 1000)) {
+          setToken(token);
+          setUser({id, name, isNewUser});
+        } else {
+          handleLogout();
+        }
       }
     });
   };

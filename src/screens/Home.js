@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import HomePage from "./HomePage";
-import * as SecureStore from "expo-secure-store";
 import {StyleSheet, ActivityIndicator} from "react-native";
 import {
   Layout,
@@ -12,13 +11,13 @@ import {
   Button,
   OverflowMenu
 } from "@ui-kitten/components";
-import {ID_TOKEN_KEY} from "../../config";
+import {logout} from "../utils/AuthUtils";
 
 const Home = ({route}) => {
   const {user, setToken} = route.params;
 
   const handleLogout = () => {
-    SecureStore.deleteItemAsync(ID_TOKEN_KEY);
+    logout();
     setToken(null);
   };
 
