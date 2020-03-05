@@ -215,7 +215,7 @@ const CategoryEditPage = ({route}) => {
             backdropStyle={styles.infoBackdrop}
           >
             <Button
-              style={{width: 30, height: 30}}
+              style={{width: 30, height: 30, marginBottom: 4}}
               onPress={onInfoIconPress}
               icon={InfoIcon}
               status="basic"
