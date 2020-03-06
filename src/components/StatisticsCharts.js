@@ -5,43 +5,33 @@ import {
   Dimensions,
   ScrollView
 } from "react-native";
+import {useQuery} from "@apollo/react-hooks";
 import {Layout, Text, Icon, Button} from "@ui-kitten/components";
 import {StackedBarChart, Grid} from "react-native-svg-charts";
+import {GET_SPENDING_CATEGORIES} from "../../data/queries";
+import StatisticsBar from "./StatisticsBar";
 
-const StatisticsCharts = ({range, isRandomRange}) => {
-  console.warn(range);
-  console.warn(isRandomRange);
+const StatisticsCharts = ({range, isRandomRange, user}) => {
+  const [barMaxWidthPercentage, setBarMaxWidthPercentage] = useState(1.0);
 
-  const data = [
-    {
-      spentUderTarget: 3840,
-      target: 1920,
-      spentOverTarget: 960
-    }
-  ];
-
-  const colors = ["#7b4173", "#a55194", "#ce6dbd"];
-  const keys = ["spentUderTarget", "target", "spentOverTarget"];
+  const {loading, error, data: categories} = useQuery(GET_SPENDING_CATEGORIES, {
+    variables: {user_id: user.id}
+  });
+  if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
   return (
     <Layout style={styles.container}>
       <ScrollView>
-        <StackedBarChart
-          style={styles.bar}
-          keys={keys}
-          colors={colors}
-          data={data}
-          horizontal={true}
-          contentInset={{top: 8, bottom: 8}}
-        />
-        <StackedBarChart
-          style={styles.bar}
-          keys={keys}
-          colors={colors}
-          data={data}
-          horizontal={true}
-          contentInset={{top: 8, bottom: 8}}
-        />
+        {(categories?.spending_category ?? []).map(category => (
+          <StatisticsBar
+            key={category.id}
+            category={category}
+            range={range}
+            isRandomRange={isRandomRange}
+            barMaxWidthPercentage={barMaxWidthPercentage}
+            setBarMaxWidthPercentage={setBarMaxWidthPercentage}
+          />
+        ))}
       </ScrollView>
     </Layout>
   );
@@ -54,10 +44,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 12,
     height: winHeight - 320
-  },
-  bar: {
-    height: 50,
-    width: 344
   }
 });
 

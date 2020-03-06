@@ -36,6 +36,7 @@ export const GET_SPENDING_CATEGORIES = gql`
       name
       description
       budget_amount
+      budget_amount_per_day
       budget_time_duration
       category_icon {
         id
@@ -64,6 +65,23 @@ export const GET_CATEGORY_ICONS = gql`
       name
       color
       color2
+    }
+  }
+`;
+
+export const GET_SPENDING_ITEMS_AGGREGATE = gql`
+  query spending_item(
+    $category_id: Int!
+    $spending_date_start: timestamptz!
+    $spending_date_end: timestamptz!
+  ) {
+    spending_item(
+      where: {
+        category_id: {_eq: $category_id}
+        spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
+      }
+    ) {
+      amount
     }
   }
 `;

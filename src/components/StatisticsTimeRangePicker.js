@@ -18,6 +18,10 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
   const [year, setYear] = useState(null);
   const [randomRange, setRandomRange] = useState({});
 
+  useEffect(() => {
+    setMonthAndClear({text: "This Month"});
+  }, []);
+
   const setRandomRangeAndClear = data => {
     setRandomRange(data);
     if (data.endDate != null) {

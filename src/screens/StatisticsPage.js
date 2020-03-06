@@ -17,7 +17,11 @@ const StatisticsPage = ({user}) => {
   return (
     <Layout style={styles.container}>
       <Text category="h5">{`Welcome  ${user.name}`}</Text>
-      <StatisticsCharts range={range} isRandomRange={isRandomRange} />
+      <StatisticsCharts
+        range={range}
+        isRandomRange={isRandomRange}
+        user={user}
+      />
       <StatisticsTimeRangePicker setStatisticsRange={setStatisticsRange} />
     </Layout>
   );

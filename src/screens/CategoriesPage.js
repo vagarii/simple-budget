@@ -23,6 +23,7 @@ const CategoriesPage = ({route}) => {
   const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES, {
     variables: {user_id: user.id}
   });
+  // TODO: formalize graphql erros, make a component for it and reuse
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
   const BackIcon = style => <Icon {...style} name="arrow-back" />;

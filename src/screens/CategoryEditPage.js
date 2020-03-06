@@ -94,7 +94,7 @@ const CategoryEditPage = ({route}) => {
     if (budgetAmountStr == null || budgetTimeDuration == null) {
       return null;
     }
-    switch (budgetTimeDuration) {
+    switch (budgetTimeDuration.text) {
       case "YEAR":
         return parseFloat(budgetAmountStr) / 365;
       case "QUARTER":
