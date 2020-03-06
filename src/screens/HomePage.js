@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from "react";
 import PropTypes from "prop-types";
 import {StyleSheet, ScrollView} from "react-native";
-import {Layout, Calendar, Text} from "@ui-kitten/components";
+import {Layout, Calendar, Text, Datepicker, Icon} from "@ui-kitten/components";
 import SpendingItemList from "../components/SpendingItemList";
 import AddSpendingItem from "../components/AddSpendingItem";
 import SpendingCategoriesWidget from "../components/SpendingCategoriesWidget";
@@ -10,11 +10,18 @@ const HomePage = ({user}) => {
   const [date, setDate] = useState(new Date());
   const [categoryId, setCategoryId] = useState(null);
 
+  const CalendarIcon = style => <Icon {...style} name="calendar" />;
+
   return (
     <Layout>
       <ScrollView>
-        <Layout style={styles.calender}>
-          <Calendar date={date} onSelect={setDate} />
+        <Layout style={styles.calenderContainer}>
+          <Datepicker
+            style={styles.calender}
+            date={date}
+            onSelect={setDate}
+            icon={CalendarIcon}
+          />
         </Layout>
         <SpendingCategoriesWidget
           user={user}
@@ -38,10 +45,12 @@ HomePage.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  calender: {
+  calenderContainer: {
     alignItems: "center",
     justifyContent: "center"
-    // minHeight: 376
+  },
+  calender: {
+    width: 344
   }
 });
 
