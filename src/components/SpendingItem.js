@@ -33,8 +33,8 @@ const SpendingItem = ({item, user, date}) => {
           height: 40,
           borderRadius: 20,
           alignItems: "center",
-          justifyContent: "center",
-          marginLeft: 20
+          justifyContent: "center"
+          // marginLeft: 20
         }}
       >
         <FontAwesome5 name={category_icon.name} color="white" size={20} solid />
@@ -45,6 +45,7 @@ const SpendingItem = ({item, user, date}) => {
   const renderItemAccessory = () => (
     <Button
       icon={DeleteIcon}
+      style={{width: 30}}
       size="small"
       onPress={deleteItem}
       appearance="ghost"
@@ -52,6 +53,7 @@ const SpendingItem = ({item, user, date}) => {
     ></Button>
   );
 
+  // TODO: have a library for all the icons
   const DeleteIcon = style => <Icon {...style} name="trash-2" />;
 
   const deleteItem = () => {
@@ -75,7 +77,7 @@ const SpendingItem = ({item, user, date}) => {
   return (
     <Layout style={styles.container}>
       <ListItem
-        title={item.amount}
+        title={`\$${item.amount}`}
         description={item.description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}

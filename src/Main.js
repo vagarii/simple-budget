@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {ApolloProvider} from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
-import {StyleSheet, ActivityIndicator} from "react-native";
+import {StyleSheet, ActivityIndicator, Alert} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import {GRAPHQL_ENDPOINT} from "../config";
@@ -26,11 +26,9 @@ const Main = ({user, token, setToken}) => {
         Authorization: `Bearer ${token}`
       },
       onError: error => {
-        console.warn(error);
+        Alert.alert("Error", error);
       }
     });
-
-    console.warn(user);
 
     if (isNewUser) {
       client.mutate({

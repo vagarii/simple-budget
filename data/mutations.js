@@ -12,7 +12,7 @@ export const INSERT_SPENDING_ITEMS = gql`
   mutation(
     $description: String!
     $category_id: Int!
-    $amount: money!
+    $amount: numeric!
     $user_id: String!
     $spending_date: timestamptz!
   ) {
@@ -55,9 +55,9 @@ export const UPDATE_SPENDING_CATEGORY = gql`
     $id: Int!
     $name: String!
     $description: String!
-    $budget_amount: money!
+    $budget_amount: numeric!
     $budget_time_duration: time_duration_enum!
-    $budget_amount_per_day: money!
+    $budget_amount_per_day: numeric!
     $icon_id: Int!
   ) {
     update_spending_category(
@@ -81,9 +81,9 @@ export const INSERT_SPENDING_CATEGORY = gql`
     $user_id: String!
     $name: String!
     $description: String!
-    $budget_amount: money!
+    $budget_amount: numeric!
     $budget_time_duration: time_duration_enum!
-    $budget_amount_per_day: money!
+    $budget_amount_per_day: numeric!
     $icon_id: Int!
   ) {
     insert_spending_category(

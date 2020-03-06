@@ -57,7 +57,9 @@ const CategoryEditPage = ({route}) => {
 
   const [name, setName] = useState(item?.name);
   const [description, setDescription] = useState(item?.description);
-  const [budgetAmount, setBudgetAmount] = useState(item?.budget_amount);
+  const [budgetAmountStr, setBudgetAmountStr] = useState(
+    item?.budget_amount == null ? null : String(item?.budget_amount)
+  );
   const [budgetTimeDuration, setBudgetTimeDuration] = useState({
     text: item?.budget_time_duration
   });
@@ -89,21 +91,20 @@ const CategoryEditPage = ({route}) => {
 
   /** TODO: move to utils **/
   const getBudgetAmountPerDay = () => {
-    if (budgetAmount == null || budgetTimeDuration == null) {
+    if (budgetAmountStr == null || budgetTimeDuration == null) {
       return null;
     }
-    var budgetPerDay;
     switch (budgetTimeDuration) {
       case "YEAR":
-        return String(Number(budgetAmount) / 365);
+        return parseFloat(budgetAmountStr) / 365;
       case "QUARTER":
-        return String(Number(budgetAmount) / 91);
+        return parseFloat(budgetAmountStr) / 91;
       case "MONTH":
-        return String(Number(budgetAmount) / 30);
+        return parseFloat(budgetAmountStr) / 30;
       case "WEEK":
-        return String(Number(budgetAmount) / 7);
+        return parseFloat(budgetAmountStr) / 7;
       default:
-        return budgetAmount;
+        return parseFloat(budgetAmountStr);
     }
   };
 
@@ -126,7 +127,7 @@ const CategoryEditPage = ({route}) => {
           user_id: user.id,
           name: name,
           description: description ?? "",
-          budget_amount: budgetAmount,
+          budget_amount: parseFloat(budgetAmountStr),
           budget_time_duration: budgetTimeDuration.text,
           budget_amount_per_day: getBudgetAmountPerDay(),
           icon_id: iconId
@@ -141,7 +142,7 @@ const CategoryEditPage = ({route}) => {
           id: item?.id,
           name: name,
           description: description ?? "",
-          budget_amount: budgetAmount,
+          budget_amount: parseFloat(budgetAmountStr),
           budget_time_duration: budgetTimeDuration.text,
           budget_amount_per_day: getBudgetAmountPerDay(),
           icon_id: iconId
@@ -236,8 +237,8 @@ const CategoryEditPage = ({route}) => {
             // icon={renderInfoIcon}
             // onIconPress={onInfoIconPress}
             placeholder="Target Budget"
-            value={budgetAmount}
-            onChangeText={setBudgetAmount}
+            value={budgetAmountStr}
+            onChangeText={setBudgetAmountStr}
           />
           <Text category="h5">/</Text>
           <Select
@@ -257,7 +258,7 @@ const CategoryEditPage = ({route}) => {
             saving ||
             deleting ||
             name == null ||
-            budgetAmount == null ||
+            budgetAmountStr == null ||
             budgetTimeDuration.text == null ||
             iconId == null
           }

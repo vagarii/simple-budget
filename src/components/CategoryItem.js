@@ -40,7 +40,7 @@ const CategoryItem = ({item, user}) => {
 
   const renderItemAccessory = () => (
     <Layout>
-      <Text category="c2">{`${budget_amount} / ${budget_time_duration}`}</Text>
+      <Text category="c2">{`\$${budget_amount} / ${budget_time_duration}`}</Text>
     </Layout>
   );
 
