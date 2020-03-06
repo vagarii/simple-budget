@@ -55,7 +55,7 @@ const IconInventory = ({iconId, setIconId}) => {
   });
 
   return (
-    <ScrollView style={{height: 350}}>
+    <ScrollView style={{height: 260}}>
       <Layout style={styles.container}>
         {rows.map((row, index) => (
           <Layout style={styles.row} key={index}>

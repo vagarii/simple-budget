@@ -18,11 +18,6 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const handleLogout = () => {
-    logout();
-    setToken(null);
-  };
-
   useEffect(() => {
     handleLogin();
   }, []);
@@ -40,6 +35,11 @@ const App = () => {
         }
       }
     });
+  };
+
+  const handleLogout = () => {
+    logout();
+    setToken(null);
   };
 
   return (

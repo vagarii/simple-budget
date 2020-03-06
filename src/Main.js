@@ -30,6 +30,8 @@ const Main = ({user, token, setToken}) => {
       }
     });
 
+    console.warn(user);
+
     if (isNewUser) {
       client.mutate({
         mutation: INSERT_USER,

@@ -194,7 +194,7 @@ const CategoryEditPage = ({route}) => {
         <Input
           style={{
             width: 344,
-            marginTop: 20
+            marginTop: 16
           }}
           fontSize={20}
           // size="large"
@@ -239,7 +239,6 @@ const CategoryEditPage = ({route}) => {
             value={budgetAmount}
             onChangeText={setBudgetAmount}
           />
-
           <Text category="h5">/</Text>
           <Select
             style={styles.targetAmountDuration}
@@ -322,8 +321,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: winWidth,
     minHeight: winHeight - 260,
-    marginTop: 8,
-    marginBottom: 300
+    marginBottom: 500
   },
   targetAmountRow: {
     flexDirection: "row",
@@ -338,7 +336,7 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   button: {
-    marginTop: 20,
+    marginTop: 16,
     width: 344
   },
   backdrop: {
