@@ -16,13 +16,7 @@ const moment = require("moment");
 
 const BAR_WIDTH = 230;
 
-const StatisticsBar = ({
-  category,
-  range,
-  isRandomRange,
-  barMaxWidthPercentage,
-  setBarMaxWidthPercentage
-}) => {
+const StatisticsBar = ({category, range, isRandomRange}) => {
   const {
     id: categoryId,
     name: categoryName,
@@ -32,7 +26,7 @@ const StatisticsBar = ({
     category_icon: categoryIcon
   } = category;
 
-  const {id: iconId, name: iconName, color, color2} = categoryIcon;
+  const {id: iconId, name: iconName, color, color2, color3} = categoryIcon;
 
   const {loading, error, data} = useQuery(GET_SPENDING_ITEMS_AGGREGATE, {
     variables: {
@@ -105,25 +99,18 @@ const StatisticsBar = ({
     }
   };
 
-  const totalTargetSum = getTotalTargetBudget();
+  const budgetSum = getTotalTargetBudget();
 
-  const isOver = spentSum > totalTargetSum;
-  const spentToBudget = spentSum / totalTargetSum;
-
-  if (spentToBudget > barMaxWidthPercentage) {
-    setBarMaxWidthPercentage(spentToBudget);
-  }
+  const isOver = spentSum > budgetSum;
+  const spentToBudget = spentSum / budgetSum;
 
   const barData = [
     {
-      spent: !isOver ? spentSum : totalTargetSum,
-      left: !isOver ? totalTargetSum - spentSum : 0,
-      over: !isOver ? 0 : spentSum - totalTargetSum
+      spent: !isOver ? spentSum : budgetSum,
+      left: !isOver ? budgetSum - spentSum : 0,
+      over: !isOver ? 0 : spentSum - budgetSum
     }
   ];
-
-  const colors = [color2, color, "rgba(0, 0, 0, 0.6)"];
-  const keys = ["spent", "left", "over"];
 
   const CateAvatar = () => (
     <Layout
@@ -152,50 +139,29 @@ const StatisticsBar = ({
         category="c2"
         status={isOver ? "danger" : "basic"}
       >{`\$${getRroundNumber(spentSum)}`}</Text>
-      <Text category="c1">{`/ \$${getRroundNumber(totalTargetSum)}`}</Text>
+      <Text category="c1">{`/ \$${getRroundNumber(budgetSum)}`}</Text>
     </Layout>
   );
 
   return (
     <Layout style={styles.container}>
       <CateAvatar />
-      <Layout style={styles.barSet}>
-        <StackedBarChart
-          style={{
-            height: 50,
-            width: BAR_WIDTH / barMaxWidthPercentage
-          }}
-          keys={["spent", "left"]}
-          colors={[color2, color]}
-          data={[
-            {
-              spent: !isOver ? spentSum : totalTargetSum,
-              left: !isOver ? totalTargetSum - spentSum : 0
-            }
-          ]}
-          horizontal={true}
-          contentInset={{top: 8, bottom: 8}}
-        />
-        {isOver && (
-          <StackedBarChart
-            style={{
-              height: 50,
-              width:
-                ((spentSum - totalTargetSum) / totalTargetSum) *
-                (BAR_WIDTH / barMaxWidthPercentage)
-            }}
-            keys={["over"]}
-            colors={["rgba(0, 0, 0, 0.6)"]}
-            data={[
-              {
-                over: spentSum - totalTargetSum
-              }
-            ]}
-            horizontal={true}
-            contentInset={{top: 8, bottom: 8}}
-          />
-        )}
-      </Layout>
+      <StackedBarChart
+        style={{
+          height: 50,
+          width: BAR_WIDTH
+        }}
+        keys={["spent", "left"]}
+        colors={[color2, color3]}
+        data={[
+          {
+            spent: !isOver ? spentSum : budgetSum,
+            left: !isOver ? budgetSum - spentSum : 0
+          }
+        ]}
+        horizontal={true}
+        contentInset={{top: 8, bottom: 8}}
+      />
       <BudgetText />
     </Layout>
   );
@@ -207,11 +173,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 344
   },
-  barSet: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: BAR_WIDTH
-  },
+
   text: {
     alignItems: "flex-end",
     width: 70

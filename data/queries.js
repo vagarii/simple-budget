@@ -43,6 +43,7 @@ export const GET_SPENDING_CATEGORIES = gql`
         name
         color
         color2
+        color3
       }
     }
   }

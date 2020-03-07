@@ -12,16 +12,10 @@ import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import StatisticsBar from "./StatisticsBar";
 
 const StatisticsCharts = ({range, isRandomRange, user}) => {
-  const [barMaxWidthPercentage, setBarMaxWidthPercentage] = useState(1.0);
-
   const {loading, error, data: categories} = useQuery(GET_SPENDING_CATEGORIES, {
     variables: {user_id: user.id}
   });
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
-
-  useEffect(() => {
-    setBarMaxWidthPercentage(1);
-  }, [range]);
 
   return (
     <Layout style={styles.container}>
@@ -32,8 +26,6 @@ const StatisticsCharts = ({range, isRandomRange, user}) => {
             category={category}
             range={range}
             isRandomRange={isRandomRange}
-            barMaxWidthPercentage={barMaxWidthPercentage}
-            setBarMaxWidthPercentage={setBarMaxWidthPercentage}
           />
         ))}
       </ScrollView>
