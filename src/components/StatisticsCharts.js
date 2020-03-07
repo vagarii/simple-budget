@@ -19,6 +19,10 @@ const StatisticsCharts = ({range, isRandomRange, user}) => {
   });
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
+  useEffect(() => {
+    setBarMaxWidthPercentage(1);
+  }, [range]);
+
   return (
     <Layout style={styles.container}>
       <ScrollView>

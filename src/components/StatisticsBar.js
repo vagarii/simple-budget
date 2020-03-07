@@ -43,12 +43,6 @@ const StatisticsBar = ({
   });
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
-  // useEffect(() => {
-  //   // console.warn(barMaxWidthPercentage);
-  //   // console.warn(data);
-  //   // setMonthAndClear({text: "This Month"});
-  // }, [barMaxWidthPercentage]);
-
   const spentSum = (data?.spending_item ?? []).reduce(
     (sum, item) => sum + item.amount,
     0
@@ -114,9 +108,10 @@ const StatisticsBar = ({
   const totalTargetSum = getTotalTargetBudget();
 
   const isOver = spentSum > totalTargetSum;
+  const spentToBudget = spentSum / totalTargetSum;
 
-  if (isOver) {
-    setBarMaxWidthPercentage(spentSum / totalTargetSum);
+  if (spentToBudget > barMaxWidthPercentage) {
+    setBarMaxWidthPercentage(spentToBudget);
   }
 
   const barData = [
