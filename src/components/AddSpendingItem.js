@@ -29,8 +29,6 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
     });
   }, []);
 
-  console.warn(range);
-
   return (
     <Layout style={styles.container}>
       <TextInput

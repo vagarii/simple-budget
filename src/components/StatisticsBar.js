@@ -11,10 +11,11 @@ import {Layout, Text, Icon, Button} from "@ui-kitten/components";
 import {StackedBarChart, Grid} from "react-native-svg-charts";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {GET_SPENDING_ITEMS_AGGREGATE} from "../../data/queries";
+import {getRroundNumberInteger} from "../utils/utils";
 
 const moment = require("moment");
 
-const BAR_WIDTH = 230;
+const BAR_WIDTH = 240;
 
 const StatisticsBar = ({category, range, isRandomRange}) => {
   const {
@@ -121,25 +122,20 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
         borderRadius: 18,
         alignItems: "center",
         justifyContent: "center",
-        marginRight: 8
+        marginRight: 12
       }}
     >
       <FontAwesome5 name={iconName} color="white" size={20} solid />
     </Layout>
   );
 
-  // TODO: utils
-  const getRroundNumber = num => {
-    return Math.round(num * 100) / 100;
-  };
-
   const BudgetText = () => (
     <Layout style={styles.text}>
       <Text
         category="c2"
         status={isOver ? "danger" : "basic"}
-      >{`\$${getRroundNumber(spentSum)}`}</Text>
-      <Text category="c1">{`/ \$${getRroundNumber(budgetSum)}`}</Text>
+      >{`\$${getRroundNumberInteger(spentSum)}`}</Text>
+      <Text category="c1">{`/ \$${getRroundNumberInteger(budgetSum)}`}</Text>
     </Layout>
   );
 
@@ -176,7 +172,7 @@ const styles = StyleSheet.create({
 
   text: {
     alignItems: "flex-end",
-    width: 70
+    width: 56
   }
 });
 export default StatisticsBar;

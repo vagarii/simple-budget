@@ -1,5 +1,13 @@
 import {gql} from "apollo-boost";
 
+export const GET_USER_SETTINGS = gql`
+  query user_settings($user_id: String!) {
+    user_settings(where: {user_id: {_eq: $user_id}}) {
+      lock_calendar
+    }
+  }
+`;
+
 export const GET_SPENDING_ITEMS = gql`
   query spending_item(
     $user_id: String!

@@ -1,12 +1,22 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {StyleSheet, ScrollView} from "react-native";
-import {Layout, Calendar, Text, Datepicker, Icon} from "@ui-kitten/components";
+import {
+  Layout,
+  Calendar,
+  Text,
+  Datepicker,
+  Icon,
+  Button
+} from "@ui-kitten/components";
+import {useQuery, useMutation} from "@apollo/react-hooks";
 import SpendingItemList from "../components/SpendingItemList";
 import AddSpendingItem from "../components/AddSpendingItem";
 import SpendingCategoriesWidget from "../components/SpendingCategoriesWidget";
 
-const HomePage = ({user}) => {
+const moment = require("moment");
+
+const HomePage = ({user, lockCalendar}) => {
   const [date, setDate] = useState(new Date());
   const [categoryId, setCategoryId] = useState(null);
 
@@ -16,12 +26,21 @@ const HomePage = ({user}) => {
     <Layout>
       <ScrollView>
         <Layout style={styles.calenderContainer}>
-          <Datepicker
-            style={styles.calender}
-            date={date}
-            onSelect={setDate}
-            icon={CalendarIcon}
-          />
+          {lockCalendar ? (
+            <Calendar
+              style={styles.calender}
+              date={date}
+              onSelect={setDate}
+              icon={CalendarIcon}
+            />
+          ) : (
+            <Datepicker
+              style={styles.calender}
+              date={date}
+              onSelect={setDate}
+              icon={CalendarIcon}
+            />
+          )}
         </Layout>
         <SpendingCategoriesWidget
           user={user}
