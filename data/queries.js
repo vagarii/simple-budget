@@ -16,6 +16,7 @@ export const GET_SPENDING_ITEMS = gql`
       id
       amount
       description
+      category_id
       spending_category {
         category_icon {
           name

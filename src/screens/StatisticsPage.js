@@ -4,6 +4,7 @@ import {Layout, Text, Icon, Button} from "@ui-kitten/components";
 import {StackedBarChart, Grid} from "react-native-svg-charts";
 import StatisticsTimeRangePicker from "../components/StatisticsTimeRangePicker";
 import StatisticsCharts from "../components/StatisticsCharts";
+import Store from "../store/Store";
 
 const StatisticsPage = ({user}) => {
   const [range, setRange] = useState({});
@@ -12,6 +13,7 @@ const StatisticsPage = ({user}) => {
   const setStatisticsRange = (range, isRandom) => {
     setRange(range);
     setIsRandomRange(isRandom);
+    Store.save("range", range).then();
   };
 
   return (

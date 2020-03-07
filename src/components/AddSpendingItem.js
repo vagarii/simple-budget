@@ -1,21 +1,35 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
-import {GET_SPENDING_ITEMS} from "../../data/queries";
+import {
+  GET_SPENDING_ITEMS,
+  GET_SPENDING_ITEMS_AGGREGATE
+} from "../../data/queries";
+import Store from "../store/Store";
 
 const moment = require("moment");
 
 const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [range, setRange] = useState(null);
+
   const [insertSpendingItem, {loading, error}] = useMutation(
     INSERT_SPENDING_ITEMS
   );
 
   if (error) return <Text>`Error! ${error.message}`</Text>;
+
+  useEffect(() => {
+    Store.get("range").then(range => {
+      setRange(range);
+    });
+  }, []);
+
+  console.warn(range);
 
   return (
     <Layout style={styles.container}>
@@ -74,6 +88,14 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
                   spending_date_start: moment(date).startOf("day"),
                   spending_date_end: moment(date).endOf("day")
                 }
+              },
+              {
+                query: GET_SPENDING_ITEMS_AGGREGATE,
+                variables: {
+                  category_id: categoryId,
+                  spending_date_start: range?.startDate ?? 0,
+                  spending_date_end: range?.endDate ?? 0
+                }
               }
             ]
           });
@@ -111,10 +133,10 @@ const styles = StyleSheet.create({
   }
 });
 
-AddSpendingItem.propTypes = {
-  user: PropTypes.object.isRequired,
-  date: PropTypes.string.isRequired,
-  categoryId: PropTypes.number.isRequired
-};
+// AddSpendingItem.propTypes = {
+//   user: PropTypes.object.isRequired,
+//   date: PropTypes.date,
+//   categoryId: PropTypes.number
+// };
 
 export default AddSpendingItem;

@@ -26,7 +26,6 @@ import {
 import {
   DELETE_SPENDING_CATEGORY,
   UPDATE_SPENDING_CATEGORY,
-  INSERT_SPENDING_ITEMS,
   INSERT_SPENDING_CATEGORY
 } from "../../data/mutations";
 import {

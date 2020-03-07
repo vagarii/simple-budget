@@ -8,6 +8,7 @@ import {
   RangeDatepicker,
   Select
 } from "@ui-kitten/components";
+
 const moment = require("moment");
 
 // TODO: use enums or fixed object for picker options

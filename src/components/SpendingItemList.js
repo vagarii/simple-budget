@@ -11,6 +11,7 @@ import {
 } from "@ui-kitten/components";
 import SpendingItem from "./SpendingItem";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
+import Store from "../store/Store";
 
 const moment = require("moment");
 

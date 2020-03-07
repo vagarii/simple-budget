@@ -89,7 +89,7 @@ const Auth = ({token, onLogin}) => {
 };
 
 Auth.propTypes = {
-  token: PropTypes.object,
+  token: PropTypes.string,
   onLogin: PropTypes.func.isRequired
 };
 

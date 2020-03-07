@@ -11,6 +11,8 @@ import Home from "./screens/Home";
 import CategoriesPage from "./screens/CategoriesPage";
 import CategoryEditPage from "./screens/CategoryEditPage";
 import {Layout, Text, ViewPager} from "@ui-kitten/components";
+import {AsyncStorage} from "react-native";
+import Store from "./store/Store";
 
 const NavStack = createStackNavigator();
 
@@ -43,6 +45,8 @@ const Main = ({user, token, setToken}) => {
   if (!client) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
+
+  Store.save("user", user).then();
 
   return (
     <ApolloProvider client={client}>
