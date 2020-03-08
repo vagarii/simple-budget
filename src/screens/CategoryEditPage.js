@@ -103,7 +103,10 @@ const CategoryEditPage = ({route}) => {
           description: description ?? "",
           budget_amount: parseFloat(budgetAmountStr),
           budget_time_duration: budgetTimeDuration.text,
-          budget_amount_per_day: getBudgetAmountPerDay(),
+          budget_amount_per_day: getBudgetAmountPerDay(
+            budgetAmountStr,
+            budgetTimeDuration
+          ),
           icon_id: iconId
         },
         refetchQueries: [
@@ -118,7 +121,10 @@ const CategoryEditPage = ({route}) => {
           description: description ?? "",
           budget_amount: parseFloat(budgetAmountStr),
           budget_time_duration: budgetTimeDuration.text,
-          budget_amount_per_day: getBudgetAmountPerDay(),
+          budget_amount_per_day: getBudgetAmountPerDay(
+            budgetAmountStr,
+            budgetTimeDuration
+          ),
           icon_id: iconId
         },
         refetchQueries: [
@@ -156,6 +162,40 @@ const CategoryEditPage = ({route}) => {
       setShowInfo(true);
     }
   };
+
+  const DeleteModal = () => (
+    <Modal
+      backdropStyle={styles.backdrop}
+      onBackdropPress={onHideDeleteModal}
+      visible={showDeleteModal}
+    >
+      {spendingItems?.spending_item == null ||
+      spendingItems?.spending_item.length === 0 ? (
+        <Layout style={styles.modalContainer}>
+          <Text category="s1">{`Are you sure to delete category`}</Text>
+          <Text category="h6">{`"${item?.name}" ?`}</Text>
+          <Button
+            icon={DeleteIcon}
+            status="danger"
+            style={styles.button}
+            onPress={onDeleteCategoryItem}
+            disabled={saving || deleting}
+          >
+            Delete
+          </Button>
+        </Layout>
+      ) : (
+        <Layout style={styles.modalContainer}>
+          <Text category="s1">
+            {`Sorry. You cannot delete this category because there are spending records under this category. `}
+            {`Please try editing this category to update the information. `}
+            {`If you still want to delete this category you would need to delete all the spending records under it first. `}
+            {`Thank you.`}
+          </Text>
+        </Layout>
+      )}
+    </Modal>
+  );
 
   return (
     <Layout>
@@ -256,37 +296,7 @@ const CategoryEditPage = ({route}) => {
           )}
         </Layout>
       </KeyboardAwareScrollView>
-      <Modal
-        backdropStyle={styles.backdrop}
-        onBackdropPress={onHideDeleteModal}
-        visible={showDeleteModal}
-      >
-        {spendingItems?.spending_item == null ||
-        spendingItems?.spending_item.length === 0 ? (
-          <Layout style={styles.modalContainer}>
-            <Text category="s1">{`Are you sure to delete category`}</Text>
-            <Text category="h6">{`"${item?.name}" ?`}</Text>
-            <Button
-              icon={DeleteIcon}
-              status="danger"
-              style={styles.button}
-              onPress={onDeleteCategoryItem}
-              disabled={saving || deleting}
-            >
-              Delete
-            </Button>
-          </Layout>
-        ) : (
-          <Layout style={styles.modalContainer}>
-            <Text category="s1">
-              {`Sorry. You cannot delete this category because there are spending records under this category. `}
-              {`Please try editing this category to update the information. `}
-              {`If you still want to delete this category you would need to delete all the spending records under it first. `}
-              {`Thank you.`}
-            </Text>
-          </Layout>
-        )}
-      </Modal>
+      <DeleteModal />
     </Layout>
   );
 };
