@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {useQuery} from "@apollo/react-hooks";
 import {StyleSheet} from "react-native";
 import {Layout, List, Text, Spinner} from "@ui-kitten/components";
@@ -48,5 +49,10 @@ const styles = StyleSheet.create({
     marginBottom: 150
   }
 });
+
+SpendingItemList.propTypes = {
+  user: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired
+};
 
 export default SpendingItemList;

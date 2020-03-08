@@ -144,10 +144,11 @@ const styles = StyleSheet.create({
   }
 });
 
-// AddSpendingItem.propTypes = {
-//   user: PropTypes.object.isRequired,
-//   date: PropTypes.date,
-//   categoryId: PropTypes.number
-// };
+AddSpendingItem.propTypes = {
+  user: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
+  categoryId: PropTypes.number,
+  setCategoryId: PropTypes.func.isRequired
+};
 
 export default AddSpendingItem;

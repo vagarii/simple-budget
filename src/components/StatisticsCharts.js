@@ -1,11 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {StyleSheet, Dimensions, ScrollView} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
 import {Layout, Text} from "@ui-kitten/components";
 import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import StatisticsBar from "./StatisticsBar";
 
-const StatisticsCharts = ({range, isRandomRange, user}) => {
+const StatisticsCharts = ({user, range, isRandomRange}) => {
   const {loading, error, data: categories} = useQuery(GET_SPENDING_CATEGORIES, {
     variables: {user_id: user.id}
   });
@@ -35,5 +36,11 @@ const styles = StyleSheet.create({
     height: winHeight - 320
   }
 });
+
+StatisticsCharts.propTypes = {
+  user: PropTypes.object.isRequired,
+  range: PropTypes.object.isRequired,
+  isRandomRange: PropTypes.bool.isRequired
+};
 
 export default StatisticsCharts;

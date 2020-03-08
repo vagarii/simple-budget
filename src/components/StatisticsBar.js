@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {StyleSheet} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
 import {Layout, Text, Icon} from "@ui-kitten/components";
@@ -117,4 +118,11 @@ const styles = StyleSheet.create({
     width: 64
   }
 });
+
+StatisticsBar.propTypes = {
+  category: PropTypes.object.isRequired,
+  range: PropTypes.object.isRequired,
+  isRandomRange: PropTypes.bool.isRequired
+};
+
 export default StatisticsBar;

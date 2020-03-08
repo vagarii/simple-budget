@@ -354,4 +354,8 @@ const styles = StyleSheet.create({
   }
 });
 
+CategoryEditPage.propTypes = {
+  route: PropTypes.object.isRequired
+};
+
 export default CategoryEditPage;

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import PropTypes from "prop-types";
 import {StyleSheet} from "react-native";
 import {Layout, Icon, RangeDatepicker, Select} from "@ui-kitten/components";
 import {WEEKS, MONTHS, QUARTERS, YEARS} from "../enums/TimeRange";
@@ -144,5 +145,9 @@ const styles = StyleSheet.create({
     width: 344
   }
 });
+
+StatisticsTimeRangePicker.propTypes = {
+  setStatisticsRange: PropTypes.func.isRequired
+};
 
 export default StatisticsTimeRangePicker;

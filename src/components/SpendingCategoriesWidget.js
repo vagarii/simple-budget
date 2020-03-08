@@ -16,16 +16,12 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   });
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
-  if (data == null || data.length === 0) {
-    return null;
-  }
-
   const navigation = useNavigation();
   const goToCategoriesPage = () => {
     navigation.navigate("CategoriesPage");
   };
 
-  const items = data.spending_category;
+  const items = data?.spending_category ?? [];
   const rows = [];
   for (var i = 0; i < items.length; i = i + 4) {
     rows.push(items.slice(i, i + 4));
@@ -75,6 +71,7 @@ const styles = StyleSheet.create({
 });
 
 SpendingCategoriesWidget.propTypes = {
+  user: PropTypes.object.isRequired,
   categoryId: PropTypes.number,
   setCategoryId: PropTypes.func.isRequired
 };

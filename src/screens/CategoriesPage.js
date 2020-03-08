@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {useQuery} from "@apollo/react-hooks";
 import {StyleSheet, Dimensions} from "react-native";
 import {
@@ -99,5 +100,9 @@ const styles = StyleSheet.create({
     width: 344
   }
 });
+
+CategoriesPage.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export default CategoriesPage;

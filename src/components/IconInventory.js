@@ -55,4 +55,9 @@ const styles = StyleSheet.create({
   }
 });
 
+IconInventory.propTypes = {
+  iconId: PropTypes.number,
+  setIconId: PropTypes.func.isRequired
+};
+
 export default IconInventory;

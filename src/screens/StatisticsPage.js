@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import PropTypes from "prop-types";
 import {StyleSheet, Dimensions} from "react-native";
 import {Layout, Text} from "@ui-kitten/components";
 import StatisticsTimeRangePicker from "../components/StatisticsTimeRangePicker";
@@ -20,7 +21,7 @@ const StatisticsPage = ({user}) => {
       <Text category="h6" style={{marginBottom: 8}}>{`My Budget Tracker`}</Text>
       <StatisticsCharts
         range={range}
-        isRandomRange={isRandomRange}
+        isRandomRange={isRandomRange === true}
         user={user}
       />
       <StatisticsTimeRangePicker setStatisticsRange={setStatisticsRange} />
@@ -36,5 +37,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
+
+StatisticsPage.propTypes = {
+  user: PropTypes.object.isRequired
+};
 
 export default StatisticsPage;

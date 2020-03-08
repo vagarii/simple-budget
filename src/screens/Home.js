@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
+import PropTypes from "prop-types";
 import {useQuery, useMutation} from "@apollo/react-hooks";
 import {StyleSheet} from "react-native";
 import {
@@ -135,7 +136,7 @@ const Home = ({route}) => {
         onSelect={setSelectedPageIndex}
       >
         <Layout style={styles.pager}>
-          <HomePage user={user} lockCalendar={lockCalendar} />
+          <HomePage user={user} lockCalendar={lockCalendar === true} />
         </Layout>
         <Layout style={styles.pager}>
           <StatisticsPage user={user} />
@@ -151,5 +152,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+Home.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export default Home;

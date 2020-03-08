@@ -51,11 +51,6 @@ const CategoryItem = ({item, user}) => {
   );
 };
 
-CategoryItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
-};
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -69,5 +64,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+CategoryItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
+};
 
 export default CategoryItem;

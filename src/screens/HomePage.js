@@ -56,10 +56,6 @@ const HomePage = ({user, lockCalendar}) => {
   );
 };
 
-HomePage.propTypes = {
-  user: PropTypes.object.isRequired
-};
-
 const styles = StyleSheet.create({
   calenderContainer: {
     alignItems: "center",
@@ -69,5 +65,10 @@ const styles = StyleSheet.create({
     width: 344
   }
 });
+
+HomePage.propTypes = {
+  user: PropTypes.object.isRequired,
+  lockCalendar: PropTypes.bool.isRequired
+};
 
 export default HomePage;

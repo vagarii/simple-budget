@@ -88,11 +88,6 @@ const Auth = ({token, onLogin}) => {
   );
 };
 
-Auth.propTypes = {
-  token: PropTypes.string,
-  onLogin: PropTypes.func.isRequired
-};
-
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
@@ -103,5 +98,10 @@ const styles = StyleSheet.create({
     width: 334
   }
 });
+
+Auth.propTypes = {
+  token: PropTypes.string,
+  onLogin: PropTypes.func.isRequired
+};
 
 export default Auth;

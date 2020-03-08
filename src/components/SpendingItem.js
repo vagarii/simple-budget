@@ -93,10 +93,6 @@ const SpendingItem = ({item, user, date}) => {
   );
 };
 
-SpendingItem.propTypes = {
-  item: PropTypes.object.isRequired
-};
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -112,5 +108,11 @@ const styles = StyleSheet.create({
     marginLeft: 8
   }
 });
+
+SpendingItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired
+};
 
 export default SpendingItem;
