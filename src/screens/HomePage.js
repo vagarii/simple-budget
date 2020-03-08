@@ -13,6 +13,7 @@ import {useQuery, useMutation} from "@apollo/react-hooks";
 import SpendingItemList from "../components/SpendingItemList";
 import AddSpendingItem from "../components/AddSpendingItem";
 import SpendingCategoriesWidget from "../components/SpendingCategoriesWidget";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const moment = require("moment");
 
@@ -23,40 +24,42 @@ const HomePage = ({user, lockCalendar}) => {
   const CalendarIcon = style => <Icon {...style} name="calendar" />;
 
   return (
-    <Layout>
-      <ScrollView>
-        <Layout style={styles.calenderContainer}>
-          {lockCalendar ? (
-            <Calendar
-              style={styles.calender}
-              date={date}
-              onSelect={setDate}
-              icon={CalendarIcon}
-            />
-          ) : (
-            <Datepicker
-              size="large"
-              style={styles.calender}
-              date={date}
-              onSelect={setDate}
-              icon={CalendarIcon}
-            />
-          )}
-        </Layout>
-        <SpendingCategoriesWidget
-          user={user}
-          categoryId={categoryId}
-          setCategoryId={setCategoryId}
-        />
-        <AddSpendingItem
-          user={user}
-          date={date}
-          categoryId={categoryId}
-          setCategoryId={setCategoryId}
-        />
-        <SpendingItemList user={user} date={date} />
-      </ScrollView>
-    </Layout>
+    <KeyboardAwareScrollView>
+      <Layout>
+        <ScrollView>
+          <Layout style={styles.calenderContainer}>
+            {lockCalendar ? (
+              <Calendar
+                style={styles.calender}
+                date={date}
+                onSelect={setDate}
+                icon={CalendarIcon}
+              />
+            ) : (
+              <Datepicker
+                size="large"
+                style={styles.calender}
+                date={date}
+                onSelect={setDate}
+                icon={CalendarIcon}
+              />
+            )}
+          </Layout>
+          <SpendingCategoriesWidget
+            user={user}
+            categoryId={categoryId}
+            setCategoryId={setCategoryId}
+          />
+          <AddSpendingItem
+            user={user}
+            date={date}
+            categoryId={categoryId}
+            setCategoryId={setCategoryId}
+          />
+          <SpendingItemList user={user} date={date} />
+        </ScrollView>
+      </Layout>
+    </KeyboardAwareScrollView>
   );
 };
 

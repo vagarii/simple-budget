@@ -35,6 +35,7 @@ import {
 } from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 import IconInventory from "../components/IconInventory";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 /** TODO: use enum from the database **/
 const DurationData = [
@@ -193,96 +194,98 @@ const CategoryEditPage = ({route}) => {
         title="Edit Category"
         titleStyle={{fontSize: 18}}
       />
-      <Layout style={styles.container}>
-        <IconInventory iconId={iconId} setIconId={setIconId} />
-        <Input
-          style={{
-            width: 344,
-            marginTop: 16
-          }}
-          fontSize={20}
-          placeholder="Category Name"
-          value={name}
-          onChangeText={setName}
-          maxLength={16}
-        />
-        <Input
-          style={{
-            width: 344,
-            marginTop: 12
-          }}
-          fontSize={13}
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-          maxLength={45}
-        />
-        <Layout style={styles.targetAmountRow}>
-          <Tooltip
-            style={{height: 84, width: 344}}
-            visible={showInfo}
-            text={INFO_TEXT}
-            onBackdropPress={onInfoIconPress}
-            backdropStyle={styles.infoBackdrop}
-          >
-            <Button
-              style={{width: 30, height: 30, marginBottom: 4}}
-              onPress={onInfoIconPress}
-              icon={InfoIcon}
-              status="basic"
-              appearance="ghost"
-            ></Button>
-          </Tooltip>
+      <KeyboardAwareScrollView>
+        <Layout style={styles.container}>
+          <IconInventory iconId={iconId} setIconId={setIconId} />
           <Input
             style={{
-              width: 144,
-              marginRight: 8
+              width: 344,
+              marginTop: 16
             }}
-            placeholder="Target Budget"
-            value={budgetAmountStr}
-            onChangeText={setBudgetAmountStr}
-            keyboardType="numeric"
-            maxLength={8}
+            fontSize={20}
+            placeholder="Category Name"
+            value={name}
+            onChangeText={setName}
+            maxLength={16}
           />
-          <Text category="h5">/</Text>
-          <Select
-            style={styles.targetAmountDuration}
-            data={DurationData}
-            placeholder="Duration"
-            selectedOption={budgetTimeDuration}
-            onSelect={setBudgetTimeDuration}
+          <Input
+            style={{
+              width: 344,
+              marginTop: 12
+            }}
+            fontSize={13}
+            placeholder="Description"
+            value={description}
+            onChangeText={setDescription}
+            maxLength={45}
           />
-        </Layout>
-        <Button
-          status="info"
-          icon={SaveIcon}
-          style={styles.button}
-          onPress={onSaveCategoryItem}
-          disabled={
-            saving ||
-            deleting ||
-            name == null ||
-            budgetAmountStr == null ||
-            budgetTimeDuration.text == null ||
-            iconId == null
-          }
-        >
-          Save
-        </Button>
-        {!isNewCategory ? (
+          <Layout style={styles.targetAmountRow}>
+            <Tooltip
+              style={{height: 84, width: 344}}
+              visible={showInfo}
+              text={INFO_TEXT}
+              onBackdropPress={onInfoIconPress}
+              backdropStyle={styles.infoBackdrop}
+            >
+              <Button
+                style={{width: 30, height: 30, marginBottom: 4}}
+                onPress={onInfoIconPress}
+                icon={InfoIcon}
+                status="basic"
+                appearance="ghost"
+              ></Button>
+            </Tooltip>
+            <Input
+              style={{
+                width: 144,
+                marginRight: 8
+              }}
+              placeholder="Target Budget"
+              value={budgetAmountStr}
+              onChangeText={setBudgetAmountStr}
+              keyboardType="numeric"
+              maxLength={8}
+            />
+            <Text category="h5">/</Text>
+            <Select
+              style={styles.targetAmountDuration}
+              data={DurationData}
+              placeholder="Duration"
+              selectedOption={budgetTimeDuration}
+              onSelect={setBudgetTimeDuration}
+            />
+          </Layout>
           <Button
-            icon={DeleteIcon}
-            status="danger"
+            status="info"
+            icon={SaveIcon}
             style={styles.button}
-            onPress={onShowDeleteModal}
-            disabled={saving || deleting}
+            onPress={onSaveCategoryItem}
+            disabled={
+              saving ||
+              deleting ||
+              name == null ||
+              budgetAmountStr == null ||
+              budgetTimeDuration.text == null ||
+              iconId == null
+            }
           >
-            Delete
+            Save
           </Button>
-        ) : (
-          <Layout style={{height: 44}} />
-        )}
-      </Layout>
+          {!isNewCategory ? (
+            <Button
+              icon={DeleteIcon}
+              status="danger"
+              style={styles.button}
+              onPress={onShowDeleteModal}
+              disabled={saving || deleting}
+            >
+              Delete
+            </Button>
+          ) : (
+            <Layout style={{height: 44}} />
+          )}
+        </Layout>
+      </KeyboardAwareScrollView>
       <Modal
         backdropStyle={styles.backdrop}
         onBackdropPress={onHideDeleteModal}

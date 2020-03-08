@@ -44,7 +44,7 @@ const IconInventory = ({iconId, setIconId}) => {
       alignItems: "center",
       justifyContent: "center",
       // height: 300
-      height: rows.length * 88
+      height: rows.length * 87
     },
     row: {
       flex: 1,

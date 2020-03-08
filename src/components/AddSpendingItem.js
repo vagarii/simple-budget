@@ -9,7 +9,9 @@ import {
   Animated,
   Dimensions,
   Keyboard,
-  UIManager
+  UIManager,
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
@@ -46,15 +48,15 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
         style={{flexDirection: "row", alignItems: "center", marginTop: 30}}
       >
         <FontAwesome5
-          style={{marginLeft: 4, marginRight: 8, marginBottom: 4}}
+          style={{marginLeft: 4, marginRight: 12, marginBottom: 4}}
           name="dollar-sign"
-          color="white"
+          color="#AEB6BF"
           size={18}
           solid
         />
         <Input
           size="large"
-          style={{width: 320}}
+          style={{width: 316}}
           placeholder="0.00"
           fontSize={20}
           value={amount}
@@ -68,14 +70,14 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
         style={{flexDirection: "row", alignItems: "center", marginTop: 12}}
       >
         <FontAwesome5
-          style={{marginLeft: 4, marginRight: 8, marginBottom: 4}}
+          style={{marginLeft: 4, marginRight: 10, marginBottom: 4}}
           name="clipboard"
-          color="white"
+          color="#AEB6BF"
           size={18}
           light
         />
         <Input
-          style={{width: 320}}
+          style={{width: 316}}
           placeholder="Note"
           fontSize={13}
           value={description}
@@ -134,15 +136,12 @@ const textInputProps = {
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: "row",
     alignItems: "center",
     marginBottom: 20
   },
   button: {
     marginTop: 12,
     width: 344
-    // backgroundColor: "blue",
-    // padding: 13
   },
   buttonText: {
     color: "white",
