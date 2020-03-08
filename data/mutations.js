@@ -8,6 +8,16 @@ export const INSERT_USER = gql`
   }
 `;
 
+export const INSERT_USER_SETTINGS = gql`
+  mutation($user_id: String, $lock_calendar: Boolean) {
+    insert_user_settings(
+      objects: {user_id: $user_id, lock_calendar: $lock_calendar}
+    ) {
+      affected_rows
+    }
+  }
+`;
+
 export const UPDATE_USER_SETTINGS = gql`
   mutation($user_id: String, $lock_calendar: Boolean) {
     update_user_settings(

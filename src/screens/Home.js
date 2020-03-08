@@ -45,7 +45,11 @@ const Home = ({route}) => {
     {loading: updatingUserSettings, error: errorUpdatingUserSettings}
   ] = useMutation(UPDATE_USER_SETTINGS);
 
-  const lockCalendar = userSettings?.user_settings[0].lock_calendar;
+  const lockCalendar =
+    (userSettings?.user_settings != null && userSettings.user_settings.length) >
+    0
+      ? userSettings.user_settings[0].lock_calendar
+      : false;
 
   const onUpdateUserSettings = () => {
     updateUserSettings({
