@@ -5,6 +5,7 @@ import {Layout, Button, Icon, Modal, Avatar, Text} from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const ICON_SIZE = 35;
+const SHADOW_COLOR = "#5D6D7E";
 
 const IconAvatar = ({icon, isSelected, onSelect}) => {
   const {id, name, color, color2, color3} = icon;
@@ -20,7 +21,7 @@ const IconAvatar = ({icon, isSelected, onSelect}) => {
         borderWidth: isSelected ? 4 : 0,
         borderColor: color2,
         backgroundColor: color,
-        shadowColor: isSelected ? "#85929E" : "rgba(0,0,0,0)" // IOS
+        shadowColor: isSelected ? SHADOW_COLOR : "rgba(0,0,0,0)" // IOS
       }}
       onPress={onSelect}
     >
