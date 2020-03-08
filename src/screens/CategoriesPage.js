@@ -53,7 +53,7 @@ const CategoriesPage = ({route}) => {
         <Button
           style={styles.addButton}
           icon={AddIcon}
-          size="medium"
+          size="large"
           onPress={() => {
             navigation.navigate("CategoryEditPage", {user});
           }}
@@ -69,6 +69,7 @@ const CategoriesPage = ({route}) => {
     <Layout>
       <TopNavigation
         style={{height: 60}}
+        titleStyle={{fontSize: 18}}
         leftControl={backAction()}
         title="My Categories"
       />

@@ -27,20 +27,21 @@ const CategoryItem = ({item, user}) => {
     <TouchableOpacity
       style={{
         backgroundColor: category_icon.color,
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
         alignItems: "center",
         justifyContent: "center"
       }}
     >
-      <FontAwesome5 name={category_icon.name} color="white" size={22} solid />
+      <FontAwesome5 name={category_icon.name} color="white" size={26} solid />
     </TouchableOpacity>
   );
 
   const renderItemAccessory = () => (
-    <Layout>
-      <Text category="c2">{`\$${budget_amount} / ${budget_time_duration}`}</Text>
+    <Layout style={styles.text}>
+      <Text category="s1">{`\$${budget_amount}`}</Text>
+      <Text category="s2">{`/ ${budget_time_duration}`}</Text>
     </Layout>
   );
 
@@ -50,6 +51,7 @@ const CategoryItem = ({item, user}) => {
     <Layout style={styles.container}>
       <ListItem
         title={name}
+        titleStyle={{fontSize: 17}}
         description={description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
@@ -70,6 +72,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center"
+  },
+  text: {
+    alignItems: "flex-end"
   }
 });
 

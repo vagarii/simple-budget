@@ -41,15 +41,15 @@ const SpendingItem = ({item, user, date}) => {
       <TouchableOpacity
         style={{
           backgroundColor: category_icon.color,
-          width: 40,
-          height: 40,
-          borderRadius: 20,
+          width: 50,
+          height: 50,
+          borderRadius: 25,
           alignItems: "center",
-          justifyContent: "center"
-          // marginLeft: 20
+          justifyContent: "center",
+          marginLeft: 8
         }}
       >
-        <FontAwesome5 name={category_icon.name} color="white" size={20} solid />
+        <FontAwesome5 name={category_icon.name} color="white" size={22} solid />
       </TouchableOpacity>
     );
   };
@@ -57,8 +57,8 @@ const SpendingItem = ({item, user, date}) => {
   const renderItemAccessory = () => (
     <Button
       icon={DeleteIcon}
-      style={{width: 30}}
-      size="small"
+      style={{width: 40}}
+      // size="small"
       onPress={deleteItem}
       appearance="ghost"
       status="basic"
@@ -98,6 +98,7 @@ const SpendingItem = ({item, user, date}) => {
     <Layout style={styles.container}>
       <ListItem
         title={`\$${item.amount}`}
+        titleStyle={{fontSize: 15}}
         description={item.description}
         icon={renderItemIcon}
         accessory={renderItemAccessory}
@@ -113,7 +114,8 @@ SpendingItem.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    width: 368
   }
 });
 

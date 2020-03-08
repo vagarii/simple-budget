@@ -35,6 +35,7 @@ const HomePage = ({user, lockCalendar}) => {
             />
           ) : (
             <Datepicker
+              size="large"
               style={styles.calender}
               date={date}
               onSelect={setDate}

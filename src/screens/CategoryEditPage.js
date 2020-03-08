@@ -188,7 +188,11 @@ const CategoryEditPage = ({route}) => {
 
   return (
     <Layout>
-      <TopNavigation leftControl={backAction()} title="Edit Category" />
+      <TopNavigation
+        leftControl={backAction()}
+        title="Edit Category"
+        titleStyle={{fontSize: 18}}
+      />
       <Layout style={styles.container}>
         <IconInventory iconId={iconId} setIconId={setIconId} />
         <Input
@@ -197,7 +201,6 @@ const CategoryEditPage = ({route}) => {
             marginTop: 16
           }}
           fontSize={20}
-          // size="large"
           placeholder="Category Name"
           value={name}
           onChangeText={setName}
@@ -207,7 +210,7 @@ const CategoryEditPage = ({route}) => {
             width: 344,
             marginTop: 12
           }}
-          fontSize={12}
+          fontSize={13}
           placeholder="Description"
           value={description}
           onChangeText={setDescription}

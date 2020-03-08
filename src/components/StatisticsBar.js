@@ -15,7 +15,7 @@ import {getRroundNumberInteger} from "../utils/utils";
 
 const moment = require("moment");
 
-const BAR_WIDTH = 240;
+const BAR_WIDTH = 230;
 
 const StatisticsBar = ({category, range, isRandomRange}) => {
   const {
@@ -117,25 +117,25 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
     <Layout
       style={{
         backgroundColor: color,
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
         alignItems: "center",
         justifyContent: "center",
         marginRight: 12
       }}
     >
-      <FontAwesome5 name={iconName} color="white" size={20} solid />
+      <FontAwesome5 name={iconName} color="white" size={25} solid />
     </Layout>
   );
 
   const BudgetText = () => (
     <Layout style={styles.text}>
       <Text
-        category="c2"
+        category="s1"
         status={isOver ? "danger" : "basic"}
       >{`\$${getRroundNumberInteger(spentSum)}`}</Text>
-      <Text category="c1">{`/ \$${getRroundNumberInteger(budgetSum)}`}</Text>
+      <Text category="s2">{`/ \$${getRroundNumberInteger(budgetSum)}`}</Text>
     </Layout>
   );
 
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    width: 344
+    width: 360,
+    height: 60
   },
-
   text: {
     alignItems: "flex-end",
-    width: 56
+    width: 64
   }
 });
 export default StatisticsBar;

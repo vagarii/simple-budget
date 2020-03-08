@@ -31,36 +31,40 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
 
   return (
     <Layout style={styles.container}>
-      <TextInput
-        style={{
-          fontSize: 25,
-          color: "white",
-          marginTop: 12,
-          width: 100,
-          height: 50,
-          borderColor: "white",
-          borderWidth: 0,
-          borderBottomWidth: 2
-        }}
-        textAlign="center"
-        placeholder="$"
-        placeholderTextColor="grey"
-        onChangeText={setAmount}
-        value={amount}
-      />
+      <Layout
+        style={{flexDirection: "row", alignItems: "center", marginTop: 30}}
+      >
+        <Text category="h4">$</Text>
+        <TextInput
+          style={{
+            fontSize: 28,
+            color: "white",
+            width: 100,
+            height: 32,
+            borderColor: "white",
+            borderWidth: 0,
+            borderBottomWidth: 2
+          }}
+          textAlign="center"
+          placeholder="0.00"
+          placeholderTextColor="grey"
+          onChangeText={setAmount}
+          value={amount}
+        />
+      </Layout>
       <TextInput
         style={{
           fontSize: 13,
           color: "gray",
           marginTop: 12,
           width: 344,
-          height: 30,
+          height: 20,
           borderColor: "gray",
           borderWidth: 0,
           borderBottomWidth: 1
         }}
         textAlign="center"
-        placeholder="Description"
+        placeholder="Note"
         placeholderTextColor="grey"
         textColor="White"
         onChangeText={setDescription}
@@ -69,6 +73,7 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
       <Button
         style={styles.button}
         status="info"
+        size="large"
         onPress={() => {
           insertSpendingItem({
             variables: {

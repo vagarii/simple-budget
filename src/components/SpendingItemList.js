@@ -32,7 +32,6 @@ const SpendingItemList = ({user, date}) => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <List
-          style={styles.list}
           {...flatlistProps}
           data={data.spending_item}
           renderItem={({item}) => (
@@ -57,9 +56,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 150
-  },
-  list: {
-    // height: 5000
   }
 });
 
