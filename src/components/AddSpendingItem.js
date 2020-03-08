@@ -1,7 +1,16 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
-import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Animated,
+  Dimensions,
+  Keyboard,
+  UIManager
+} from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
 import {
@@ -9,6 +18,8 @@ import {
   GET_SPENDING_ITEMS_AGGREGATE
 } from "../../data/queries";
 import Store from "../store/Store";
+import {getIfValidNumber} from "../utils/utils";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const moment = require("moment");
 
@@ -34,42 +45,45 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
       <Layout
         style={{flexDirection: "row", alignItems: "center", marginTop: 30}}
       >
-        <Text category="h4">$</Text>
-        <TextInput
-          style={{
-            fontSize: 28,
-            color: "white",
-            width: 100,
-            height: 32,
-            borderColor: "white",
-            borderWidth: 0,
-            borderBottomWidth: 2
-          }}
-          textAlign="center"
+        <FontAwesome5
+          style={{marginLeft: 4, marginRight: 8, marginBottom: 4}}
+          name="dollar-sign"
+          color="white"
+          size={18}
+          solid
+        />
+        <Input
+          size="large"
+          style={{width: 320}}
           placeholder="0.00"
-          placeholderTextColor="grey"
-          onChangeText={setAmount}
+          fontSize={20}
           value={amount}
+          onChangeText={setAmount}
+          keyboardType="numeric"
+          textAlign="center"
+          maxLength={8}
         />
       </Layout>
-      <TextInput
-        style={{
-          fontSize: 13,
-          color: "gray",
-          marginTop: 12,
-          width: 344,
-          height: 20,
-          borderColor: "gray",
-          borderWidth: 0,
-          borderBottomWidth: 1
-        }}
-        textAlign="center"
-        placeholder="Note"
-        placeholderTextColor="grey"
-        textColor="White"
-        onChangeText={setDescription}
-        value={description}
-      />
+      <Layout
+        style={{flexDirection: "row", alignItems: "center", marginTop: 12}}
+      >
+        <FontAwesome5
+          style={{marginLeft: 4, marginRight: 8, marginBottom: 4}}
+          name="clipboard"
+          color="white"
+          size={18}
+          light
+        />
+        <Input
+          style={{width: 320}}
+          placeholder="Note"
+          fontSize={13}
+          value={description}
+          onChangeText={setDescription}
+          textAlign="center"
+          maxLength={35}
+        />
+      </Layout>
       <Button
         style={styles.button}
         status="info"

@@ -204,6 +204,7 @@ const CategoryEditPage = ({route}) => {
           placeholder="Category Name"
           value={name}
           onChangeText={setName}
+          maxLength={16}
         />
         <Input
           style={{
@@ -214,6 +215,7 @@ const CategoryEditPage = ({route}) => {
           placeholder="Description"
           value={description}
           onChangeText={setDescription}
+          maxLength={45}
         />
         <Layout style={styles.targetAmountRow}>
           <Tooltip
@@ -236,11 +238,11 @@ const CategoryEditPage = ({route}) => {
               width: 144,
               marginRight: 8
             }}
-            // icon={renderInfoIcon}
-            // onIconPress={onInfoIconPress}
             placeholder="Target Budget"
             value={budgetAmountStr}
             onChangeText={setBudgetAmountStr}
+            keyboardType="numeric"
+            maxLength={8}
           />
           <Text category="h5">/</Text>
           <Select

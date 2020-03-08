@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {Layout, Button, Icon, Modal, Avatar, Text} from "@ui-kitten/components";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import IconAvatar from "./IconAvatar";
 
 const CategoryAvatar = ({item, categoryId, setCategoryId}) => {
@@ -15,7 +14,11 @@ const CategoryAvatar = ({item, categoryId, setCategoryId}) => {
         isSelected={id === categoryId}
         onSelect={() => setCategoryId(id)}
       />
-      <Text color="gray" category="c1">
+      <Text
+        style={{width: 80, textAlign: "center", fontSize: 11}}
+        color="gray"
+        category="c1"
+      >
         {name}
       </Text>
     </Layout>

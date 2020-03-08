@@ -41,13 +41,13 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
         {rows.map((row, index) => (
           <Layout style={styles.row} key={index}>
             {row.map(item => (
-              <Fragment key={item.id}>
+              <Layout key={item.id}>
                 <CategoryAvatar
                   item={item}
                   categoryId={categoryId}
                   setCategoryId={setCategoryId}
                 />
-              </Fragment>
+              </Layout>
             ))}
             {row.length < 4 && (
               <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
