@@ -1,13 +1,14 @@
 import React from "react";
 import {useQuery} from "@apollo/react-hooks";
-import {FlatList, StyleSheet, View, ActivityIndicator} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
 import {
   Layout,
   Button,
   Icon,
   List,
   ListItem,
-  Text
+  Text,
+  Spinner
 } from "@ui-kitten/components";
 import SpendingItem from "./SpendingItem";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
@@ -29,7 +30,7 @@ const SpendingItemList = ({user, date}) => {
   return (
     <Layout style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <Spinner status="basic" />
       ) : (
         <List
           {...flatlistProps}

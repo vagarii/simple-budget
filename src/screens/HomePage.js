@@ -1,15 +1,8 @@
 import React, {Fragment, useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, ScrollView} from "react-native";
-import {
-  Layout,
-  Calendar,
-  Text,
-  Datepicker,
-  Icon,
-  Button
-} from "@ui-kitten/components";
 import {useQuery, useMutation} from "@apollo/react-hooks";
+import {StyleSheet, ScrollView} from "react-native";
+import {Layout, Calendar, Datepicker, Icon} from "@ui-kitten/components";
 import SpendingItemList from "../components/SpendingItemList";
 import AddSpendingItem from "../components/AddSpendingItem";
 import SpendingCategoriesWidget from "../components/SpendingCategoriesWidget";
@@ -17,11 +10,11 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const moment = require("moment");
 
+const CalendarIcon = style => <Icon {...style} name="calendar" />;
+
 const HomePage = ({user, lockCalendar}) => {
   const [date, setDate] = useState(new Date());
   const [categoryId, setCategoryId] = useState(null);
-
-  const CalendarIcon = style => <Icon {...style} name="calendar" />;
 
   return (
     <KeyboardAwareScrollView>

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import HomePage from "./HomePage";
-import StatisticsPage from "./StatisticsPage";
-import {StyleSheet, ActivityIndicator} from "react-native";
+import {useQuery, useMutation} from "@apollo/react-hooks";
+import {StyleSheet} from "react-native";
 import {
   Layout,
   Text,
@@ -13,17 +12,15 @@ import {
   OverflowMenu
 } from "@ui-kitten/components";
 import {logout} from "../utils/AuthUtils";
-import {useQuery, useMutation} from "@apollo/react-hooks";
+import HomePage from "./HomePage";
+import StatisticsPage from "./StatisticsPage";
 import {GET_USER_SETTINGS} from "../../data/queries";
 import {UPDATE_USER_SETTINGS} from "../../data/mutations";
 
+const MenuIcon = style => <Icon {...style} name="more-horizontal" />;
+
 const Home = ({route}) => {
   const {user, setToken} = route.params;
-
-  const handleLogout = () => {
-    logout();
-    setToken(null);
-  };
 
   const [selectedPageIndex, setSelectedPageIndex] = useState(0);
   const [menuVisible, setMenuVisible] = React.useState(false);
@@ -44,6 +41,11 @@ const Home = ({route}) => {
     updateUserSettings,
     {loading: updatingUserSettings, error: errorUpdatingUserSettings}
   ] = useMutation(UPDATE_USER_SETTINGS);
+
+  const handleLogout = () => {
+    logout();
+    setToken(null);
+  };
 
   const lockCalendar =
     (userSettings?.user_settings != null && userSettings.user_settings.length) >
@@ -82,8 +84,6 @@ const Home = ({route}) => {
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
-
-  const MenuIcon = style => <Icon {...style} name="more-horizontal" />;
 
   const ClickableMenu = () => (
     <Layout
@@ -147,8 +147,6 @@ const Home = ({route}) => {
 
 const styles = StyleSheet.create({
   pager: {
-    // height: 192,
-    // width: "100%"
     alignItems: "center",
     justifyContent: "center"
   }

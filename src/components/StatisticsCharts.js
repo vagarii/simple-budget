@@ -1,10 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {
-  StyleSheet,
-  ActivityIndicator,
-  Dimensions,
-  ScrollView
-} from "react-native";
+import {StyleSheet, Dimensions, ScrollView} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
 import {Layout, Text, Icon, Button} from "@ui-kitten/components";
 import {StackedBarChart, Grid} from "react-native-svg-charts";

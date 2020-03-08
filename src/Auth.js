@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Alert, StyleSheet, Dimensions} from "react-native";
 import {AuthSession} from "expo";
 import * as Random from "expo-random";
 import * as SecureStore from "expo-secure-store";
 import jwtDecoder from "jwt-decode";
 import queryString from "query-string";
+import {Alert, StyleSheet, Dimensions} from "react-native";
 import {
   AUTH_CLIENT_ID,
   AUTH_DOMAIN,
@@ -15,6 +15,8 @@ import {
 } from "../config";
 import {Button, Icon, Layout} from "@ui-kitten/components";
 
+const StarIcon = style => <Icon {...style} name="star" />;
+
 const generateNonce = async () => {
   const nonce = String.fromCharCode.apply(
     null,
@@ -23,8 +25,6 @@ const generateNonce = async () => {
   await SecureStore.setItemAsync(NONCE_KEY, nonce);
   return nonce;
 };
-
-const StarIcon = style => <Icon {...style} name="star" />;
 
 const Auth = ({token, onLogin}) => {
   const handleLoginPress = async () => {

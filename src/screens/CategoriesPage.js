@@ -1,12 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {useQuery} from "@apollo/react-hooks";
 import {StyleSheet, Dimensions} from "react-native";
 import {
   Layout,
   Button,
   Icon,
-  Modal,
   Text,
   List,
   Spinner,
@@ -17,6 +15,9 @@ import CategoryItem from "../components/CategoryItem";
 import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
+const BackIcon = style => <Icon {...style} name="arrow-back" />;
+const AddIcon = style => <Icon {...style} name="plus" />;
+
 const CategoriesPage = ({route}) => {
   const user = route.params;
 
@@ -25,8 +26,6 @@ const CategoriesPage = ({route}) => {
   });
   // TODO: formalize graphql erros, make a component for it and reuse
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
-
-  const BackIcon = style => <Icon {...style} name="arrow-back" />;
 
   const navigation = useNavigation();
   const backAction = () => (
@@ -37,8 +36,6 @@ const CategoriesPage = ({route}) => {
       }}
     />
   );
-
-  const AddIcon = style => <Icon {...style} name="plus" />;
 
   const CategoriesContent = () => (
     <Layout>
@@ -80,8 +77,8 @@ const CategoriesPage = ({route}) => {
   );
 };
 
-const winWidth = Dimensions.get("window").width; //full width
-const winHeight = Dimensions.get("window").height; //full height
+const winWidth = Dimensions.get("window").width;
+const winHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {StyleSheet, ActivityIndicator, Dimensions} from "react-native";
-import {Layout, Text, Icon, Button} from "@ui-kitten/components";
-import {StackedBarChart, Grid} from "react-native-svg-charts";
+import {StyleSheet, Dimensions} from "react-native";
+import {Layout, Text} from "@ui-kitten/components";
 import StatisticsTimeRangePicker from "../components/StatisticsTimeRangePicker";
 import StatisticsCharts from "../components/StatisticsCharts";
 import Store from "../store/Store";
@@ -29,14 +28,12 @@ const StatisticsPage = ({user}) => {
   );
 };
 
-const winWidth = Dimensions.get("window").width; //full width
-const winHeight = Dimensions.get("window").height; //full height
+const winHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
     height: winHeight - 60,
     alignItems: "center"
-    // justifyContent: "center"
   }
 });
 

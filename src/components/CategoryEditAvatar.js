@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {Layout, Button, Icon, Modal, Avatar, Text} from "@ui-kitten/components";
 
-const CategoryEditAvatar = ({onPressEdit}) => {
-  const EditIcon = style => <Icon {...style} name={"edit"} size={30} />;
+const EditIcon = style => <Icon {...style} name={"edit"} size={30} />;
 
+const CategoryEditAvatar = ({onPressEdit}) => {
   return (
     <Layout style={styles.container}>
       <Button

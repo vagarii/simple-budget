@@ -1,20 +1,11 @@
 import React, {useState, Fragment} from "react";
 import PropTypes from "prop-types";
 import {useMutation, useQuery} from "@apollo/react-hooks";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView
-} from "react-native";
+import {StyleSheet, Dimensions, ScrollView} from "react-native";
 import {
   Button,
   Icon,
   Input,
-  List,
-  ListItem,
   Text,
   Modal,
   Select,
@@ -30,14 +21,23 @@ import {
 } from "../../data/mutations";
 import {
   GET_SPENDING_CATEGORIES,
-  GET_SPENDING_ITEMS_FOR_CATEGORY,
-  GET_CATEGORY_ICONS
+  GET_SPENDING_ITEMS_FOR_CATEGORY
 } from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 import IconInventory from "../components/IconInventory";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {getBudgetAmountPerDay} from "../utils/utils";
 
-/** TODO: use enum from the database **/
+const BackIcon = style => <Icon {...style} name="arrow-back" />;
+const SaveIcon = style => <Icon {...style} name="save" />;
+const DeleteIcon = style => <Icon {...style} name="trash-2" />;
+const InfoIcon = style => <Icon {...style} name="info" />;
+
+const INFO_TEXT =
+  "This is the target budget you would like to contribute to this category. " +
+  "For example, if you'd like to spend $200 every quarter, " +
+  'you can put "200" in the Target Budget cell and choose "QUARTER" in the selector.';
+
 const DurationData = [
   {text: "YEAR"},
   {text: "QUARTER"},
@@ -45,11 +45,6 @@ const DurationData = [
   {text: "WEEK"},
   {text: "DAY"}
 ];
-
-const INFO_TEXT =
-  "This is the target budget you would like to contribute to this category. " +
-  "For example, if you'd like to spend $200 every quarter, " +
-  'you can put "200" in the Target Budget cell and choose "QUARTER" in the selector.';
 
 const CategoryEditPage = ({route}) => {
   const {item, user} = route.params;
@@ -88,27 +83,6 @@ const CategoryEditPage = ({route}) => {
   } = useQuery(GET_SPENDING_ITEMS_FOR_CATEGORY, {
     variables: {user_id: user.id, category_id: item?.id ?? 0}
   });
-
-  /** TODO: move to utils **/
-  const getBudgetAmountPerDay = () => {
-    if (budgetAmountStr == null || budgetTimeDuration == null) {
-      return null;
-    }
-    switch (budgetTimeDuration.text) {
-      case "YEAR":
-        return parseFloat(budgetAmountStr) / 365;
-      case "QUARTER":
-        return parseFloat(budgetAmountStr) / 91;
-      case "MONTH":
-        return parseFloat(budgetAmountStr) / 30;
-      case "WEEK":
-        return parseFloat(budgetAmountStr) / 7;
-      default:
-        return parseFloat(budgetAmountStr);
-    }
-  };
-
-  const BackIcon = style => <Icon {...style} name="arrow-back" />;
 
   const navigation = useNavigation();
   const backAction = () => (
@@ -174,10 +148,6 @@ const CategoryEditPage = ({route}) => {
     });
     navigation.goBack();
   };
-
-  const SaveIcon = style => <Icon {...style} name="save" />;
-  const DeleteIcon = style => <Icon {...style} name="trash-2" />;
-  const InfoIcon = style => <Icon {...style} name="info" />;
 
   const onInfoIconPress = () => {
     if (showInfo) {
@@ -321,8 +291,8 @@ const CategoryEditPage = ({route}) => {
   );
 };
 
-const winWidth = Dimensions.get("window").width; //full width
-const winHeight = Dimensions.get("window").height; //full height
+const winWidth = Dimensions.get("window").width;
+const winHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {

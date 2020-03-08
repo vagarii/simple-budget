@@ -46,7 +46,12 @@ const App = () => {
     <Fragment>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={darkTheme}>
-        <Layout style={styles}>
+        <Layout
+          style={{
+            flex: 1,
+            paddingTop: 30
+          }}
+        >
           {token && user ? (
             <Main user={user} token={token} setToken={setToken} />
           ) : (
@@ -56,11 +61,6 @@ const App = () => {
       </ApplicationProvider>
     </Fragment>
   );
-};
-
-const styles = {
-  flex: 1,
-  paddingTop: 30
 };
 
 export default App;

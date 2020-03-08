@@ -20,6 +20,8 @@ import Store from "../store/Store";
 
 const moment = require("moment");
 
+const DeleteIcon = style => <Icon {...style} name="trash-2" />;
+
 const SpendingItem = ({item, user, date}) => {
   const [range, setRange] = useState(null);
 
@@ -64,9 +66,6 @@ const SpendingItem = ({item, user, date}) => {
       status="basic"
     ></Button>
   );
-
-  // TODO: have a library for all the icons
-  const DeleteIcon = style => <Icon {...style} name="trash-2" />;
 
   const deleteItem = () => {
     deleteSpendingItem({

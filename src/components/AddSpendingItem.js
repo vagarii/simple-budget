@@ -124,7 +124,7 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
         }}
         disabled={loading || amount == null || categoryId == null}
       >
-        Save
+        {`Save`}
       </Button>
     </Layout>
   );
