@@ -1,47 +1,35 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import {useMutation} from "@apollo/react-hooks";
-import {StyleSheet, View, TouchableOpacity} from "react-native";
-import {
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Layout
-} from "@ui-kitten/components";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import {ListItem, Text, Layout} from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {useNavigation} from "@react-navigation/native";
 
 const CategoryItem = ({item, user}) => {
   const {
-    id,
-    name,
+    name: cateName,
     description,
-    budget_amount,
-    budget_time_duration,
-    category_icon
+    budget_amount: budgetAmount,
+    budget_time_duration: budgetTimeDuration,
+    category_icon: cateIcon
   } = item;
+  const {name: iconName, color: iconColor} = cateIcon;
 
   const renderItemIcon = style => (
     <TouchableOpacity
       style={{
-        backgroundColor: category_icon.color,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        alignItems: "center",
-        justifyContent: "center"
+        ...styles.icon,
+        backgroundColor: iconColor
       }}
     >
-      <FontAwesome5 name={category_icon.name} color="white" size={26} solid />
+      <FontAwesome5 name={iconName} color="white" size={26} solid />
     </TouchableOpacity>
   );
 
   const renderItemAccessory = () => (
-    <Layout style={styles.text}>
-      <Text category="s1">{`\$${budget_amount}`}</Text>
-      <Text category="s2">{`/ ${budget_time_duration}`}</Text>
+    <Layout style={{alignItems: "flex-end"}}>
+      <Text category="s1">{`\$${budgetAmount}`}</Text>
+      <Text category="s2">{`/ ${budgetTimeDuration}`}</Text>
     </Layout>
   );
 
@@ -50,7 +38,7 @@ const CategoryItem = ({item, user}) => {
   return (
     <Layout style={styles.container}>
       <ListItem
-        title={name}
+        title={cateName}
         titleStyle={{fontSize: 17}}
         description={description}
         icon={renderItemIcon}
@@ -73,8 +61,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  text: {
-    alignItems: "flex-end"
+  icon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 

@@ -1,17 +1,24 @@
 import React, {useState, useEffect} from "react";
 import {StyleSheet} from "react-native";
+import {Layout, Icon, RangeDatepicker, Select} from "@ui-kitten/components";
+import {WEEKS, MONTHS, QUARTERS, YEARS} from "../enums/TimeRange";
 import {
-  Layout,
-  Text,
-  Icon,
-  Button,
-  RangeDatepicker,
-  Select
-} from "@ui-kitten/components";
+  getStatisticsRangeByWeek,
+  getStatisticsRangeByMonth,
+  getStatisticsRangeByQuarter,
+  getStatisticsRangeByYear
+} from "../utils/TimeRangeUtil";
 
 const moment = require("moment");
 
-// TODO: use enums or fixed object for picker options
+const SELECT_DATA_WEEK = [{text: WEEKS.week0}, {text: WEEKS.week1}];
+const SELECT_DATA_MONTH = [{text: MONTHS.month0}, {text: MONTHS.month1}];
+const SELECT_DATA_QUARTER = [
+  {text: QUARTERS.quarter0},
+  {text: QUARTERS.quarter1}
+];
+const SELECT_DATA_YEAR = [{text: YEARS.year0}, {text: YEARS.year1}];
+
 const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
   const [week, setWeek] = useState(null);
   const [month, setMonth] = useState(null);
@@ -20,7 +27,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
   const [randomRange, setRandomRange] = useState({});
 
   useEffect(() => {
-    setMonthAndClear({text: "This Month"});
+    setMonthAndClear({text: MONTHS.month0});
   }, []);
 
   const setRandomRangeAndClear = data => {
@@ -40,30 +47,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
     setQuarter(null);
     setYear(null);
     setRandomRange({});
-    switch (data.text) {
-      case "This Week":
-        setStatisticsRange(
-          {
-            startDate: moment().startOf("week"),
-            endDate: moment().endOf("week")
-          },
-          false
-        );
-        break;
-      case "Prev Week":
-        setStatisticsRange(
-          {
-            startDate: moment()
-              .subtract(1, "week")
-              .startOf("week"),
-            endDate: moment()
-              .subtract(1, "week")
-              .endOf("week")
-          },
-          false
-        );
-        break;
-    }
+    setStatisticsRange(getStatisticsRangeByWeek(data.text), false);
   };
 
   const setMonthAndClear = data => {
@@ -72,30 +56,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
     setQuarter(null);
     setYear(null);
     setRandomRange({});
-    switch (data.text) {
-      case "This Month":
-        setStatisticsRange(
-          {
-            startDate: moment().startOf("month"),
-            endDate: moment().endOf("month")
-          },
-          false
-        );
-        break;
-      case "Prev Month":
-        setStatisticsRange(
-          {
-            startDate: moment()
-              .subtract(1, "month")
-              .startOf("month"),
-            endDate: moment()
-              .subtract(1, "month")
-              .endOf("month")
-          },
-          false
-        );
-        break;
-    }
+    setStatisticsRange(getStatisticsRangeByMonth(data.text), false);
   };
 
   const setQuarterAndClear = data => {
@@ -104,30 +65,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
     setQuarter(data);
     setYear(null);
     setRandomRange({});
-    switch (data.text) {
-      case "This Quarter":
-        setStatisticsRange(
-          {
-            startDate: moment().startOf("quarter"),
-            endDate: moment().endOf("quarter")
-          },
-          false
-        );
-        break;
-      case "Prev Quarter":
-        setStatisticsRange(
-          {
-            startDate: moment()
-              .subtract(1, "quarter")
-              .startOf("quarter"),
-            endDate: moment()
-              .subtract(1, "quarter")
-              .endOf("quarter")
-          },
-          false
-        );
-        break;
-    }
+    setStatisticsRange(getStatisticsRangeByQuarter(data.text), false);
   };
 
   const setYearAndClear = data => {
@@ -136,30 +74,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
     setQuarter(null);
     setYear(data);
     setRandomRange({});
-    switch (data.text) {
-      case "This Year":
-        setStatisticsRange(
-          {
-            startDate: moment().startOf("year"),
-            endDate: moment().endOf("year")
-          },
-          false
-        );
-        break;
-      case "Prev Year":
-        setStatisticsRange(
-          {
-            startDate: moment()
-              .subtract(1, "year")
-              .startOf("year"),
-            endDate: moment()
-              .subtract(1, "year")
-              .endOf("year")
-          },
-          false
-        );
-        break;
-    }
+    setStatisticsRange(getStatisticsRangeByYear(data.text), false);
   };
 
   return (
@@ -167,7 +82,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
       <Layout style={styles.pickersRow}>
         <Select
           style={styles.picker}
-          data={[{text: "This Week"}, {text: "Prev Week"}]}
+          data={SELECT_DATA_WEEK}
           placeholder="WEEK"
           status={week == null ? "basic" : "success"}
           selectedOption={week}
@@ -175,7 +90,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
         />
         <Select
           style={styles.picker}
-          data={[{text: "This Month"}, {text: "Prev Month"}]}
+          data={SELECT_DATA_MONTH}
           status={month == null ? "basic" : "success"}
           placeholder="MONTH"
           selectedOption={month}
@@ -185,7 +100,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
       <Layout style={styles.pickersRow}>
         <Select
           style={styles.picker}
-          data={[{text: "This Quarter"}, {text: "Prev Quarter"}]}
+          data={SELECT_DATA_QUARTER}
           status={quarter == null ? "basic" : "success"}
           placeholder="QUARTER"
           selectedOption={quarter}
@@ -193,7 +108,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
         />
         <Select
           style={styles.picker}
-          data={[{text: "This Year"}, {text: "Prev Year"}]}
+          data={SELECT_DATA_YEAR}
           status={year == null ? "basic" : "success"}
           placeholder="YEAR"
           selectedOption={year}
@@ -203,11 +118,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
       <RangeDatepicker
         style={styles.rangePicker}
         range={randomRange}
-        status={
-          randomRange == null || randomRange?.endDate == null
-            ? "basic"
-            : "success"
-        }
+        status={randomRange?.endDate == null ? "basic" : "success"}
         onSelect={setRandomRangeAndClear}
       />
     </Layout>

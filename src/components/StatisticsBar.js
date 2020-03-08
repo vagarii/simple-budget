@@ -1,16 +1,11 @@
-import React, {useState, useEffect} from "react";
-import {
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity
-} from "react-native";
+import React from "react";
+import {StyleSheet} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
-import {Layout, Text, Icon, Button} from "@ui-kitten/components";
-import {StackedBarChart, Grid} from "react-native-svg-charts";
+import {Layout, Text, Icon} from "@ui-kitten/components";
+import {StackedBarChart} from "react-native-svg-charts";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {GET_SPENDING_ITEMS_AGGREGATE} from "../../data/queries";
-import {getRroundNumberInteger} from "../utils/utils";
+import {getRroundNumberInteger, getTotalTargetBudget} from "../utils/utils";
 
 const moment = require("moment");
 
@@ -25,105 +20,40 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
     budget_time_duration: budgetTimeDuration,
     category_icon: categoryIcon
   } = category;
-
   const {id: iconId, name: iconName, color, color2, color3} = categoryIcon;
 
-  const {loading, error, data} = useQuery(GET_SPENDING_ITEMS_AGGREGATE, {
+  const {
+    loading: loadingAggregate,
+    error: errorOnAggregate,
+    data: aggregateData
+  } = useQuery(GET_SPENDING_ITEMS_AGGREGATE, {
     variables: {
       category_id: categoryId,
       spending_date_start: range.startDate,
       spending_date_end: range.endDate
     }
   });
-  if (error) return <Text>{`Error! ${error.message}`}</Text>;
+  if (errorOnAggregate)
+    return <Text>{`Error! ${errorOnAggregate.message}`}</Text>;
 
-  const spentSum = (data?.spending_item ?? []).reduce(
-    (sum, item) => sum + item.amount,
-    0
-  );
+  const spentSum =
+    aggregateData?.spending_item_aggregate?.aggregate?.sum?.amount ?? 0;
 
   const daysInRange =
     moment(range.endDate).diff(moment(range.startDate), "day") + 1;
 
-  // TODO: make this utils
-  const getTotalTargetBudget = () => {
-    if (isRandomRange) {
-      return daysInRange * budgetAmountPerDay;
-    }
-    if (daysInRange == 7) {
-      // WEEK
-      switch (budgetTimeDuration) {
-        case "Week":
-          return budgetAmount;
-        default:
-          return daysInRange * budgetAmountPerDay;
-      }
-    } else if (28 <= daysInRange && daysInRange <= 31) {
-      // MONTH
-      switch (budgetTimeDuration) {
-        case "MONTH":
-          return budgetAmount;
-        case "QUARTER":
-          return budgetAmount / 3;
-        case "YEAR":
-          return budgetAmount / 12;
-        default:
-          return daysInRange * budgetAmountPerDay;
-      }
-    } else if (120 <= daysInRange && daysInRange <= 122) {
-      // QUARTER
-      switch (budgetTimeDuration) {
-        case "MONTH":
-          return budgetAmount * 3;
-        case "QUARTER":
-          return budgetAmount;
-        case "YEAR":
-          return budgetAmount / 4;
-        default:
-          return daysInRange * budgetAmountPerDay;
-      }
-    } else if (daysInRange == 365 || daysInRange == 366) {
-      // YEAR
-      switch (budgetTimeDuration) {
-        case "MONTH":
-          return budgetAmount * 12;
-        case "QUARTER":
-          return budgetAmount * 4;
-        case "YEAR":
-          return budgetAmount;
-        default:
-          return daysInRange * budgetAmountPerDay;
-      }
-    } else {
-      return daysInRange * budgetAmountPerDay;
-    }
-  };
-
-  const budgetSum = getTotalTargetBudget();
+  const budgetSum = getTotalTargetBudget(
+    isRandomRange,
+    budgetAmount,
+    budgetTimeDuration,
+    daysInRange,
+    budgetAmountPerDay
+  );
 
   const isOver = spentSum > budgetSum;
-  const spentToBudget = spentSum / budgetSum;
-
-  const barData = [
-    {
-      spent: !isOver ? spentSum : budgetSum,
-      left: !isOver ? budgetSum - spentSum : 0,
-      over: !isOver ? 0 : spentSum - budgetSum
-    }
-  ];
 
   const CateAvatar = () => (
-    <Layout
-      style={{
-        backgroundColor: color,
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        alignItems: "center",
-        justifyContent: "center",
-        marginRight: 12
-      }}
-    >
+    <Layout style={{...styles.avatar, backgroundColor: color}}>
       <FontAwesome5 name={iconName} color="white" size={25} solid />
     </Layout>
   );
@@ -138,22 +68,23 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
     </Layout>
   );
 
+  const barKeys = ["spent", "left"];
+  const barColors = [color2, color3];
+  const barData = [
+    {
+      spent: !isOver ? spentSum : budgetSum,
+      left: !isOver ? budgetSum - spentSum : 0
+    }
+  ];
+
   return (
     <Layout style={styles.container}>
       <CateAvatar />
       <StackedBarChart
-        style={{
-          height: 50,
-          width: BAR_WIDTH
-        }}
-        keys={["spent", "left"]}
-        colors={[color2, color3]}
-        data={[
-          {
-            spent: !isOver ? spentSum : budgetSum,
-            left: !isOver ? budgetSum - spentSum : 0
-          }
-        ]}
+        style={styles.bar}
+        keys={barKeys}
+        colors={barColors}
+        data={barData}
         horizontal={true}
         contentInset={{top: 8, bottom: 8}}
       />
@@ -168,6 +99,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 360,
     height: 60
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12
+  },
+  bar: {
+    height: 50,
+    width: BAR_WIDTH
   },
   text: {
     alignItems: "flex-end",

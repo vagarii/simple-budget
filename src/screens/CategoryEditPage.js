@@ -38,6 +38,12 @@ const INFO_TEXT =
   "For example, if you'd like to spend $200 every quarter, " +
   'you can put "200" in the Target Budget cell and choose "QUARTER" in the selector.';
 
+const INFO_TEXT_CANNOT_DELETE =
+  "Sorry. You cannot delete this category because there are spending records under this category. \n\n" +
+  "Please try editing this category to update the information. \n\n" +
+  "If you still want to delete this category you would need to delete all the spending records under it first. \n\n" +
+  "Thank you.";
+
 const DurationData = [
   {text: "YEAR"},
   {text: "QUARTER"},
@@ -62,14 +68,15 @@ const CategoryEditPage = ({route}) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
-  const [updateCategory, {loading: saving, error: errorOnSaving}] = useMutation(
-    UPDATE_SPENDING_CATEGORY
-  );
-
   const [
     insertCategory,
-    {loading: creating, error: errorOnCreating}
+    {loading: inserting, error: errorOnInserting}
   ] = useMutation(INSERT_SPENDING_CATEGORY);
+
+  const [
+    updateCategory,
+    {loading: updating, error: errorOnUpdating}
+  ] = useMutation(UPDATE_SPENDING_CATEGORY);
 
   const [
     deleteCategory,
@@ -79,10 +86,17 @@ const CategoryEditPage = ({route}) => {
   const {
     data: spendingItems,
     loading: querying,
-    error: errorQuerying
+    error: errorOnQuerying
   } = useQuery(GET_SPENDING_ITEMS_FOR_CATEGORY, {
     variables: {user_id: user.id, category_id: item?.id ?? 0}
   });
+
+  const mutationInProcess = inserting || updating || deleting;
+  const validValues =
+    name != null &&
+    budgetAmountStr != null &&
+    budgetTimeDuration.text != null &&
+    iconId != null;
 
   const navigation = useNavigation();
   const backAction = () => (
@@ -179,23 +193,63 @@ const CategoryEditPage = ({route}) => {
             status="danger"
             style={styles.button}
             onPress={onDeleteCategoryItem}
-            disabled={saving || deleting}
+            disabled={mutationInProcess}
           >
             Delete
           </Button>
         </Layout>
       ) : (
         <Layout style={styles.modalContainer}>
-          <Text category="s1">
-            {`Sorry. You cannot delete this category because there are spending records under this category. `}
-            {`Please try editing this category to update the information. `}
-            {`If you still want to delete this category you would need to delete all the spending records under it first. `}
-            {`Thank you.`}
-          </Text>
+          <Text category="s1">{INFO_TEXT_CANNOT_DELETE}</Text>
         </Layout>
       )}
     </Modal>
   );
+
+  const InfoButton = () => (
+    <Tooltip
+      style={{height: 84, width: 344}}
+      visible={showInfo}
+      text={INFO_TEXT}
+      onBackdropPress={onInfoIconPress}
+      backdropStyle={styles.infoBackdrop}
+    >
+      <Button
+        style={{width: 30, height: 30, marginBottom: 4}}
+        onPress={onInfoIconPress}
+        icon={InfoIcon}
+        status="basic"
+        appearance="ghost"
+      ></Button>
+    </Tooltip>
+  );
+
+  const SaveButton = () => (
+    <Button
+      status="info"
+      icon={SaveIcon}
+      style={styles.button}
+      onPress={onSaveCategoryItem}
+      disabled={mutationInProcess || !validValues}
+    >
+      Save
+    </Button>
+  );
+
+  const DeleteButton = () =>
+    !isNewCategory ? (
+      <Button
+        icon={DeleteIcon}
+        status="danger"
+        style={styles.button}
+        onPress={onShowDeleteModal}
+        disabled={mutationInProcess}
+      >
+        Delete
+      </Button>
+    ) : (
+      <Layout style={{height: 44}} />
+    );
 
   return (
     <Layout>
@@ -230,21 +284,7 @@ const CategoryEditPage = ({route}) => {
             maxLength={45}
           />
           <Layout style={styles.targetAmountRow}>
-            <Tooltip
-              style={{height: 84, width: 344}}
-              visible={showInfo}
-              text={INFO_TEXT}
-              onBackdropPress={onInfoIconPress}
-              backdropStyle={styles.infoBackdrop}
-            >
-              <Button
-                style={{width: 30, height: 30, marginBottom: 4}}
-                onPress={onInfoIconPress}
-                icon={InfoIcon}
-                status="basic"
-                appearance="ghost"
-              ></Button>
-            </Tooltip>
+            <InfoButton />
             <Input
               style={{
                 width: 144,
@@ -265,35 +305,8 @@ const CategoryEditPage = ({route}) => {
               onSelect={setBudgetTimeDuration}
             />
           </Layout>
-          <Button
-            status="info"
-            icon={SaveIcon}
-            style={styles.button}
-            onPress={onSaveCategoryItem}
-            disabled={
-              saving ||
-              deleting ||
-              name == null ||
-              budgetAmountStr == null ||
-              budgetTimeDuration.text == null ||
-              iconId == null
-            }
-          >
-            Save
-          </Button>
-          {!isNewCategory ? (
-            <Button
-              icon={DeleteIcon}
-              status="danger"
-              style={styles.button}
-              onPress={onShowDeleteModal}
-              disabled={saving || deleting}
-            >
-              Delete
-            </Button>
-          ) : (
-            <Layout style={{height: 44}} />
-          )}
+          <SaveButton />
+          <DeleteButton />
         </Layout>
       </KeyboardAwareScrollView>
       <DeleteModal />

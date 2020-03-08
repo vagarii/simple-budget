@@ -80,18 +80,22 @@ export const GET_CATEGORY_ICONS = gql`
 `;
 
 export const GET_SPENDING_ITEMS_AGGREGATE = gql`
-  query spending_item(
+  query spending_item_aggregate(
     $category_id: Int!
     $spending_date_start: timestamptz!
     $spending_date_end: timestamptz!
   ) {
-    spending_item(
+    spending_item_aggregate(
       where: {
         category_id: {_eq: $category_id}
         spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
       }
     ) {
-      amount
+      aggregate {
+        sum {
+          amount
+        }
+      }
     }
   }
 `;

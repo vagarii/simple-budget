@@ -1,18 +1,9 @@
 import React from "react";
 import {useQuery} from "@apollo/react-hooks";
-import {FlatList, StyleSheet, View} from "react-native";
-import {
-  Layout,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Spinner
-} from "@ui-kitten/components";
-import SpendingItem from "./SpendingItem";
+import {StyleSheet} from "react-native";
+import {Layout, List, Text, Spinner} from "@ui-kitten/components";
 import {GET_SPENDING_ITEMS} from "../../data/queries";
-import Store from "../store/Store";
+import SpendingItem from "./SpendingItem";
 
 const moment = require("moment");
 
@@ -50,8 +41,6 @@ const flatlistProps = {
 
 const styles = StyleSheet.create({
   container: {
-    // width: 300,
-    // height: 500
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 10,

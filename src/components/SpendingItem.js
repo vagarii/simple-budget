@@ -1,20 +1,13 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
-import {StyleSheet, View, TouchableOpacity} from "react-native";
-import {
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Layout
-} from "@ui-kitten/components";
-import {DELETE_SPENDING_ITEM} from "../../data/mutations";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import {Button, Icon, ListItem, Layout} from "@ui-kitten/components";
 import {
   GET_SPENDING_ITEMS,
   GET_SPENDING_ITEMS_AGGREGATE
 } from "../../data/queries";
+import {DELETE_SPENDING_ITEM} from "../../data/mutations";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Store from "../store/Store";
 
@@ -31,7 +24,7 @@ const SpendingItem = ({item, user, date}) => {
     });
   }, []);
 
-  const [deleteSpendingItem, {loading, error}] = useMutation(
+  const [deleteSpendingItem, {deleting, errorOnDeleting}] = useMutation(
     DELETE_SPENDING_ITEM
   );
 
@@ -42,13 +35,8 @@ const SpendingItem = ({item, user, date}) => {
     return (
       <TouchableOpacity
         style={{
-          backgroundColor: category_icon.color,
-          width: 50,
-          height: 50,
-          borderRadius: 25,
-          alignItems: "center",
-          justifyContent: "center",
-          marginLeft: 8
+          ...styles.avadar,
+          backgroundColor: category_icon.color
         }}
       >
         <FontAwesome5 name={category_icon.name} color="white" size={22} solid />
@@ -60,7 +48,6 @@ const SpendingItem = ({item, user, date}) => {
     <Button
       icon={DeleteIcon}
       style={{width: 40}}
-      // size="small"
       onPress={deleteItem}
       appearance="ghost"
       status="basic"
@@ -115,6 +102,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: 368
+  },
+  avadar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 8
   }
 });
 

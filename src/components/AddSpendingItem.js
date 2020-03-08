@@ -1,18 +1,7 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
-import {
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Animated,
-  Dimensions,
-  Keyboard,
-  UIManager,
-  ScrollView,
-  KeyboardAvoidingView
-} from "react-native";
+import {StyleSheet} from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
 import {
@@ -30,11 +19,11 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   const [amount, setAmount] = useState(null);
   const [range, setRange] = useState(null);
 
-  const [insertSpendingItem, {loading, error}] = useMutation(
+  const [insertSpendingItem, {inserting, errorOnInserting}] = useMutation(
     INSERT_SPENDING_ITEMS
   );
-
-  if (error) return <Text>`Error! ${error.message}`</Text>;
+  if (errorOnInserting)
+    return <Text>`Error! ${errorOnInserting.message}`</Text>;
 
   useEffect(() => {
     Store.get("range").then(range => {
@@ -42,18 +31,75 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
     });
   }, []);
 
+  const onSave = () => {
+    insertSpendingItem({
+      variables: {
+        description: description ?? "",
+        category_id: categoryId,
+        amount: amount,
+        user_id: user.id,
+        spending_date: moment(date).startOf("day")
+      },
+      refetchQueries: [
+        {
+          query: GET_SPENDING_ITEMS,
+          variables: {
+            user_id: user.id,
+            spending_date_start: moment(date).startOf("day"),
+            spending_date_end: moment(date).endOf("day")
+          }
+        },
+        {
+          query: GET_SPENDING_ITEMS_AGGREGATE,
+          variables: {
+            category_id: categoryId,
+            spending_date_start: range?.startDate ?? 0,
+            spending_date_end: range?.endDate ?? 0
+          }
+        }
+      ]
+    });
+    setAmount(null);
+    setCategoryId(null);
+    setDescription(null);
+  };
+
+  const DollarIcon = () => (
+    <FontAwesome5
+      style={{marginLeft: 4, marginRight: 12, marginBottom: 4}}
+      name="dollar-sign"
+      color="#AEB6BF"
+      size={18}
+      solid
+    />
+  );
+
+  const NoteIcon = () => (
+    <FontAwesome5
+      style={{marginLeft: 4, marginRight: 10, marginBottom: 4}}
+      name="clipboard"
+      color="#AEB6BF"
+      size={18}
+      light
+    />
+  );
+
+  const SaveButton = () => (
+    <Button
+      style={styles.button}
+      status="info"
+      size="large"
+      onPress={onSave}
+      disabled={inserting || amount == null || categoryId == null}
+    >
+      Save
+    </Button>
+  );
+
   return (
     <Layout style={styles.container}>
-      <Layout
-        style={{flexDirection: "row", alignItems: "center", marginTop: 30}}
-      >
-        <FontAwesome5
-          style={{marginLeft: 4, marginRight: 12, marginBottom: 4}}
-          name="dollar-sign"
-          color="#AEB6BF"
-          size={18}
-          solid
-        />
+      <Layout style={{...styles.row, marginTop: 30}}>
+        <DollarIcon />
         <Input
           size="large"
           style={{width: 316}}
@@ -66,16 +112,8 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
           maxLength={8}
         />
       </Layout>
-      <Layout
-        style={{flexDirection: "row", alignItems: "center", marginTop: 12}}
-      >
-        <FontAwesome5
-          style={{marginLeft: 4, marginRight: 10, marginBottom: 4}}
-          name="clipboard"
-          color="#AEB6BF"
-          size={18}
-          light
-        />
+      <Layout style={{...styles.row, marginTop: 12}}>
+        <NoteIcon />
         <Input
           style={{width: 316}}
           placeholder="Note"
@@ -86,52 +124,9 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
           maxLength={35}
         />
       </Layout>
-      <Button
-        style={styles.button}
-        status="info"
-        size="large"
-        onPress={() => {
-          insertSpendingItem({
-            variables: {
-              description: description ?? "",
-              category_id: categoryId,
-              amount: amount,
-              user_id: user.id,
-              spending_date: moment(date).startOf("day")
-            },
-            refetchQueries: [
-              {
-                query: GET_SPENDING_ITEMS,
-                variables: {
-                  user_id: user.id,
-                  spending_date_start: moment(date).startOf("day"),
-                  spending_date_end: moment(date).endOf("day")
-                }
-              },
-              {
-                query: GET_SPENDING_ITEMS_AGGREGATE,
-                variables: {
-                  category_id: categoryId,
-                  spending_date_start: range?.startDate ?? 0,
-                  spending_date_end: range?.endDate ?? 0
-                }
-              }
-            ]
-          });
-          setAmount(null);
-          setCategoryId(null);
-          setDescription(null);
-        }}
-        disabled={loading || amount == null || categoryId == null}
-      >
-        {`Save`}
-      </Button>
+      <SaveButton />
     </Layout>
   );
-};
-
-const textInputProps = {
-  borderWidth: 0
 };
 
 const styles = StyleSheet.create({
@@ -139,13 +134,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20
   },
+  row: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
   button: {
     marginTop: 12,
     width: 344
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 20
   }
 });
 

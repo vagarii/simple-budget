@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, TouchableOpacity} from "react-native";
-import {Layout, Button, Icon, Modal, Avatar, Text} from "@ui-kitten/components";
+import {StyleSheet} from "react-native";
+import {Layout, Button, Icon, Text} from "@ui-kitten/components";
 
 const EditIcon = style => <Icon {...style} name={"edit"} size={30} />;
 

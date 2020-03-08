@@ -1,12 +1,11 @@
-import React, {useState, Fragment} from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, TouchableOpacity} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
-import {Layout, Button, Icon, Modal, Avatar} from "@ui-kitten/components";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {StyleSheet} from "react-native";
+import {Layout, Avatar} from "@ui-kitten/components";
+import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import CategoryAvatar from "./CategoryAvatar";
 import CategoryEditAvatar from "./CategoryEditAvatar.js";
-import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 
 const CATEGORY_NUMBER_PER_CARD = 7;
@@ -15,57 +14,48 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   const {loading, error, data} = useQuery(GET_SPENDING_CATEGORIES, {
     variables: {user_id: user.id}
   });
-
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
+
+  if (data == null || data.length === 0) {
+    return null;
+  }
 
   const navigation = useNavigation();
   const goToCategoriesPage = () => {
     navigation.navigate("CategoriesPage");
   };
 
-  const {spending_category} = data ?? {};
+  const items = data.spending_category;
+  const rows = [];
+  for (var i = 0; i < items.length; i = i + 4) {
+    rows.push(items.slice(i, i + 4));
+  }
 
-  const Categories = () => {
-    if (data == null || data.length === 0) {
-      return null;
-    }
-
-    const items = data.spending_category;
-    const rows = [];
-    for (var i = 0; i < items.length; i = i + 4) {
-      rows.push(items.slice(i, i + 4));
-    }
-
-    return (
-      <Layout style={styles.container}>
-        {rows.map((row, index) => (
-          <Layout style={styles.row} key={index}>
-            {row.map(item => (
-              <Layout key={item.id}>
-                <CategoryAvatar
-                  item={item}
-                  categoryId={categoryId}
-                  setCategoryId={setCategoryId}
-                />
-              </Layout>
-            ))}
-            {row.length < 4 && (
-              <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
-            )}
-          </Layout>
-        ))}
-        {items.length % 4 === 0 && (
-          <Layout style={styles.row}>
-            <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
-          </Layout>
-        )}
-      </Layout>
-    );
-  };
+  const EditAvatar = () => (
+    <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
+  );
 
   return (
-    <Layout>
-      <Categories />
+    <Layout style={styles.container}>
+      {rows.map((row, index) => (
+        <Layout style={styles.row} key={index}>
+          {row.map(item => (
+            <Layout key={item.id}>
+              <CategoryAvatar
+                item={item}
+                categoryId={categoryId}
+                setCategoryId={setCategoryId}
+              />
+            </Layout>
+          ))}
+          {row.length < 4 && <EditAvatar />}
+        </Layout>
+      ))}
+      {items.length % 4 === 0 && (
+        <Layout style={styles.row}>
+          <EditAvatar />
+        </Layout>
+      )}
     </Layout>
   );
 };

@@ -1,24 +1,20 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, TouchableOpacity} from "react-native";
-import {Layout, Button, Icon, Modal, Avatar, Text} from "@ui-kitten/components";
+import {StyleSheet} from "react-native";
+import {Layout, Text} from "@ui-kitten/components";
 import IconAvatar from "./IconAvatar";
 
 const CategoryAvatar = ({item, categoryId, setCategoryId}) => {
-  const {id, name, category_icon} = item;
+  const {id, name, category_icon: cateIcon} = item;
 
   return (
     <Layout style={styles.container}>
       <IconAvatar
-        icon={category_icon}
+        icon={cateIcon}
         isSelected={id === categoryId}
         onSelect={() => setCategoryId(id)}
       />
-      <Text
-        style={{width: 80, textAlign: "center", fontSize: 11}}
-        color="gray"
-        category="c1"
-      >
+      <Text style={styles.text} color="gray" category="c1">
         {name}
       </Text>
     </Layout>
@@ -29,6 +25,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center"
+  },
+  text: {
+    width: 80,
+    textAlign: "center",
+    fontSize: 11
   }
 });
 

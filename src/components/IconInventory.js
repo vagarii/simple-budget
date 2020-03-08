@@ -1,36 +1,20 @@
-import React, {useState, Fragment} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {useQuery} from "@apollo/react-hooks";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView
-} from "react-native";
-import {
-  Button,
-  Icon,
-  Input,
-  List,
-  ListItem,
-  Text,
-  Modal,
-  Select,
-  Layout,
-  TopNavigation,
-  TopNavigationAction
-} from "@ui-kitten/components";
+import {StyleSheet, ScrollView} from "react-native";
+import {Layout} from "@ui-kitten/components";
 import {GET_CATEGORY_ICONS} from "../../data/queries";
 import IconAvatar from "./IconAvatar";
+
+const ROW_HEIGHT = 86;
 
 const IconInventory = ({iconId, setIconId}) => {
   const {
     data: iconsData,
     loading: loadingIcons,
-    error: loadingIconsError
+    error: errorOnLoadingIcons
   } = useQuery(GET_CATEGORY_ICONS);
+
   const icons = iconsData?.category_icon ?? [];
 
   const rows = [];
@@ -38,25 +22,9 @@ const IconInventory = ({iconId, setIconId}) => {
     rows.push(icons.slice(i, i + 4));
   }
 
-  const styles = StyleSheet.create({
-    container: {
-      // marginTop: 12
-      alignItems: "center",
-      justifyContent: "center",
-      // height: 300
-      height: rows.length * 87
-    },
-    row: {
-      flex: 1,
-      flexDirection: "row",
-      justifyContent: "flex-start",
-      width: 344
-    }
-  });
-
   return (
     <ScrollView style={{height: 260}}>
-      <Layout style={styles.container}>
+      <Layout style={{...styles.container, height: rows.length * ROW_HEIGHT}}>
         {rows.map((row, index) => (
           <Layout style={styles.row} key={index}>
             {row.map(item => (
@@ -74,5 +42,17 @@ const IconInventory = ({iconId, setIconId}) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 344
+  }
+});
 
 export default IconInventory;
