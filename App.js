@@ -22,6 +22,11 @@ const App = () => {
     handleLogin();
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setToken(null);
+  };
+
   const handleLogin = (isNewUser = false) => {
     SecureStore.getItemAsync(ID_TOKEN_KEY).then(session => {
       if (session) {
@@ -35,11 +40,6 @@ const App = () => {
         }
       }
     });
-  };
-
-  const handleLogout = () => {
-    logout();
-    setToken(null);
   };
 
   return (
