@@ -13,7 +13,7 @@ import {
   ID_TOKEN_KEY,
   NONCE_KEY
 } from "../config";
-import {Button, Icon, Layout} from "@ui-kitten/components";
+import {Button, Icon, Layout, Text} from "@ui-kitten/components";
 
 const StarIcon = style => <Icon {...style} name="star" />;
 
@@ -76,6 +76,9 @@ const Auth = ({token, onLogin}) => {
 
   return (
     <Layout style={styles.container}>
+      <Text style={styles.text} category="h4">
+        Simple Budget
+      </Text>
       <Button
         style={styles.button}
         onPress={handleLoginPress}
@@ -94,8 +97,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: Dimensions.get("window").height
   },
+  text: {
+    marginBottom: 30
+  },
   button: {
-    width: 334
+    width: 334,
+    marginBottom: 90
   }
 });
 
