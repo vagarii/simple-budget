@@ -166,6 +166,7 @@ const CategoryEditPage = ({route}) => {
         {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
       ]
     });
+    setShowDeleteModal(false);
     navigation.goBack();
   };
 
@@ -236,7 +237,7 @@ const CategoryEditPage = ({route}) => {
     </Button>
   );
 
-  const DeleteButton = () =>
+  const DeleteButtonOrPlaceholder = () =>
     !isNewCategory ? (
       <Button
         icon={DeleteIcon}
@@ -248,7 +249,7 @@ const CategoryEditPage = ({route}) => {
         Delete
       </Button>
     ) : (
-      <Layout style={{height: 44}} />
+      <Layout style={{height: 52}} />
     );
 
   return (
@@ -306,7 +307,7 @@ const CategoryEditPage = ({route}) => {
             />
           </Layout>
           <SaveButton />
-          <DeleteButton />
+          <DeleteButtonOrPlaceholder />
         </Layout>
       </KeyboardAwareScrollView>
       <DeleteModal />

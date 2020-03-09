@@ -5,7 +5,8 @@ import {StyleSheet, TouchableOpacity} from "react-native";
 import {Button, Icon, ListItem, Layout} from "@ui-kitten/components";
 import {
   GET_SPENDING_ITEMS,
-  GET_SPENDING_ITEMS_AGGREGATE
+  GET_SPENDING_ITEMS_AGGREGATE,
+  GET_SPENDING_ITEMS_FOR_CATEGORY
 } from "../../data/queries";
 import {DELETE_SPENDING_ITEM} from "../../data/mutations";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -74,6 +75,13 @@ const SpendingItem = ({item, user, date}) => {
             category_id: category_id ?? 0,
             spending_date_start: range?.startDate ?? 0,
             spending_date_end: range?.endDate ?? 0
+          }
+        },
+        {
+          query: GET_SPENDING_ITEMS_FOR_CATEGORY,
+          variables: {
+            user_id: user.id,
+            category_id: category_id ?? 0
           }
         }
       ]

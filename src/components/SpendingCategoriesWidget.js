@@ -28,7 +28,10 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   }
 
   const EditAvatar = () => (
-    <CategoryEditAvatar onPressEdit={goToCategoriesPage} />
+    <CategoryEditAvatar
+      onPress={goToCategoriesPage}
+      text={items.length === 0 ? "Add Category" : "Edit"}
+    />
   );
 
   return (

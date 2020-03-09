@@ -5,19 +5,19 @@ import {Layout, Button, Icon, Text} from "@ui-kitten/components";
 
 const EditIcon = style => <Icon {...style} name={"edit"} size={30} />;
 
-const CategoryEditAvatar = ({onPressEdit}) => {
+const CategoryEditAvatar = ({onPress, text}) => {
   return (
     <Layout style={styles.container}>
       <Button
         style={styles.avatar}
         icon={EditIcon}
         size="large"
-        onPress={onPressEdit}
+        onPress={onPress}
         appearance="ghost"
         status="basic"
       ></Button>
       <Text color="gray" category="c1">
-        Edit
+        {text}
       </Text>
     </Layout>
   );
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
 });
 
 CategoryEditAvatar.propTypes = {
-  onPressEdit: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired
 };
 
 export default CategoryEditAvatar;
