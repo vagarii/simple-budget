@@ -2,7 +2,7 @@ import {WEEKS, MONTHS, QUARTERS, YEARS} from "../enums/TimeRange";
 
 const moment = require("moment");
 
-const getStatisticsRangeByWeek = text => {
+const getStatisticsFixedRange = text => {
   switch (text) {
     case WEEKS.week0:
       return {
@@ -18,13 +18,6 @@ const getStatisticsRangeByWeek = text => {
           .subtract(1, "week")
           .endOf("week")
       };
-    default:
-      return {};
-  }
-};
-
-const getStatisticsRangeByMonth = text => {
-  switch (text) {
     case MONTHS.month0:
       return {
         startDate: moment().startOf("month"),
@@ -39,13 +32,6 @@ const getStatisticsRangeByMonth = text => {
           .subtract(1, "month")
           .endOf("month")
       };
-    default:
-      return {};
-  }
-};
-
-const getStatisticsRangeByQuarter = text => {
-  switch (text) {
     case QUARTERS.quarter0:
       return {
         startDate: moment().startOf("quarter"),
@@ -60,13 +46,6 @@ const getStatisticsRangeByQuarter = text => {
           .subtract(1, "quarter")
           .endOf("quarter")
       };
-    default:
-      return {};
-  }
-};
-
-const getStatisticsRangeByYear = text => {
-  switch (text) {
     case YEARS.year0:
       return {
         startDate: moment().startOf("year"),
@@ -82,13 +61,11 @@ const getStatisticsRangeByYear = text => {
           .endOf("year")
       };
     default:
-      return {};
+      return {
+        startDate: moment(new Date()).startOf("day"),
+        endDate: moment(new Date()).endOf("day")
+      };
   }
 };
 
-export {
-  getStatisticsRangeByWeek,
-  getStatisticsRangeByMonth,
-  getStatisticsRangeByQuarter,
-  getStatisticsRangeByYear
-};
+export {getStatisticsFixedRange};
