@@ -98,7 +98,7 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
 
   return (
     <Layout style={styles.container}>
-      <Layout style={{...styles.row, marginTop: 30}}>
+      <Layout style={{...styles.row, marginTop: 20}}>
         <DollarIcon />
         <Input
           size="large"

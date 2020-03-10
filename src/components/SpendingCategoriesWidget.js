@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {useQuery} from "@apollo/react-hooks";
-import {StyleSheet} from "react-native";
+import {StyleSheet, ScrollView} from "react-native";
 import {Layout, Avatar} from "@ui-kitten/components";
 import {GET_SPENDING_CATEGORIES} from "../../data/queries";
 import CategoryAvatar from "./CategoryAvatar";
@@ -35,33 +35,34 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   );
 
   return (
-    <Layout style={styles.container}>
-      {rows.map((row, index) => (
-        <Layout style={styles.row} key={index}>
-          {row.map(item => (
-            <Layout key={item.id}>
-              <CategoryAvatar
-                item={item}
-                categoryId={categoryId}
-                setCategoryId={setCategoryId}
-              />
-            </Layout>
-          ))}
-          {row.length < 4 && <EditAvatar />}
-        </Layout>
-      ))}
-      {items.length % 4 === 0 && (
-        <Layout style={styles.row}>
-          <EditAvatar />
-        </Layout>
-      )}
-    </Layout>
+    <ScrollView style={{height: 204, marginTop: 20}}>
+      <Layout style={styles.container}>
+        {rows.map((row, index) => (
+          <Layout style={styles.row} key={index}>
+            {row.map(item => (
+              <Layout key={item.id}>
+                <CategoryAvatar
+                  item={item}
+                  categoryId={categoryId}
+                  setCategoryId={setCategoryId}
+                />
+              </Layout>
+            ))}
+            {row.length < 4 && <EditAvatar />}
+          </Layout>
+        ))}
+        {items.length % 4 === 0 && (
+          <Layout style={styles.row}>
+            <EditAvatar />
+          </Layout>
+        )}
+      </Layout>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 12,
     alignItems: "center",
     justifyContent: "center"
   },
