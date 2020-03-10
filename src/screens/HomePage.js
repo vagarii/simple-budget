@@ -17,7 +17,7 @@ const HomePage = ({user, lockCalendar}) => {
   const [categoryId, setCategoryId] = useState(null);
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView extraScrollHeight={92}>
       <Layout>
         <ScrollView>
           <Layout style={styles.calenderContainer}>

@@ -259,7 +259,7 @@ const CategoryEditPage = ({route}) => {
         title="Edit Category"
         titleStyle={{fontSize: 18}}
       />
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView extraScrollHeight={92}>
         <Layout style={styles.container}>
           <IconInventory iconId={iconId} setIconId={setIconId} />
           <Input
