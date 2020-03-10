@@ -99,3 +99,15 @@ export const GET_SPENDING_ITEMS_AGGREGATE = gql`
     }
   }
 `;
+
+export const GET_CATEGORY_MAX_ORDER = gql`
+  query spending_category_aggregate($user_id: String!) {
+    spending_category_aggregate(where: {user_id: {_eq: $user_id}}) {
+      aggregate {
+        max {
+          order
+        }
+      }
+    }
+  }
+`;

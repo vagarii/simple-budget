@@ -20,6 +20,7 @@ import {
   INSERT_SPENDING_CATEGORY
 } from "../../data/mutations";
 import {
+  GET_CATEGORY_MAX_ORDER,
   GET_SPENDING_CATEGORIES,
   GET_SPENDING_ITEMS_FOR_CATEGORY
 } from "../../data/queries";
@@ -91,6 +92,16 @@ const CategoryEditPage = ({route}) => {
     variables: {user_id: user.id, category_id: item?.id ?? 0}
   });
 
+  const {
+    data: cateMaxOrder,
+    loading: queryingMaxOrder,
+    error: errorOnQueryingMaxOrder
+  } = useQuery(GET_CATEGORY_MAX_ORDER, {
+    variables: {user_id: user.id}
+  });
+  const curMaxOrder =
+    cateMaxOrder?.spending_category_aggregate?.aggregate?.max?.order;
+
   const mutationInProcess = inserting || updating || deleting;
   const validValues =
     name != null &&
@@ -130,10 +141,12 @@ const CategoryEditPage = ({route}) => {
             budgetAmountStr,
             budgetTimeDuration
           ),
-          icon_id: iconId
+          icon_id: iconId,
+          order: curMaxOrder == null ? 1 : curMaxOrder + 1
         },
         refetchQueries: [
-          {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
+          {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}},
+          {query: GET_CATEGORY_MAX_ORDER, variables: {user_id: user.id}}
         ]
       });
     } else {
@@ -184,7 +197,8 @@ const CategoryEditPage = ({route}) => {
         id: item?.id
       },
       refetchQueries: [
-        {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}}
+        {query: GET_SPENDING_CATEGORIES, variables: {user_id: user.id}},
+        {query: GET_CATEGORY_MAX_ORDER, variables: {user_id: user.id}}
       ]
     });
     setShowDeleteModal(false);

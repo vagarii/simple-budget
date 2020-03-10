@@ -106,6 +106,7 @@ export const INSERT_SPENDING_CATEGORY = gql`
     $budget_time_duration: time_duration_enum!
     $budget_amount_per_day: numeric!
     $icon_id: Int!
+    $order: Int!
   ) {
     insert_spending_category(
       objects: {
@@ -116,6 +117,7 @@ export const INSERT_SPENDING_CATEGORY = gql`
         budget_time_duration: $budget_time_duration
         budget_amount_per_day: $budget_amount_per_day
         icon_id: $icon_id
+        order: $order
       }
     ) {
       affected_rows
