@@ -56,6 +56,9 @@ const Home = ({route}) => {
       : false;
 
   const onUpdateUserSettings = () => {
+    if (user?.id == null) {
+      return;
+    }
     const ifLock = !lockCalendar;
     updateUserSettings({
       variables: {

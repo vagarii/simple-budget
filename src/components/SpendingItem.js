@@ -56,6 +56,9 @@ const SpendingItem = ({item, user, date}) => {
   );
 
   const deleteItem = () => {
+    if (item?.id == null) {
+      return;
+    }
     deleteSpendingItem({
       variables: {
         id: item.id

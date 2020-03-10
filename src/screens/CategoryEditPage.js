@@ -110,6 +110,15 @@ const CategoryEditPage = ({route}) => {
 
   const onSaveCategoryItem = () => {
     if (isNewCategory) {
+      if (
+        user?.id == null ||
+        name == null ||
+        budgetAmountStr == null ||
+        budgetTimeDuration?.text == null ||
+        iconId == null
+      ) {
+        return;
+      }
       insertCategory({
         variables: {
           user_id: user.id,
@@ -128,6 +137,15 @@ const CategoryEditPage = ({route}) => {
         ]
       });
     } else {
+      if (
+        item?.id == null ||
+        name == null ||
+        budgetAmountStr == null ||
+        budgetTimeDuration?.text == null ||
+        iconId == null
+      ) {
+        return;
+      }
       updateCategory({
         variables: {
           id: item?.id,
@@ -158,6 +176,9 @@ const CategoryEditPage = ({route}) => {
   };
 
   const onDeleteCategoryItem = () => {
+    if (item?.id == null) {
+      return;
+    }
     deleteCategory({
       variables: {
         id: item?.id

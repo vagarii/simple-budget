@@ -32,6 +32,15 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   }, []);
 
   const onSave = () => {
+    if (
+      categoryId == null ||
+      amount == null ||
+      user?.id == null ||
+      date == null ||
+      moment(date).startOf("day") == null
+    ) {
+      return;
+    }
     insertSpendingItem({
       variables: {
         description: description ?? "",
