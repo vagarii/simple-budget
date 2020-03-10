@@ -258,6 +258,7 @@ const CategoryEditPage = ({route}) => {
         leftControl={backAction()}
         title="Edit Category"
         titleStyle={{fontSize: 18}}
+        alignment="center"
       />
       <KeyboardAwareScrollView extraScrollHeight={92}>
         <Layout style={styles.container}>
@@ -267,7 +268,7 @@ const CategoryEditPage = ({route}) => {
               width: 344,
               marginTop: 16
             }}
-            fontSize={20}
+            fontSize={18}
             placeholder="Category Name"
             value={name}
             onChangeText={setName}
@@ -278,7 +279,6 @@ const CategoryEditPage = ({route}) => {
               width: 344,
               marginTop: 12
             }}
-            fontSize={13}
             placeholder="Description"
             value={description}
             onChangeText={setDescription}

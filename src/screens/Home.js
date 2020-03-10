@@ -150,11 +150,13 @@ const Home = ({route}) => {
         </Layout>
       </ViewPager>
       <Layout style={styles.bottomTab}>
-        <PaginationDot
-          activeDotColor="white"
-          curPage={selectedPageIndex}
-          maxPage={2}
-        />
+        <Layout style={styles.pagination}>
+          <PaginationDot
+            activeDotColor="white"
+            curPage={selectedPageIndex}
+            maxPage={2}
+          />
+        </Layout>
       </Layout>
     </Layout>
   );
@@ -165,13 +167,21 @@ const styles = StyleSheet.create({
   pager: {
     alignItems: "center",
     justifyContent: "center",
-    maxHeight: winHeight - 130
+    maxHeight: winHeight - 142
   },
   bottomTab: {
     alignItems: "center",
+    justifyContent: "center"
+  },
+  pagination: {
+    alignItems: "center",
     justifyContent: "center",
-    height: 40,
-    marginBottom: 36
+    height: 24,
+    width: 48,
+    borderRadius: 12,
+    marginTop: 12,
+    marginBottom: 44,
+    backgroundColor: "rgba(254, 254, 254,0.1)"
   }
 });
 

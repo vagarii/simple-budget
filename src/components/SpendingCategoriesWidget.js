@@ -19,6 +19,7 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   const navigation = useNavigation();
   const goToCategoriesPage = () => {
     navigation.navigate("CategoriesPage");
+    setCategoryId(null);
   };
 
   const items = data?.spending_category ?? [];
@@ -35,7 +36,7 @@ const SpendingCategoriesWidget = ({user, categoryId, setCategoryId}) => {
   );
 
   return (
-    <ScrollView style={{height: 204, marginTop: 20}}>
+    <ScrollView style={{height: 196, marginTop: 20}}>
       <Layout style={styles.container}>
         {rows.map((row, index) => (
           <Layout style={styles.row} key={index}>

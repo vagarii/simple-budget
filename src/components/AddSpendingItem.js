@@ -115,9 +115,9 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
       <Layout style={{...styles.row, marginTop: 12}}>
         <NoteIcon />
         <Input
+          size="large"
           style={{width: 316}}
           placeholder="Note"
-          fontSize={13}
           value={description}
           onChangeText={setDescription}
           textAlign="center"

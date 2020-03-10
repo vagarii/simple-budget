@@ -42,7 +42,7 @@ const CategoriesPage = ({route}) => {
     <Layout>
       <Layout style={styles.list}>
         <List
-          style={{backgroundColor: "#242B43"}}
+          style={{backgroundColor: "rgba(0,0,0,0)"}}
           data={data.spending_category}
           renderItem={({item}) => <CategoryItem item={item} user={user} />}
         />
@@ -51,7 +51,6 @@ const CategoriesPage = ({route}) => {
         <Button
           style={styles.addButton}
           icon={AddIcon}
-          size="large"
           onPress={() => {
             navigation.navigate("CategoryEditPage", {user});
           }}
@@ -70,6 +69,7 @@ const CategoriesPage = ({route}) => {
         titleStyle={{fontSize: 18}}
         leftControl={backAction()}
         title="My Categories"
+        alignment="center"
       />
       <Layout style={styles.container}>
         {loading ? <Spinner status="basic" /> : <CategoriesContent />}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     padding: 16
   },
   list: {
-    height: winHeight - 190
+    height: winHeight - 170
   },
   bottomBar: {
     alignItems: "center",

@@ -33,7 +33,7 @@ const winHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
-    height: winHeight - 80,
+    height: winHeight - 70,
     alignItems: "center"
   }
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {ListItem, Text, Layout} from "@ui-kitten/components";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {useNavigation} from "@react-navigation/native";
@@ -27,10 +27,10 @@ const CategoryItem = ({item, user}) => {
   );
 
   const renderItemAccessory = () => (
-    <Layout style={{alignItems: "flex-end"}}>
+    <View style={{alignItems: "flex-end"}}>
       <Text category="s1">{`\$${budgetAmount}`}</Text>
       <Text category="s2">{`/ ${budgetTimeDuration}`}</Text>
-    </Layout>
+    </View>
   );
 
   const navigation = useNavigation();
