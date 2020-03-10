@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {useQuery, useMutation} from "@apollo/react-hooks";
-import {StyleSheet} from "react-native";
+import {StyleSheet, Dimensions} from "react-native";
 import {
   Layout,
   Text,
@@ -12,6 +12,7 @@ import {
   Button,
   OverflowMenu
 } from "@ui-kitten/components";
+import PaginationDot from "react-native-animated-pagination-dot";
 import {logout} from "../utils/AuthUtils";
 import HomePage from "./HomePage";
 import StatisticsPage from "./StatisticsPage";
@@ -55,10 +56,11 @@ const Home = ({route}) => {
       : false;
 
   const onUpdateUserSettings = () => {
+    const ifLock = !lockCalendar;
     updateUserSettings({
       variables: {
         user_id: user.id,
-        lock_calendar: !lockCalendar
+        lock_calendar: ifLock
       },
       refetchQueries: [
         {
@@ -78,6 +80,8 @@ const Home = ({route}) => {
       handleLogout();
     } else if (index === 1) {
       onUpdateUserSettings();
+    } else if (index === 2) {
+      setSelectedPageIndex(1); // go to my budget tracker
     }
     setSelectedMenuIndex(null);
   };
@@ -99,7 +103,8 @@ const Home = ({route}) => {
         style={{width: 200}}
         data={[
           {title: `Log Out -- ${user.name}`},
-          {title: lockCalendar ? "Unlock Calendar" : "Lock Calendar"}
+          {title: lockCalendar ? "Unlock Calendar" : "Lock Calendar"},
+          {title: "My Budget Tracker"}
         ]}
         visible={menuVisible}
         selectedIndex={selectedMenuIndex}
@@ -122,7 +127,9 @@ const Home = ({route}) => {
     <TopNavigationAction {...props} icon={ClickableMenu} />
   );
 
-  const renderRightControls = () => [<MenuAction />];
+  const renderRightControls = () => {
+    return selectedPageIndex === 0 ? [<MenuAction />] : [];
+  };
 
   return (
     <Layout>
@@ -142,14 +149,29 @@ const Home = ({route}) => {
           <StatisticsPage user={user} />
         </Layout>
       </ViewPager>
+      <Layout style={styles.bottomTab}>
+        <PaginationDot
+          activeDotColor="white"
+          curPage={selectedPageIndex}
+          maxPage={2}
+        />
+      </Layout>
     </Layout>
   );
 };
 
+const winHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   pager: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    maxHeight: winHeight - 130
+  },
+  bottomTab: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    marginBottom: 36
   }
 });
 

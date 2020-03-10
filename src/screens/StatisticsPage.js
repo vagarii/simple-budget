@@ -18,7 +18,7 @@ const StatisticsPage = ({user}) => {
 
   return (
     <Layout style={styles.container}>
-      <Text category="h6" style={{marginBottom: 8}}>{`My Budget Tracker`}</Text>
+      <Text category="h5" style={{marginBottom: 8}}>{`My Budget Tracker`}</Text>
       <StatisticsCharts
         range={range}
         isRandomRange={isRandomRange === true}
@@ -33,7 +33,7 @@ const winHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
-    height: winHeight - 60,
+    height: winHeight - 80,
     alignItems: "center"
   }
 });

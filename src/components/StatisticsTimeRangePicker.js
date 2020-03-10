@@ -50,7 +50,7 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
   };
 
   return (
-    <Layout style={styles.container}>
+    <Layout>
       <Select
         style={styles.rangePicker}
         data={SELECT_DATA}
@@ -70,12 +70,8 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    minHeight: 376,
-    alignItems: "center"
-  },
   rangePicker: {
-    marginVertical: 4,
+    marginVertical: 6,
     width: 344
   }
 });

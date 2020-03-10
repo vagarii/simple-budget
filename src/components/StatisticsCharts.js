@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 12,
     marginBottom: 12,
-    height: winHeight - 320
+    height: winHeight - 268
   }
 });
 

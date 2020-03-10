@@ -16,6 +16,8 @@ import {INSERT_USER, INSERT_USER_SETTINGS} from "../data/mutations";
 
 const NavStack = createStackNavigator();
 
+const LOCK_CALENDAR_MIN_WIN_HEIGHT = 800;
+
 const HeaderOptions = {
   headerStyle: {
     height: 0
@@ -48,7 +50,8 @@ const Main = ({user, token, setToken}) => {
         mutation: INSERT_USER_SETTINGS,
         variables: {
           user_id: id,
-          lock_calendar: false
+          lock_calendar:
+            Dimensions.get("window").height > LOCK_CALENDAR_MIN_WIN_HEIGHT
         }
       });
     }
