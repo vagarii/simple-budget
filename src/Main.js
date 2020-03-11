@@ -12,7 +12,7 @@ import Home from "./screens/Home";
 import CategoriesPage from "./screens/CategoriesPage";
 import CategoryEditPage from "./screens/CategoryEditPage";
 import Store from "./store/Store";
-import {INSERT_USER, INSERT_USER_SETTINGS} from "../data/mutations";
+import {INSERT_USER} from "../data/mutations";
 
 const NavStack = createStackNavigator();
 
@@ -43,13 +43,9 @@ const Main = ({user, token, setToken}) => {
     if (isNewUser) {
       client.mutate({
         mutation: INSERT_USER,
-        variables: {id, name}
-      });
-
-      client.mutate({
-        mutation: INSERT_USER_SETTINGS,
         variables: {
-          user_id: id,
+          id: id,
+          name: name,
           lock_calendar:
             Dimensions.get("window").height > LOCK_CALENDAR_MIN_WIN_HEIGHT
         }

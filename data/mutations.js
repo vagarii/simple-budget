@@ -1,17 +1,13 @@
 import {gql} from "apollo-boost";
 
 export const INSERT_USER = gql`
-  mutation($id: String, $name: String) {
-    insert_user(objects: {id: $id, name: $name}) {
-      affected_rows
-    }
-  }
-`;
-
-export const INSERT_USER_SETTINGS = gql`
-  mutation($user_id: String, $lock_calendar: Boolean) {
-    insert_user_settings(
-      objects: {user_id: $user_id, lock_calendar: $lock_calendar}
+  mutation($id: String, $name: String, $lock_calendar: Boolean) {
+    insert_user(
+      objects: {
+        user_settings: {data: {lock_calendar: $lock_calendar}}
+        id: $id
+        name: $name
+      }
     ) {
       affected_rows
     }
