@@ -24,9 +24,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.zihanxx.simpleBudget",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
-    "description": "",
-    "githubUrl": "https://github.com/ZihanXX/my-big-plan"
+    "description": "Simple Budget -- My Piggy Bank",
+    "githubUrl": "https://github.com/ZihanXX/simple-budget"
   }
 }
