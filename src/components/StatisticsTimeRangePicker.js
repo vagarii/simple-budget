@@ -55,14 +55,14 @@ const StatisticsTimeRangePicker = ({setStatisticsRange}) => {
         style={styles.rangePicker}
         data={SELECT_DATA}
         placeholder="Recommended Time Range"
-        status={fixedRange == null ? "basic" : "success"}
+        status={fixedRange == null ? "basic" : "danger"}
         selectedOption={fixedRange}
         onSelect={setFixedRangeAndClear}
       />
       <RangeDatepicker
         style={styles.rangePicker}
         range={randomRange}
-        status={randomRange?.endDate == null ? "basic" : "success"}
+        status={randomRange?.endDate == null ? "basic" : "danger"}
         onSelect={setRandomRangeAndClear}
       />
     </Layout>

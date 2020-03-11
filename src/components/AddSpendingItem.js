@@ -99,7 +99,9 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
       status="info"
       size="large"
       onPress={onSave}
-      disabled={inserting || amount == null || categoryId == null}
+      disabled={
+        inserting || amount == null || amount.length === 0 || categoryId == null
+      }
     >
       Save
     </Button>

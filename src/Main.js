@@ -59,37 +59,37 @@ const Main = ({user, token, setToken}) => {
     setClient(client);
   }, []);
 
-  if (!client) {
-    return <Spinner status="basic" />;
-  }
-
   Store.save("user", user).then();
 
-  return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
-        <NavStack.Navigator initialRouteName="Home">
-          <NavStack.Screen
-            name="Home"
-            component={Home}
-            initialParams={{user, setToken}}
-            options={HeaderOptions}
-          />
-          <NavStack.Screen
-            name="CategoriesPage"
-            component={CategoriesPage}
-            initialParams={user}
-            options={HeaderOptions}
-          />
-          <NavStack.Screen
-            name="CategoryEditPage"
-            component={CategoryEditPage}
-            options={HeaderOptions}
-          />
-        </NavStack.Navigator>
-      </NavigationContainer>
-    </ApolloProvider>
-  );
+  if (!client) {
+    return <Spinner status="basic" />;
+  } else {
+    return (
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <NavStack.Navigator initialRouteName="Home">
+            <NavStack.Screen
+              name="Home"
+              component={Home}
+              initialParams={{user, setToken}}
+              options={HeaderOptions}
+            />
+            <NavStack.Screen
+              name="CategoriesPage"
+              component={CategoriesPage}
+              initialParams={user}
+              options={HeaderOptions}
+            />
+            <NavStack.Screen
+              name="CategoryEditPage"
+              component={CategoryEditPage}
+              options={HeaderOptions}
+            />
+          </NavStack.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
+    );
+  }
 };
 
 Main.propTypes = {

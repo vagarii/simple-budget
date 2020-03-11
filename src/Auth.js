@@ -5,7 +5,7 @@ import * as Random from "expo-random";
 import * as SecureStore from "expo-secure-store";
 import jwtDecoder from "jwt-decode";
 import queryString from "query-string";
-import {Alert, StyleSheet, Dimensions} from "react-native";
+import {Alert, StyleSheet, Dimensions, Image} from "react-native";
 import {
   AUTH_CLIENT_ID,
   AUTH_DOMAIN,
@@ -14,8 +14,6 @@ import {
   NONCE_KEY
 } from "../config";
 import {Button, Icon, Layout, Text} from "@ui-kitten/components";
-
-const StarIcon = style => <Icon {...style} name="star" />;
 
 const generateNonce = async () => {
   const nonce = String.fromCharCode.apply(
@@ -76,14 +74,15 @@ const Auth = ({token, onLogin}) => {
 
   return (
     <Layout style={styles.container}>
-      <Text style={styles.text} category="h4">
-        Simple Budget
-      </Text>
+      <Image
+        source={require("./assets/transPiggy.png")}
+        style={{width: 221, height: 271, marginBottom: 32}}
+      />
       <Button
         style={styles.button}
         onPress={handleLoginPress}
-        status="info"
-        icon={StarIcon}
+        status="basic"
+        size="large"
       >
         Login
       </Button>
@@ -101,8 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   button: {
-    width: 334,
-    marginBottom: 90
+    width: 148
   }
 });
 
