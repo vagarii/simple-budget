@@ -3,28 +3,15 @@ import PropTypes from "prop-types";
 import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {Button, Icon, ListItem, Layout} from "@ui-kitten/components";
-import {
-  GET_SPENDING_ITEMS,
-  GET_SPENDING_ITEMS_AGGREGATE,
-  GET_SPENDING_ITEMS_FOR_CATEGORY
-} from "../../data/queries";
+import {GET_SPENDING_ITEMS} from "../../data/queries";
 import {DELETE_SPENDING_ITEM} from "../../data/mutations";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Store from "../store/Store";
 
 const moment = require("moment");
 
 const DeleteIcon = style => <Icon {...style} name="trash-2" />;
 
 const SpendingItem = ({item, user, date}) => {
-  const [range, setRange] = useState(null);
-
-  useEffect(() => {
-    Store.get("range").then(range => {
-      setRange(range);
-    });
-  }, []);
-
   const [deleteSpendingItem, {deleting, errorOnDeleting}] = useMutation(
     DELETE_SPENDING_ITEM
   );
@@ -70,21 +57,6 @@ const SpendingItem = ({item, user, date}) => {
             user_id: user.id,
             spending_date_start: moment(date).startOf("day"),
             spending_date_end: moment(date).endOf("day")
-          }
-        },
-        {
-          query: GET_SPENDING_ITEMS_AGGREGATE,
-          variables: {
-            category_id: category_id ?? 0,
-            spending_date_start: range?.startDate ?? 0,
-            spending_date_end: range?.endDate ?? 0
-          }
-        },
-        {
-          query: GET_SPENDING_ITEMS_FOR_CATEGORY,
-          variables: {
-            user_id: user.id,
-            category_id: category_id ?? 0
           }
         }
       ]

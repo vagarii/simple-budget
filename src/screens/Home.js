@@ -149,7 +149,7 @@ const Home = ({route}) => {
           <HomePage user={user} lockCalendar={lockCalendar === true} />
         </Layout>
         <Layout style={styles.pager}>
-          <StatisticsPage user={user} />
+          <StatisticsPage user={user} homePageIndex={selectedPageIndex} />
         </Layout>
       </ViewPager>
       <Layout style={styles.bottomTab}>

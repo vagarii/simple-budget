@@ -11,7 +11,6 @@ import {Spinner} from "@ui-kitten/components";
 import Home from "./screens/Home";
 import CategoriesPage from "./screens/CategoriesPage";
 import CategoryEditPage from "./screens/CategoryEditPage";
-import Store from "./store/Store";
 import {INSERT_USER} from "../data/mutations";
 
 const NavStack = createStackNavigator();
@@ -54,8 +53,6 @@ const Main = ({user, token, setToken}) => {
 
     setClient(client);
   }, []);
-
-  Store.save("user", user).then();
 
   if (!client) {
     return <Spinner status="basic" />;

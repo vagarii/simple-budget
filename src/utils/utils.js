@@ -6,11 +6,11 @@ const getRroundNumberMoney = num => {
   return Math.round(num * 100) / 100;
 };
 
-const getBudgetAmountPerDay = (budgetAmountStr, budgetTimeDuration) => {
-  if (budgetAmountStr == null || budgetTimeDuration == null) {
+const getBudgetAmountPerDay = (budgetAmountStr, budgetDuration) => {
+  if (budgetAmountStr == null || budgetDuration == null) {
     return null;
   }
-  switch (budgetTimeDuration.text) {
+  switch (budgetDuration) {
     case "YEAR":
       return parseFloat(budgetAmountStr) / 365;
     case "QUARTER":
@@ -27,7 +27,7 @@ const getBudgetAmountPerDay = (budgetAmountStr, budgetTimeDuration) => {
 const getTotalTargetBudget = (
   isRandomRange,
   budgetAmount,
-  budgetTimeDuration,
+  budgetDuration,
   daysInRange,
   budgetAmountPerDay
 ) => {
@@ -36,7 +36,7 @@ const getTotalTargetBudget = (
   }
   if (daysInRange == 7) {
     // WEEK
-    switch (budgetTimeDuration) {
+    switch (budgetDuration) {
       case "Week":
         return budgetAmount;
       default:
@@ -44,7 +44,7 @@ const getTotalTargetBudget = (
     }
   } else if (28 <= daysInRange && daysInRange <= 31) {
     // MONTH
-    switch (budgetTimeDuration) {
+    switch (budgetDuration) {
       case "MONTH":
         return budgetAmount;
       case "QUARTER":
@@ -56,7 +56,7 @@ const getTotalTargetBudget = (
     }
   } else if (120 <= daysInRange && daysInRange <= 122) {
     // QUARTER
-    switch (budgetTimeDuration) {
+    switch (budgetDuration) {
       case "MONTH":
         return budgetAmount * 3;
       case "QUARTER":
@@ -68,7 +68,7 @@ const getTotalTargetBudget = (
     }
   } else if (daysInRange == 365 || daysInRange == 366) {
     // YEAR
-    switch (budgetTimeDuration) {
+    switch (budgetDuration) {
       case "MONTH":
         return budgetAmount * 12;
       case "QUARTER":

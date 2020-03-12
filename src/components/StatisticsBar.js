@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {StyleSheet} from "react-native";
 import {useQuery} from "@apollo/react-hooks";
@@ -12,7 +12,7 @@ const moment = require("moment");
 
 const BAR_WIDTH = 230;
 
-const StatisticsBar = ({category, range, isRandomRange}) => {
+const StatisticsBar = ({category, range, isRandomRange, homePageIndex}) => {
   const {
     id: categoryId,
     name: categoryName,
@@ -26,7 +26,8 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
   const {
     loading: loadingAggregate,
     error: errorOnAggregate,
-    data: aggregateData
+    data: aggregateData,
+    refetch: refetchAggregateData
   } = useQuery(GET_SPENDING_ITEMS_AGGREGATE, {
     variables: {
       category_id: categoryId,
@@ -36,6 +37,10 @@ const StatisticsBar = ({category, range, isRandomRange}) => {
   });
   if (errorOnAggregate)
     return <Text>{`Error! ${errorOnAggregate.message}`}</Text>;
+
+  useEffect(() => {
+    refetchAggregateData();
+  }, [range, homePageIndex]);
 
   const spentSum =
     aggregateData?.spending_item_aggregate?.aggregate?.sum?.amount ?? 0;
@@ -122,7 +127,8 @@ const styles = StyleSheet.create({
 StatisticsBar.propTypes = {
   category: PropTypes.object.isRequired,
   range: PropTypes.object.isRequired,
-  isRandomRange: PropTypes.bool.isRequired
+  isRandomRange: PropTypes.bool.isRequired,
+  homePageIndex: PropTypes.number.isRequired
 };
 
 export default StatisticsBar;

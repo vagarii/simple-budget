@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import PropTypes from "prop-types";
 import {useMutation, useQuery} from "@apollo/react-hooks";
 import {StyleSheet, Dimensions, ScrollView} from "react-native";
@@ -22,7 +22,7 @@ import {
 import {
   GET_CATEGORY_MAX_ORDER,
   GET_SPENDING_CATEGORIES,
-  GET_SPENDING_ITEMS_FOR_CATEGORY
+  GET_CATEGORY_SPENDING_ITEM_COUNT
 } from "../../data/queries";
 import {useNavigation} from "@react-navigation/native";
 import IconInventory from "../components/IconInventory";
@@ -62,9 +62,9 @@ const CategoryEditPage = ({route}) => {
   const [budgetAmountStr, setBudgetAmountStr] = useState(
     item?.budget_amount == null ? null : String(item?.budget_amount)
   );
-  const [budgetTimeDuration, setBudgetTimeDuration] = useState({
-    text: item?.budget_time_duration
-  });
+  const [budgetDuration, setBudgetDuration] = useState(
+    item?.budget_time_duration
+  );
   const [iconId, setIconId] = useState(item?.category_icon?.id);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -85,11 +85,12 @@ const CategoryEditPage = ({route}) => {
   ] = useMutation(DELETE_SPENDING_CATEGORY);
 
   const {
-    data: spendingItems,
-    loading: querying,
-    error: errorOnQuerying
-  } = useQuery(GET_SPENDING_ITEMS_FOR_CATEGORY, {
-    variables: {user_id: user.id, category_id: item?.id ?? 0}
+    data: spendingItemCount,
+    loading: queryingSpendingItemCount,
+    error: errorOnQueryingSpendingItemCount,
+    refetch: refetchSpendingItemCount
+  } = useQuery(GET_CATEGORY_SPENDING_ITEM_COUNT, {
+    variables: {category_id: item?.id ?? 0}
   });
 
   const {
@@ -102,11 +103,15 @@ const CategoryEditPage = ({route}) => {
   const curMaxOrder =
     cateMaxOrder?.spending_category_aggregate?.aggregate?.max?.order;
 
+  useEffect(() => {
+    refetchSpendingItemCount();
+  }, []);
+
   const mutationInProcess = inserting || updating || deleting;
   const validValues =
     name != null &&
     budgetAmountStr != null &&
-    budgetTimeDuration.text != null &&
+    budgetDuration != null &&
     iconId != null;
 
   const navigation = useNavigation();
@@ -125,7 +130,7 @@ const CategoryEditPage = ({route}) => {
         user?.id == null ||
         name == null ||
         budgetAmountStr == null ||
-        budgetTimeDuration?.text == null ||
+        budgetDuration == null ||
         iconId == null
       ) {
         return;
@@ -136,10 +141,10 @@ const CategoryEditPage = ({route}) => {
           name: name,
           description: description ?? "",
           budget_amount: parseFloat(budgetAmountStr),
-          budget_time_duration: budgetTimeDuration.text,
+          budget_time_duration: budgetDuration,
           budget_amount_per_day: getBudgetAmountPerDay(
             budgetAmountStr,
-            budgetTimeDuration
+            budgetDuration
           ),
           icon_id: iconId,
           order: curMaxOrder == null ? 1 : curMaxOrder + 1
@@ -154,7 +159,7 @@ const CategoryEditPage = ({route}) => {
         item?.id == null ||
         name == null ||
         budgetAmountStr == null ||
-        budgetTimeDuration?.text == null ||
+        budgetDuration == null ||
         iconId == null
       ) {
         return;
@@ -165,10 +170,10 @@ const CategoryEditPage = ({route}) => {
           name: name,
           description: description ?? "",
           budget_amount: parseFloat(budgetAmountStr),
-          budget_time_duration: budgetTimeDuration.text,
+          budget_time_duration: budgetDuration,
           budget_amount_per_day: getBudgetAmountPerDay(
             budgetAmountStr,
-            budgetTimeDuration
+            budgetDuration
           ),
           icon_id: iconId
         },
@@ -213,14 +218,19 @@ const CategoryEditPage = ({route}) => {
     }
   };
 
+  const categoryStillHasSpendingItem =
+    spendingItemCount != null &&
+    spendingItemCount.spending_category.length > 0 &&
+    spendingItemCount.spending_category[0]?.spending_items_aggregate?.aggregate
+      ?.count > 0;
+
   const DeleteModal = () => (
     <Modal
       backdropStyle={styles.backdrop}
       onBackdropPress={onHideDeleteModal}
       visible={showDeleteModal}
     >
-      {spendingItems?.spending_item == null ||
-      spendingItems?.spending_item.length === 0 ? (
+      {!categoryStillHasSpendingItem ? (
         <Layout style={styles.modalContainer}>
           <Text category="s1">{`Are you sure to delete category`}</Text>
           <Text category="h6">{`"${item?.name}" ?`}</Text>
@@ -336,9 +346,9 @@ const CategoryEditPage = ({route}) => {
             <Select
               style={styles.targetAmountDuration}
               data={DurationData}
-              placeholder="Duration"
-              selectedOption={budgetTimeDuration}
-              onSelect={setBudgetTimeDuration}
+              placeholder="Period"
+              selectedOption={{text: budgetDuration}}
+              onSelect={selectedItem => setBudgetDuration(selectedItem.text)}
             />
           </Layout>
           <SaveButton />

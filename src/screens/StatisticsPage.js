@@ -4,16 +4,14 @@ import {StyleSheet, Dimensions} from "react-native";
 import {Layout, Text} from "@ui-kitten/components";
 import StatisticsTimeRangePicker from "../components/StatisticsTimeRangePicker";
 import StatisticsCharts from "../components/StatisticsCharts";
-import Store from "../store/Store";
 
-const StatisticsPage = ({user}) => {
+const StatisticsPage = ({user, homePageIndex}) => {
   const [range, setRange] = useState({});
   const [isRandomRange, setIsRandomRange] = useState(null);
 
   const setStatisticsRange = (range, isRandom) => {
     setRange(range);
     setIsRandomRange(isRandom);
-    Store.save("range", range).then();
   };
 
   return (
@@ -23,6 +21,7 @@ const StatisticsPage = ({user}) => {
         range={range}
         isRandomRange={isRandomRange === true}
         user={user}
+        homePageIndex={homePageIndex}
       />
       <StatisticsTimeRangePicker setStatisticsRange={setStatisticsRange} />
     </Layout>
@@ -39,7 +38,8 @@ const styles = StyleSheet.create({
 });
 
 StatisticsPage.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  homePageIndex: PropTypes.number.isRequired
 };
 
 export default StatisticsPage;

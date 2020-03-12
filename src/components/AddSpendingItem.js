@@ -4,11 +4,7 @@ import {useMutation} from "@apollo/react-hooks";
 import {StyleSheet} from "react-native";
 import {Input, Layout, Text, Button} from "@ui-kitten/components";
 import {INSERT_SPENDING_ITEMS} from "../../data/mutations";
-import {
-  GET_SPENDING_ITEMS,
-  GET_SPENDING_ITEMS_AGGREGATE
-} from "../../data/queries";
-import Store from "../store/Store";
+import {GET_SPENDING_ITEMS} from "../../data/queries";
 import {getIfValidNumber} from "../utils/utils";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
@@ -17,7 +13,6 @@ const moment = require("moment");
 const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   const [description, setDescription] = useState(null);
   const [amount, setAmount] = useState(null);
-  const [range, setRange] = useState(null);
 
   const [insertSpendingItem, {inserting, errorOnInserting}] = useMutation(
     INSERT_SPENDING_ITEMS
@@ -25,19 +20,15 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
   if (errorOnInserting)
     return <Text>`Error! ${errorOnInserting.message}`</Text>;
 
-  useEffect(() => {
-    Store.get("range").then(range => {
-      setRange(range);
-    });
-  }, []);
-
   const onSave = () => {
+    const startOfDate = moment(date).startOf("day");
+    const endOfDate = moment(date).endOf("day");
     if (
       categoryId == null ||
       amount == null ||
       user?.id == null ||
       date == null ||
-      moment(date).startOf("day") == null
+      startOfDate == null
     ) {
       return;
     }
@@ -47,23 +38,15 @@ const AddSpendingItem = ({user, date, categoryId, setCategoryId}) => {
         category_id: categoryId,
         amount: amount,
         user_id: user.id,
-        spending_date: moment(date).startOf("day")
+        spending_date: startOfDate
       },
       refetchQueries: [
         {
           query: GET_SPENDING_ITEMS,
           variables: {
             user_id: user.id,
-            spending_date_start: moment(date).startOf("day"),
-            spending_date_end: moment(date).endOf("day")
-          }
-        },
-        {
-          query: GET_SPENDING_ITEMS_AGGREGATE,
-          variables: {
-            category_id: categoryId,
-            spending_date_start: range?.startDate ?? 0,
-            spending_date_end: range?.endDate ?? 0
+            spending_date_start: startOfDate,
+            spending_date_end: endOfDate
           }
         }
       ]
