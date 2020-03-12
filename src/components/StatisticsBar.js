@@ -42,8 +42,11 @@ const StatisticsBar = ({category, range, isRandomRange, homePageIndex}) => {
     refetchAggregateData();
   }, [range, homePageIndex]);
 
+  const cates = aggregateData?.spending_category ?? [];
   const spentSum =
-    aggregateData?.spending_item_aggregate?.aggregate?.sum?.amount ?? 0;
+    (cates.length > 0 &&
+      cates[0].spending_items_aggregate?.aggregate?.sum?.amount) ??
+    0;
 
   const daysInRange =
     moment(range.endDate).diff(moment(range.startDate), "day") + 1;

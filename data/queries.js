@@ -1,34 +1,37 @@
 import {gql} from "apollo-boost";
 
 export const GET_USER_SETTINGS = gql`
-  query user_settings($user_id: String!) {
-    user_settings(where: {user_id: {_eq: $user_id}}) {
-      lock_calendar
+  query user($user_id: String!) {
+    user(where: {id: {_eq: $user_id}}) {
+      user_settings {
+        lock_calendar
+      }
     }
   }
 `;
 
 export const GET_SPENDING_ITEMS = gql`
-  query spending_item(
+  query user(
     $user_id: String!
     $spending_date_start: timestamptz!
     $spending_date_end: timestamptz!
   ) {
-    spending_item(
-      order_by: {created_time: desc}
-      where: {
-        user_id: {_eq: $user_id}
-        spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
-      }
-    ) {
-      id
-      amount
-      description
-      category_id
-      spending_category {
-        category_icon {
-          name
-          color
+    user(where: {id: {_eq: $user_id}}) {
+      spending_items(
+        order_by: {created_time: desc}
+        where: {
+          spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
+        }
+      ) {
+        id
+        amount
+        description
+        category_id
+        spending_category {
+          category_icon {
+            name
+            color
+          }
         }
       }
     }
@@ -82,20 +85,21 @@ export const GET_CATEGORY_ICONS = gql`
 `;
 
 export const GET_SPENDING_ITEMS_AGGREGATE = gql`
-  query spending_item_aggregate(
+  query spending_category(
     $category_id: Int!
     $spending_date_start: timestamptz!
     $spending_date_end: timestamptz!
   ) {
-    spending_item_aggregate(
-      where: {
-        category_id: {_eq: $category_id}
-        spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
-      }
-    ) {
-      aggregate {
-        sum {
-          amount
+    spending_category(where: {id: {_eq: $category_id}}) {
+      spending_items_aggregate(
+        where: {
+          spending_date: {_gte: $spending_date_start, _lt: $spending_date_end}
+        }
+      ) {
+        aggregate {
+          sum {
+            amount
+          }
         }
       }
     }

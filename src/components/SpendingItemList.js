@@ -16,7 +16,6 @@ const SpendingItemList = ({user, date}) => {
       spending_date_end: moment(date).endOf("day")
     }
   });
-
   if (error) return <Text>{`Error! ${error.message}`}</Text>;
 
   return (
@@ -26,7 +25,7 @@ const SpendingItemList = ({user, date}) => {
       ) : (
         <List
           {...flatlistProps}
-          data={data.spending_item}
+          data={data.user[0].spending_items}
           renderItem={({item}) => (
             <SpendingItem item={item} user={user} date={date} />
           )}

@@ -49,21 +49,18 @@ const Home = ({route}) => {
     setToken(null);
   };
 
+  const settings = userSettings?.user[0].user_settings ?? [];
   const lockCalendar =
-    (userSettings?.user_settings != null && userSettings.user_settings.length) >
-    0
-      ? userSettings.user_settings[0].lock_calendar
-      : false;
+    settings.length !== 0 && settings[0].lock_calendar === true;
 
   const onUpdateUserSettings = () => {
     if (user?.id == null) {
       return;
     }
-    const ifLock = !lockCalendar;
     updateUserSettings({
       variables: {
         user_id: user.id,
-        lock_calendar: ifLock
+        lock_calendar: !lockCalendar
       },
       refetchQueries: [
         {
